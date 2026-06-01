@@ -11,7 +11,7 @@ export default function Home() {
       {/* Background Image Layer */}
       <div className="absolute inset-0 w-full h-full pointer-events-none">
         <Image
-          src="/airplane_background.jpg"
+          src="/sunset_airplane.jpg"
           alt="Airplane flying over clouds with world map background"
           fill
           priority
@@ -19,8 +19,8 @@ export default function Home() {
           quality={100}
         />
         {/* Softer overlay gradient just enough for text readability */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#030d22]/80 via-[#030d22]/30 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#030d22]/60 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#030d22]/60 via-[#030d22]/20 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#030d22]/40 via-transparent to-transparent" />
       </div>
 
       <Navbar />

@@ -1,6 +1,7 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
+import { createSession } from "@/lib/auth";
 
 export async function getFlights() {
   return await prisma.flight.findMany({
@@ -42,9 +43,23 @@ export async function signup(name: string, email: string, password: string) {
         password // In a real app we would hash this using bcrypt
       }
     });
+    await createSession({ id: user.id, email: user.email, role: user.role });
     return { success: true, user };
   } catch (error) {
     return { success: false, error: 'Email already exists or invalid data' };
+  }
+}
+
+export async function login(email: string, password: string) {
+  try {
+    const user = await prisma.user.findUnique({ where: { email } });
+    if (!user || user.password !== password) {
+      return { success: false, error: 'Invalid email or password' };
+    }
+    await createSession({ id: user.id, email: user.email, role: user.role });
+    return { success: true, user };
+  } catch (error) {
+    return { success: false, error: 'Login failed' };
   }
 }
 
