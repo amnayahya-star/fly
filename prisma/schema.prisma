@@ -1,0 +1,78 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id        String    @id @default(cuid())
+  name      String
+  email     String    @unique
+  password  String
+  role      String    @default("USER")
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  bookings  Booking[]
+}
+
+model Flight {
+  id            String    @id @default(cuid())
+  airline       String
+  logo          String
+  departureTime String
+  arrivalTime   String
+  duration      String
+  from          String
+  to            String
+  price         String
+  type          String
+  delay         Boolean   @default(false)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  bookings      Booking[]
+}
+
+model Hotel {
+  id          String   @id @default(cuid())
+  name        String
+  location    String
+  rating      Float
+  reviews     Int
+  price       String
+  image       String
+  amenities   String   // Stored as JSON string or comma-separated
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Deal {
+  id            String   @id @default(cuid())
+  title         String
+  description   String
+  type          String
+  image         String
+  originalPrice String
+  discountPrice String
+  tag           String
+  expiresIn     String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Booking {
+  id        String   @id @default(cuid())
+  pnr       String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  flightId  String
+  flight    Flight   @relation(fields: [flightId], references: [id], onDelete: Cascade)
+  status    String   @default("CONFIRMED")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
