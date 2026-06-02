@@ -31,10 +31,10 @@ const stats = [
 
 export default function Statistics() {
   return (
-    <div className="relative z-20 w-full px-8 md:px-12 xl:px-24 mt-6 pb-12 flex flex-col items-center">
+    <div className="relative z-20 w-full px-12 md:px-20 xl:px-36 mt-6 pb-4 flex flex-col items-center">
       
       {/* Stats Grid */}
-      <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-6 mb-12">
+      <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-6 mb-6">
         {stats.map((stat, idx) => {
           const Icon = stat.icon;
           return (
