@@ -15,7 +15,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
       {/* Background Image Layer */}
       <div className="absolute inset-0 w-full h-full pointer-events-none">
         <Image
-          src="/elegant_sky_clouds.png"
+          src="/re.png"
           alt="Elegant soft sky and majestic clouds"
           fill
           priority
