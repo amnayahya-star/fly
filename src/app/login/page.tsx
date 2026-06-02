@@ -19,7 +19,7 @@ export default function LoginPage() {
     if (result.success) {
       window.location.href = '/admin'; // Redirect to dashboard, middleware will block if not admin
     } else {
-      setErrorMsg(result.error);
+      setErrorMsg(result.error || 'An error occurred during login');
       setLoading(false);
     }
   };
