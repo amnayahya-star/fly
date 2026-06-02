@@ -3,7 +3,7 @@ import * as motion from 'framer-motion/client';
 
 export default function HeroContent({ dict }: { dict: any }) {
   return (
-    <div className="max-w-2xl text-white relative z-10 pt-12 pb-4 px-8 md:px-12 xl:px-24">
+    <div className="max-w-4xl text-white relative z-10 pt-12 pb-4 px-8 md:px-12 xl:px-24">
       {/* Label */}
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
@@ -29,13 +29,12 @@ export default function HeroContent({ dict }: { dict: any }) {
         </span>
       </motion.h1>
 
-      {/* Description */}
-      <motion.p 
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.3 }}
-        className="text-lg md:text-xl text-white/80 max-w-lg leading-relaxed font-light"
-      >
+        <motion.p 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="text-lg md:text-xl text-white/80 max-w-[540px] leading-relaxed font-light"
+        >
         {dict.description}
       </motion.p>
     </div>

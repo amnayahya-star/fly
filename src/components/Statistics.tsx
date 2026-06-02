@@ -1,6 +1,6 @@
 import React from 'react';
 import * as motion from 'framer-motion/client';
-import { Plane, Globe, ShieldCheck, Headphones } from 'lucide-react';
+import { Plane, Globe, ShieldCheck, Headset } from 'lucide-react';
 
 const stats = [
   {
@@ -22,7 +22,7 @@ const stats = [
     desc: 'We match any price',
   },
   {
-    icon: Headphones,
+    icon: Headset,
     title: '24/7',
     subtitle: 'Support',
     desc: 'Always here to help',
@@ -31,10 +31,10 @@ const stats = [
 
 export default function Statistics() {
   return (
-    <div className="relative z-20 w-full max-w-[1400px] mx-auto px-8 md:px-12 xl:px-24 mt-6 pb-12 flex flex-col items-center">
+    <div className="relative z-20 w-full px-8 md:px-12 xl:px-24 mt-6 pb-12 flex flex-col items-center">
       
       {/* Stats Grid */}
-      <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mb-12">
+      <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-6 mb-12">
         {stats.map((stat, idx) => {
           const Icon = stat.icon;
           return (
@@ -43,16 +43,22 @@ export default function Statistics() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.6 + idx * 0.1 }}
-              className="bg-[#0b1a30]/60 backdrop-blur-md border border-white/10 rounded-2xl p-5 flex items-center gap-5 hover:bg-[#0b1a30]/80 transition-colors group cursor-pointer shadow-lg"
+              className="group flex min-h-[126px] cursor-pointer items-center gap-5 rounded-[18px] border border-[#1f4774]/70 bg-[#0b2648]/75 px-6 py-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_14px_34px_rgba(4,15,35,0.38)] backdrop-blur-md transition-colors hover:border-[#2d5f96]/85 hover:bg-[#0d2c54]/80"
             >
-              <div className="w-14 h-14 rounded-full bg-white/[0.03] border border-white/10 flex items-center justify-center relative group-hover:scale-110 transition-transform">
-                <div className="absolute inset-0 rounded-full shadow-[0_0_15px_rgba(76,161,255,0.15)] pointer-events-none"></div>
-                <Icon className="w-6 h-6 text-[#4CA1FF] relative z-10" strokeWidth={1.5} />
+              <div
+                className="relative flex h-[70px] w-[70px] shrink-0 items-center justify-center rounded-full border border-[#2c5a91]/55 shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_0_24px_rgba(62,146,239,0.24)] transition-transform group-hover:scale-105"
+                style={{
+                  background:
+                    'radial-gradient(circle at 35% 28%, rgba(77, 158, 255, 0.42), rgba(31, 98, 171, 0.42) 45%, rgba(13, 38, 73, 0.9) 100%)',
+                }}
+              >
+                <div className="absolute inset-[7px] rounded-full border border-white/[0.04]" />
+                <Icon className="relative z-10 h-8 w-8 text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.22)]" strokeWidth={1.8} />
               </div>
-              <div className="flex flex-col">
-                <span className="text-[22px] font-bold text-white leading-tight">{stat.title}</span>
-                <span className="text-[15px] font-semibold text-white leading-snug">{stat.subtitle}</span>
-                <span className="text-[12px] text-white/50 mt-1 font-medium">{stat.desc}</span>
+              <div className="flex min-w-0 flex-col">
+                <span className="text-[28px] font-bold leading-[1.05] text-white md:text-[32px]">{stat.title}</span>
+                <span className="text-[20px] font-semibold leading-snug text-white md:text-[21px]">{stat.subtitle}</span>
+                <span className="mt-3 text-[14px] font-medium leading-tight text-[#b8c4d5]">{stat.desc}</span>
               </div>
             </motion.div>
           );
