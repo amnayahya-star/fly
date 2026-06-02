@@ -15,5 +15,24 @@
     "headline": "Your Journey",
     "headlineHighlight": "Begins Here",
     "description": "Search, compare and book flights from hundreds of airlines with the best prices and instant confirmation."
+  },
+  "hotels": {
+    "title": "Find your perfect stay.",
+    "subtitle": "Discover exclusive rates on luxury hotels, resorts, and vacation homes around the world with AERO.",
+    "destination": "Destination or property",
+    "placeholder": "Where are you going?",
+    "checkIn": "Check-in",
+    "checkOut": "Check-out",
+    "addDates": "Add dates",
+    "guests": "Guests & Rooms",
+    "guestsValue": "2 Guests, 1 Room",
+    "search": "Search",
+    "trending": "Trending Destinations",
+    "trendingSub": "Most popular choices for travelers",
+    "seeAll": "See all properties",
+    "reviews": "reviews",
+    "startingFrom": "Starting from",
+    "night": "/night",
+    "viewDeal": "View Deal"
   }
 }

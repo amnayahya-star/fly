@@ -11,10 +11,11 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
 
   return (
     <main className="relative min-h-screen w-full overflow-hidden bg-[#060b19] flex flex-col justify-between selection:bg-[#4CA1FF] selection:text-white">
-      
+
       {/* Background Image Layer */}
       <div className="absolute inset-0 w-full h-full pointer-events-none">
         <Image
+
           src="/q/hero-pick.png"
           alt="Airplane flying above clouds with route labels"
           fill
@@ -28,10 +29,10 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
       </div>
 
       <Navbar dict={dict.navbar} lang={lang} />
-      
+
       <div className="relative z-10 flex flex-col min-h-screen pt-20">
         <HeroContent dict={dict.hero} />
-        
+
         <div className="w-full mb-12">
           <BookingEngine />
           <Statistics />
