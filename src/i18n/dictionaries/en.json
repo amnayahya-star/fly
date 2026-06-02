@@ -34,5 +34,14 @@
     "startingFrom": "Starting from",
     "night": "/night",
     "viewDeal": "View Deal"
+  },
+  "deals": {
+    "limited": "Limited Time Offers",
+    "title": "Exclusive AERO Deals",
+    "subtitle": "Unlock incredible savings on flights, luxury hotels, and complete travel packages. Don't miss out on these limited-time offers.",
+    "catAll": "All Deals",
+    "catFlights": "Flights",
+    "catHotels": "Hotels",
+    "catPackages": "Packages"
   }
 }
