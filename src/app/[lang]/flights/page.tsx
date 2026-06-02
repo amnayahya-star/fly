@@ -3,11 +3,14 @@ import React, { useState, useEffect } from 'react';
 import * as motion from 'framer-motion/client';
 import Image from "next/image";
 import Link from 'next/link';
+import { useParams } from 'next/navigation';
 import { Plane, ArrowRight, Clock, MapPin, Filter, ChevronDown, Check } from 'lucide-react';
 
 import { getFlights } from '@/app/actions';
 
 export default function FlightsResultsPage() {
+  const params = useParams();
+  const lang = params.lang as string;
   const [flights, setFlights] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -148,9 +151,9 @@ export default function FlightsResultsPage() {
                     <p className="text-[11px] text-white/50 font-medium tracking-wide uppercase">Total from</p>
                     <p className="text-2xl font-bold text-white">{flight.price}</p>
                   </div>
-                  <button className="bg-[#0066FF]/20 hover:bg-[#0066FF] text-[#4CA1FF] hover:text-white px-5 py-2 rounded-xl font-semibold transition-colors flex items-center gap-2 text-sm">
+                  <Link href={`/${lang}/checkout/${flight.id}`} className="bg-[#0066FF]/20 hover:bg-[#0066FF] text-[#4CA1FF] hover:text-white px-5 py-2 rounded-xl font-semibold transition-colors flex items-center gap-2 text-sm">
                     Select
-                  </button>
+                  </Link>
                 </div>
               </motion.div>
             ))

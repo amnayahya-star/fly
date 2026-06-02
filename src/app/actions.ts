@@ -1,12 +1,41 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
-import { createSession } from "@/lib/auth";
+import { createSession, getSession } from "@/lib/auth";
 
 export async function getFlights() {
   return await prisma.flight.findMany({
     orderBy: { createdAt: 'desc' }
   });
+}
+
+export async function getFlightById(id: string) {
+  return await prisma.flight.findUnique({
+    where: { id }
+  });
+}
+
+export async function createBooking(flightId: string) {
+  try {
+    const session = await getSession();
+    if (!session || !session.user) {
+      return { success: false, error: 'Unauthorized' };
+    }
+
+    const pnr = 'AERO-' + Math.random().toString(36).substring(2, 8).toUpperCase();
+    
+    const booking = await prisma.booking.create({
+      data: {
+        pnr,
+        userId: session.user.id,
+        flightId
+      }
+    });
+    
+    return { success: true, pnr };
+  } catch (error) {
+    return { success: false, error: 'Failed to create booking' };
+  }
 }
 
 export async function getHotels() {
