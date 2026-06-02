@@ -1,5 +1,4 @@
-"use client";
-import React, { useState } from 'react';
+import React from 'react';
 import * as motion from 'framer-motion/client';
 import Image from "next/image";
 import Link from 'next/link';
@@ -7,16 +6,13 @@ import Navbar from "@/components/Navbar";
 import { MapPin, Calendar, Users, Search, Star, Wifi, Coffee, Map } from 'lucide-react';
 
 import { getHotels } from '@/app/actions';
+import { getDictionary } from '@/i18n/getDictionary';
 
-export default function Page() {
-const dict = { navbar: {} };
-const lang = "en";
-
-  const [hotels, setHotels] = useState<any[]>([]);
-
-  React.useEffect(() => {
-    getHotels().then(setHotels);
-  }, []);
+export default async function Page({ params }: { params: Promise<{ lang: string }> }) {
+  const { lang } = await params;
+  const dict = await getDictionary(lang as "en" | "ar" | "fa");
+  
+  const hotels = await getHotels();
 
   return (
     <main className="relative min-h-screen w-full overflow-hidden bg-[#060b19] selection:bg-[#4CA1FF] selection:text-white pb-20">
@@ -44,8 +40,8 @@ const lang = "en";
           transition={{ duration: 0.7 }}
           className="mb-12"
         >
-          <h1 className="text-4xl md:text-6xl font-bold text-white mb-4">Find your perfect stay.</h1>
-          <p className="text-white/70 text-lg max-w-2xl">Discover exclusive rates on luxury hotels, resorts, and vacation homes around the world with AERO.</p>
+          <h1 className="text-4xl md:text-6xl font-bold text-white mb-4">{dict.hotels.title}</h1>
+          <p className="text-white/70 text-lg max-w-2xl">{dict.hotels.subtitle}</p>
         </motion.div>
 
         {/* Hotel Search Engine */}
@@ -61,12 +57,12 @@ const lang = "en";
             
             {/* Destination */}
             <div className="flex-[2] px-5 py-3.5 bg-black/20 border border-white/10 rounded-xl cursor-pointer hover:bg-black/30 transition-colors group">
-              <span className="block text-xs text-white/50 mb-1 font-medium tracking-wide">Destination or property</span>
+              <span className="block text-xs text-white/50 mb-1 font-medium tracking-wide">{dict.hotels.destination}</span>
               <div className="flex items-center gap-3 text-white/90">
                 <MapPin className="w-5 h-5 text-white/40 group-hover:text-[#4CA1FF] transition-colors" />
                 <input 
                   type="text" 
-                  placeholder="Where are you going?" 
+                  placeholder={dict.hotels.placeholder}
                   className="bg-transparent border-none outline-none text-base font-semibold w-full placeholder-white/30"
                 />
               </div>
@@ -75,34 +71,34 @@ const lang = "en";
             {/* Check-in / Check-out */}
             <div className="flex-[2] flex gap-2">
               <div className="flex-1 px-5 py-3.5 bg-black/20 border border-white/10 rounded-xl cursor-pointer hover:bg-black/30 transition-colors group">
-                <span className="block text-xs text-white/50 mb-1 font-medium tracking-wide">Check-in</span>
+                <span className="block text-xs text-white/50 mb-1 font-medium tracking-wide">{dict.hotels.checkIn}</span>
                 <div className="flex items-center gap-3 text-white/90">
                   <Calendar className="w-5 h-5 text-white/40 group-hover:text-[#4CA1FF] transition-colors" />
-                  <span className="text-base font-semibold">Add dates</span>
+                  <span className="text-base font-semibold">{dict.hotels.addDates}</span>
                 </div>
               </div>
               <div className="flex-1 px-5 py-3.5 bg-black/20 border border-white/10 rounded-xl cursor-pointer hover:bg-black/30 transition-colors group">
-                <span className="block text-xs text-white/50 mb-1 font-medium tracking-wide">Check-out</span>
+                <span className="block text-xs text-white/50 mb-1 font-medium tracking-wide">{dict.hotels.checkOut}</span>
                 <div className="flex items-center gap-3 text-white/90">
                   <Calendar className="w-5 h-5 text-white/40 group-hover:text-[#4CA1FF] transition-colors" />
-                  <span className="text-base font-semibold">Add dates</span>
+                  <span className="text-base font-semibold">{dict.hotels.addDates}</span>
                 </div>
               </div>
             </div>
 
             {/* Guests & Rooms */}
             <div className="flex-1 px-5 py-3.5 bg-black/20 border border-white/10 rounded-xl cursor-pointer hover:bg-black/30 transition-colors group">
-              <span className="block text-xs text-white/50 mb-1 font-medium tracking-wide">Guests & Rooms</span>
+              <span className="block text-xs text-white/50 mb-1 font-medium tracking-wide">{dict.hotels.guests}</span>
               <div className="flex items-center gap-3 text-white/90">
                 <Users className="w-5 h-5 text-white/40 group-hover:text-[#4CA1FF] transition-colors" />
-                <span className="text-base font-semibold">2 Guests, 1 Room</span>
+                <span className="text-base font-semibold">{dict.hotels.guestsValue}</span>
               </div>
             </div>
 
             {/* Search Button */}
             <button className="xl:w-auto w-full bg-[#0066FF] hover:bg-[#0052cc] text-white px-8 py-3.5 rounded-xl font-semibold flex items-center justify-center gap-2 transition-all shadow-[0_4px_20px_rgba(0,102,255,0.4)] whitespace-nowrap text-base group">
               <Search className="w-5 h-5 group-hover:scale-110 transition-transform" />
-              Search
+              {dict.hotels.search}
             </button>
             
           </div>
@@ -112,11 +108,11 @@ const lang = "en";
         <div>
           <div className="flex items-end justify-between mb-8">
             <div>
-              <h2 className="text-2xl font-bold text-white mb-2">Trending Destinations</h2>
-              <p className="text-white/60">Most popular choices for travelers from UAE</p>
+              <h2 className="text-2xl font-bold text-white mb-2">{dict.hotels.trending}</h2>
+              <p className="text-white/60">{dict.hotels.trendingSub}</p>
             </div>
             <Link href="#" className="text-[#4CA1FF] hover:text-white text-sm font-medium transition-colors flex items-center gap-1">
-              See all properties <Map className="w-4 h-4" />
+              {dict.hotels.seeAll} <Map className="w-4 h-4" />
             </Link>
           </div>
 
@@ -149,7 +145,7 @@ const lang = "en";
                   <h3 className="text-xl font-bold text-white mb-1 drop-shadow-md">{hotel.name}</h3>
                   <div className="flex items-center gap-1 text-white/70 text-sm mb-4">
                     <MapPin className="w-3.5 h-3.5" />
-                    {hotel.location} • {hotel.reviews} reviews
+                    {hotel.location} • {hotel.reviews} {dict.hotels.reviews}
                   </div>
 
                   <div className="flex flex-wrap gap-2 mb-6">
@@ -162,11 +158,11 @@ const lang = "en";
 
                   <div className="flex items-end justify-between pt-4 border-t border-white/10">
                     <div>
-                      <p className="text-xs text-white/50 mb-0.5 uppercase tracking-wider">Starting from</p>
-                      <p className="text-2xl font-bold text-white">{hotel.price} <span className="text-sm font-normal text-white/50">/night</span></p>
+                      <p className="text-xs text-white/50 mb-0.5 uppercase tracking-wider">{dict.hotels.startingFrom}</p>
+                      <p className="text-2xl font-bold text-white">{hotel.price} <span className="text-sm font-normal text-white/50">{dict.hotels.night}</span></p>
                     </div>
                     <button className="bg-white/10 hover:bg-[#4CA1FF] text-white px-4 py-2 rounded-lg font-medium transition-colors text-sm">
-                      View Deal
+                      {dict.hotels.viewDeal}
                     </button>
                   </div>
                 </div>
