@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import * as motion from 'framer-motion/client';
 import { Plane, Plus, Trash2 } from 'lucide-react';
-import { addFlight, getFlights } from '@/app/actions';
+import { addFlight, getFlights, deleteFlight } from '@/app/actions';
 
 export default function AdminFlightsPage() {
   const [flights, setFlights] = useState<any[]>([]);
@@ -39,6 +39,13 @@ export default function AdminFlightsPage() {
     setFormData({
       airline: '', logo: '', departureTime: '', arrivalTime: '', duration: '', from: '', to: '', price: '', type: 'Direct'
     });
+  };
+
+  const handleDelete = async (id: string) => {
+    if(confirm('Are you sure you want to delete this flight? Associated bookings will also be deleted.')) {
+      await deleteFlight(id);
+      await loadFlights();
+    }
   };
 
   return (
@@ -150,12 +157,17 @@ export default function AdminFlightsPage() {
                 </td>
                 <td className="px-6 py-4 font-bold text-[#4CA1FF]">{flight.price}</td>
                 <td className="px-6 py-4 text-right">
-                  <button className="p-2 rounded-lg text-white/40 hover:text-red-400 hover:bg-red-400/10 transition-colors">
+                  <button onClick={() => handleDelete(flight.id)} className="p-2 rounded-lg text-white/40 hover:text-red-400 hover:bg-red-400/10 transition-colors">
                     <Trash2 className="w-4 h-4" />
                   </button>
                 </td>
               </tr>
             ))}
+            {flights.length === 0 && (
+              <tr>
+                <td colSpan={5} className="px-6 py-8 text-center text-white/50">No flights found.</td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>
