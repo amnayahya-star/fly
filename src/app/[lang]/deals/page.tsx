@@ -16,7 +16,10 @@ const categories = [
 
 import { getDeals } from '@/app/actions';
 
-export default function DealsPage() {
+export default function Page() {
+const dict = { navbar: {} };
+const lang = "en";
+
   const [activeCategory, setActiveCategory] = useState('all');
   const [deals, setDeals] = useState<any[]>([]);
 
@@ -34,7 +37,7 @@ export default function DealsPage() {
       {/* Background Subtle glow */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-[400px] bg-gradient-to-br from-[#0066FF]/20 to-[#A020F0]/20 blur-[150px] rounded-full pointer-events-none"></div>
 
-      <Navbar />
+      <Navbar dict={dict.navbar} lang={lang} />
 
       <div className="relative z-10 max-w-[1400px] mx-auto px-8 md:px-12 xl:px-24 pt-40">
         

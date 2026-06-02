@@ -1,0 +1,19 @@
+{
+  "navbar": {
+    "flights": "Flights",
+    "hotels": "Hotels",
+    "deals": "Deals",
+    "manageBooking": "Manage Booking",
+    "checkIn": "Check In",
+    "support": "Support",
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "admin": "Admin"
+  },
+  "hero": {
+    "label": "Explore • Book • Travel",
+    "headline": "Your Journey",
+    "headlineHighlight": "Begins Here",
+    "description": "Search, compare and book flights from hundreds of airlines with the best prices and instant confirmation."
+  }
+}

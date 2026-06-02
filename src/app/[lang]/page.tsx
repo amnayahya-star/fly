@@ -3,8 +3,12 @@ import Navbar from "@/components/Navbar";
 import HeroContent from "@/components/HeroContent";
 import BookingEngine from "@/components/BookingEngine";
 import Statistics from "@/components/Statistics";
+import { getDictionary, Locale } from "@/i18n/getDictionary";
 
-export default function Home() {
+export default async function Home({ params }: { params: Promise<{ lang: string }> }) {
+  const { lang } = await params;
+  const dict = await getDictionary(lang as Locale);
+
   return (
     <main className="relative min-h-screen w-full overflow-hidden bg-[#060b19] flex flex-col justify-between selection:bg-[#4CA1FF] selection:text-white">
       
@@ -23,10 +27,10 @@ export default function Home() {
         <div className="absolute inset-0 bg-gradient-to-t from-[#030d22]/40 via-transparent to-transparent" />
       </div>
 
-      <Navbar />
+      <Navbar dict={dict.navbar} lang={lang} />
       
       <div className="relative z-10 flex flex-col min-h-screen pt-20">
-        <HeroContent />
+        <HeroContent dict={dict.hero} />
         
         <div className="w-full mb-12">
           <BookingEngine />

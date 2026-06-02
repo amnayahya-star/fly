@@ -8,7 +8,10 @@ import { MapPin, Calendar, Users, Search, Star, Wifi, Coffee, Map } from 'lucide
 
 import { getHotels } from '@/app/actions';
 
-export default function HotelsPage() {
+export default function Page() {
+const dict = { navbar: {} };
+const lang = "en";
+
   const [hotels, setHotels] = useState<any[]>([]);
 
   React.useEffect(() => {
@@ -31,7 +34,7 @@ export default function HotelsPage() {
         <div className="absolute inset-0 bg-gradient-to-b from-[#060b19]/60 via-[#060b19]/80 to-[#060b19]" />
       </div>
 
-      <Navbar />
+      <Navbar dict={dict.navbar} lang={lang} />
 
       <div className="relative z-10 max-w-[1400px] mx-auto px-8 md:px-12 xl:px-24 pt-40">
         
