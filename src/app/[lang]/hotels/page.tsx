@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import React from 'react';
 import * as motion from 'framer-motion/client';
 import Image from "next/image";

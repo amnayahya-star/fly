@@ -8,6 +8,7 @@ import { getDictionary, Locale } from "@/i18n/getDictionary";
 export default async function Home({ params }: { params: Promise<{ lang: string }> }) {
   const { lang } = await params;
   const dict = await getDictionary(lang as Locale);
+  const heroSrc = lang === "ar" ? "/q/hero-pick-ar.png" : "/q/hero-pick.png";
 
   return (
     <main className="relative min-h-screen w-full overflow-hidden bg-[#060b19] flex flex-col justify-between selection:bg-[#4CA1FF] selection:text-white">
@@ -15,8 +16,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
       {/* Background Image Layer */}
       <div className="absolute inset-0 w-full h-full pointer-events-none">
         <Image
-
-          src="/q/hero-pick.png"
+          src={heroSrc}
           alt="Airplane flying above clouds with route labels"
           fill
           priority
@@ -31,11 +31,11 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
       <Navbar dict={dict.navbar} lang={lang} />
 
       <div className="relative z-10 flex flex-col min-h-screen pt-20">
-        <HeroContent dict={dict.hero} />
+        <HeroContent dict={dict.hero} lang={lang} />
 
         <div className="w-full mb-12">
-          <BookingEngine />
-          <Statistics />
+          <BookingEngine lang={lang} />
+          <Statistics lang={lang} />
         </div>
       </div>
     </main>

@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import React from 'react';
 import { getFlightById } from '@/app/actions';
 import { notFound } from 'next/navigation';

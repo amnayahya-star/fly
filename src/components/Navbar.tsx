@@ -100,7 +100,7 @@ export default function Navbar({ dict, lang }: { dict: any, lang: string }) {
                 >
                   {l.name}
                   {lang === l.code && (
-                    <div className="w-1.5 h-1.5 rounded-full bg-[#4CA1FF]"></div>
+                    <div className={`w-1.5 h-1.5 rounded-full ${lang === 'ar' ? 'bg-[#D4AF37]' : 'bg-[#4CA1FF]'}`}></div>
                   )}
                 </button>
               ))}
@@ -110,7 +110,11 @@ export default function Navbar({ dict, lang }: { dict: any, lang: string }) {
         <Link href={`/${lang}/signin`} className="text-sm font-medium text-white/90 hover:text-white transition-colors hidden sm:block">
           {dict.signIn}
         </Link>
-        <Link href={`/${lang}/signup`} className="px-5 py-2 text-sm font-medium text-white bg-[#0066FF]/80 hover:bg-[#0066FF] border border-[#0066FF]/50 shadow-[0_0_15px_rgba(0,102,255,0.3)] rounded-full backdrop-blur-md transition-all">
+        <Link href={`/${lang}/signup`} className={`px-5 py-2 text-sm font-medium text-white rounded-full backdrop-blur-md transition-all ${
+          lang === 'ar'
+            ? 'bg-[#D4AF37]/80 hover:bg-[#D4AF37] border border-[#D4AF37]/50 shadow-[0_0_15px_rgba(212,175,55,0.3)]'
+            : 'bg-[#0066FF]/80 hover:bg-[#0066FF] border border-[#0066FF]/50 shadow-[0_0_15px_rgba(0,102,255,0.3)]'
+        }`}>
           {dict.signUp}
         </Link>
       </div>
