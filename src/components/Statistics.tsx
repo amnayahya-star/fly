@@ -44,19 +44,19 @@ export default function Statistics({ lang }: { lang?: string }) {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.6 + idx * 0.1 }}
               className={`group flex min-h-[126px] cursor-pointer items-center gap-5 rounded-[18px] border bg-[#0b2648]/75 px-6 py-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_14px_34px_rgba(4,15,35,0.38)] backdrop-blur-md transition-colors ${
-                lang === 'ar'
+                (lang === 'ar' || lang === 'fa')
                   ? 'border-[#BF953F]/40 hover:border-[#D4AF37]/65 hover:bg-[#151005]/85'
                   : 'border-[#1f4774]/70 hover:border-[#2d5f96]/85 hover:bg-[#0d2c54]/80'
               }`}
             >
               <div
                 className={`relative flex h-[70px] w-[70px] shrink-0 items-center justify-center rounded-full border transition-transform group-hover:scale-105 ${
-                  lang === 'ar'
+                  (lang === 'ar' || lang === 'fa')
                     ? 'border-[#D4AF37]/55 shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_0_24px_rgba(212,175,55,0.35)]'
                     : 'border-[#2c5a91]/55 shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_0_24px_rgba(62,146,239,0.24)]'
                 }`}
                 style={{
-                  background: lang === 'ar'
+                  background: (lang === 'ar' || lang === 'fa')
                     ? 'radial-gradient(circle at 35% 28%, rgba(212, 175, 55, 0.42), rgba(170, 119, 28, 0.42) 45%, rgba(45, 30, 5, 0.9) 100%)'
                     : 'radial-gradient(circle at 35% 28%, rgba(77, 158, 255, 0.42), rgba(31, 98, 171, 0.42) 45%, rgba(13, 38, 73, 0.9) 100%)',
                 }}

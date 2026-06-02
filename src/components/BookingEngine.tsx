@@ -43,13 +43,13 @@ export default function BookingEngine({ lang }: { lang?: string }) {
                   className={clsx(
                     "flex items-center gap-2 px-6 py-3 rounded-2xl text-[14px] font-semibold transition-all cursor-pointer",
                     isActive 
-                      ? (lang === 'ar'
+                      ? ((lang === 'ar' || lang === 'fa')
                           ? "bg-[#02102e] text-white shadow-[0_0_18px_rgba(212,175,55,0.45)] border border-[#D4AF37]"
                           : "bg-[#02102e] text-white shadow-[0_0_18px_rgba(0,102,255,0.45)] border border-[#0066FF]") 
                       : "bg-white/[0.03] text-white/70 hover:text-white border border-white/10 hover:bg-white/[0.06] hover:border-white/20"
                   )}
                 >
-                  <Icon className={clsx("w-4 h-4", isActive ? (lang === 'ar' ? "text-[#D4AF37]" : "text-[#4CA1FF]") : "text-white/60")} />
+                  <Icon className={clsx("w-4 h-4", isActive ? ((lang === 'ar' || lang === 'fa') ? "text-[#D4AF37]" : "text-[#4CA1FF]") : "text-white/60")} />
                   {type.label}
                 </button>
               );
@@ -124,7 +124,7 @@ export default function BookingEngine({ lang }: { lang?: string }) {
 
             {/* Search Button (perfectly matches inputs in height and features a premium dynamic blue/gold linear gradient) */}
             <Link href="/flights" className={`xl:w-auto w-full text-white px-8 py-[18px] rounded-2xl font-bold flex items-center justify-center gap-2.5 transition-all hover:scale-[1.02] active:scale-[0.98] whitespace-nowrap text-[16px] cursor-pointer ${
-              lang === 'ar'
+              (lang === 'ar' || lang === 'fa')
                 ? "bg-gradient-to-r from-[#AA771C] to-[#F2C94C] hover:from-[#8B5A10] hover:to-[#D4AF37] shadow-[0_4px_20px_rgba(170,119,28,0.45)] hover:shadow-[0_4px_28px_rgba(170,119,28,0.75)]"
                 : "bg-gradient-to-r from-[#004BEE] to-[#0088FF] hover:from-[#003CD0] hover:to-[#0077EE] shadow-[0_4px_20px_rgba(0,102,255,0.45)] hover:shadow-[0_4px_28px_rgba(0,102,255,0.7)]"
             }`}>

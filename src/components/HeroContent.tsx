@@ -24,7 +24,7 @@ export default function HeroContent({ dict, lang }: { dict: any; lang?: string }
         className="text-5xl md:text-7xl font-bold leading-[1.1] mb-6 tracking-tight"
       >
         {dict.headline} <br />
-        <span className={`text-transparent bg-clip-text bg-gradient-to-r ${lang === 'ar' ? 'from-[#BF953F] via-[#FCF6BA] to-[#B38728]' : 'from-[#4CA1FF] to-[#36D1DC]'}`}>
+        <span className={`text-transparent bg-clip-text bg-gradient-to-r ${(lang === 'ar' || lang === 'fa') ? 'from-[#BF953F] via-[#FCF6BA] to-[#B38728]' : 'from-[#4CA1FF] to-[#36D1DC]'}`}>
           {dict.headlineHighlight}
         </span>
       </motion.h1>

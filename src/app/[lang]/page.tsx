@@ -8,7 +8,7 @@ import { getDictionary, Locale } from "@/i18n/getDictionary";
 export default async function Home({ params }: { params: Promise<{ lang: string }> }) {
   const { lang } = await params;
   const dict = await getDictionary(lang as Locale);
-  const heroSrc = lang === "ar" ? "/q/hero-pick-ar.png" : "/q/hero-pick.png";
+  const heroSrc = (lang === "ar" || lang === "fa") ? "/q/hero-pick-ar.png" : "/q/hero-pick.png";
 
   return (
     <main className="relative min-h-screen w-full overflow-hidden bg-[#060b19] flex flex-col justify-between selection:bg-[#4CA1FF] selection:text-white">
