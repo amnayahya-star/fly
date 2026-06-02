@@ -15,8 +15,8 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
       {/* Background Image Layer */}
       <div className="absolute inset-0 w-full h-full pointer-events-none">
         <Image
-          src="/sunset_airplane.jpg"
-          alt="Airplane flying over clouds with world map background"
+          src="/luxury_aero_hero.png"
+          alt="Luxury dark themed airplane soaring over glowing world map"
           fill
           priority
           className="object-cover object-center"
