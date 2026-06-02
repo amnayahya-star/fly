@@ -43,5 +43,18 @@
     "catFlights": "Flights",
     "catHotels": "Hotels",
     "catPackages": "Packages"
+  },
+  "flightsPage": {
+    "backToSearch": "Back to Search",
+    "filters": "Filters",
+    "stops": "Stops",
+    "direct": "Direct",
+    "oneStop": "1 Stop",
+    "twoStops": "2+ Stops",
+    "priceRange": "Price Range",
+    "selectDeparture": "Select your departure flight",
+    "flightSubtitle": "Worldwide Flights • 1 Passenger • Economy",
+    "totalFrom": "Total from",
+    "select": "Select"
   }
 }

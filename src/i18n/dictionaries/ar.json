@@ -43,5 +43,18 @@
     "catFlights": "طيران",
     "catHotels": "فنادق",
     "catPackages": "باقات سفر"
+  },
+  "flightsPage": {
+    "backToSearch": "العودة للبحث",
+    "filters": "تصفية",
+    "stops": "التوقفات",
+    "direct": "مباشر",
+    "oneStop": "توقف واحد",
+    "twoStops": "توقفان أو أكثر",
+    "priceRange": "نطاق السعر",
+    "selectDeparture": "اختر رحلة المغادرة",
+    "flightSubtitle": "رحلات عالمية • 1 مسافر • الدرجة السياحية",
+    "totalFrom": "الإجمالي يبدأ من",
+    "select": "اختيار"
   }
 }
