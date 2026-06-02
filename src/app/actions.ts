@@ -121,3 +121,101 @@ export async function getDashboardStats() {
 
   return { users, flights, hotels, deals };
 }
+
+export async function getRecentBookings() {
+  return await prisma.booking.findMany({
+    orderBy: { createdAt: 'desc' },
+    take: 5,
+    include: {
+      user: true,
+      flight: true
+    }
+  });
+}
+
+export async function getAllBookings() {
+  return await prisma.booking.findMany({
+    orderBy: { createdAt: 'desc' },
+    include: {
+      user: true,
+      flight: true
+    }
+  });
+}
+
+export async function deleteFlight(id: string) {
+  try {
+    // Delete associated bookings first to maintain referential integrity
+    await prisma.booking.deleteMany({ where: { flightId: id } });
+    await prisma.flight.delete({ where: { id } });
+    return { success: true };
+  } catch (error) {
+    return { success: false, error: 'Failed to delete flight' };
+  }
+}
+
+export async function deleteHotel(id: string) {
+  try {
+    await prisma.hotel.delete({ where: { id } });
+    return { success: true };
+  } catch (error) {
+    return { success: false, error: 'Failed to delete hotel' };
+  }
+}
+
+export async function deleteDeal(id: string) {
+  try {
+    await prisma.deal.delete({ where: { id } });
+    return { success: true };
+  } catch (error) {
+    return { success: false, error: 'Failed to delete deal' };
+  }
+}
+
+export async function deleteBooking(id: string) {
+  try {
+    await prisma.booking.delete({ where: { id } });
+    return { success: true };
+  } catch (error) {
+    return { success: false, error: 'Failed to delete booking' };
+  }
+}
+
+export async function addHotel(data: any) {
+  try {
+    const hotel = await prisma.hotel.create({
+      data: {
+        name: data.name,
+        location: data.location,
+        image: data.image,
+        price: data.price,
+        rating: data.rating,
+        reviews: data.reviews,
+        amenities: data.amenities
+      }
+    });
+    return { success: true, hotel };
+  } catch (error) {
+    return { success: false, error: 'Failed to add hotel' };
+  }
+}
+
+export async function addDeal(data: any) {
+  try {
+    const deal = await prisma.deal.create({
+      data: {
+        title: data.title,
+        description: data.description,
+        image: data.image,
+        originalPrice: data.originalPrice,
+        discountPrice: data.discountPrice,
+        tag: data.tag,
+        expiresIn: data.expiresIn,
+        type: data.type
+      }
+    });
+    return { success: true, deal };
+  } catch (error) {
+    return { success: false, error: 'Failed to add deal' };
+  }
+}

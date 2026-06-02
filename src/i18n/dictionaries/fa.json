@@ -43,5 +43,18 @@
     "catFlights": "پروازها",
     "catHotels": "هتل‌ها",
     "catPackages": "پکیج‌ها"
+  },
+  "flightsPage": {
+    "backToSearch": "بازگشت به جستجو",
+    "filters": "فیلترها",
+    "stops": "توقف‌ها",
+    "direct": "مستقیم",
+    "oneStop": "۱ توقف",
+    "twoStops": "۲+ توقف",
+    "priceRange": "محدوده قیمت",
+    "selectDeparture": "پرواز رفت خود را انتخاب کنید",
+    "flightSubtitle": "پروازهای جهانی • ۱ مسافر • اکونومی",
+    "totalFrom": "مجموع از",
+    "select": "انتخاب"
   }
 }
