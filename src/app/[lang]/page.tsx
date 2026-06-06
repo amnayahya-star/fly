@@ -45,7 +45,6 @@ const destinations = [
 export default async function Home({ params }: { params: Promise<{ lang: string }> }) {
   const { lang } = await params;
   const dict = await getDictionary(lang as Locale);
-  const heroSrc = (lang === "ar" || lang === "fa") ? "/q/hero-pick-ar.png" : "/q/hero-pick.png";
 
   return (
     <main className="relative min-h-screen w-full overflow-hidden bg-[#060b19] flex flex-col justify-between selection:bg-[#4CA1FF] selection:text-white">
@@ -100,7 +99,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
                       className="object-cover transition-transform duration-700 group-hover:scale-105"
                     />
                     <div className="absolute top-3.5 left-3.5 bg-indigo-600/95 backdrop-blur-sm text-white text-[10px] font-bold px-2.5 py-1 rounded-full select-none shadow-sm">
-                      {dict.popularDestinations.badges[dest.badge] || dest.badge}
+                      {dict.popularDestinations.badges[dest.badge as keyof typeof dict.popularDestinations.badges] || dest.badge}
                     </div>
                   </div>
 
