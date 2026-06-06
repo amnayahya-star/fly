@@ -1,138 +1,628 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import * as motion from 'framer-motion/client';
 import Link from 'next/link';
-import { MapPin, Calendar, User, ArrowRightLeft, Route, Plane, ArrowRight, ChevronDown, Armchair, RotateCw } from 'lucide-react';
+import { MapPin, Calendar, User, Users, ArrowRightLeft, Route, Plane, ChevronDown, RotateCw, Sparkles } from 'lucide-react';
 import clsx from 'clsx';
 
 const tripTypes = [
   { id: 'round', label: 'Round Trip', icon: RotateCw },
   { id: 'oneway', label: 'One Way', icon: Plane },
-  { id: 'multi', label: 'Multi City', icon: Route },
+];
+
+const airports = [
+  "DXB (Dubai)", 
+  "LHR (London)", 
+  "JFK (New York)", 
+  "CDG (Paris)",
+  "HND (Tokyo)", 
+  "ICN (Seoul)", 
+  "SYD (Sydney)", 
+  "AKL (Auckland)",
+  "DOH (Doha)", 
+  "FRA (Frankfurt)", 
+  "MXP (Milan)", 
+  "MUC (Munich)", 
+  "MAD (Madrid)"
+];
+
+const flightClasses = [
+  "Economy",
+  "Premium Economy",
+  "Business",
+  "First"
 ];
 
 export default function BookingEngine({ lang }: { lang?: string }) {
   const [activeTrip, setActiveTrip] = useState('round');
+  const [takeoffKey, setTakeoffKey] = useState(0);
+
+  const containerRef = useRef<HTMLDivElement>(null);
+  const departureInputRef = useRef<HTMLInputElement>(null);
+  const returnInputRef = useRef<HTMLInputElement>(null);
+  const [containerWidth, setContainerWidth] = useState(0);
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  // Search Fields State
+  const [fromAirport, setFromAirport] = useState("DXB (Dubai)");
+  const [toAirport, setToAirport] = useState("LHR (London)");
+  const [showFromDropdown, setShowFromDropdown] = useState(false);
+  const [showToDropdown, setShowToDropdown] = useState(false);
+  const [searchFromQuery, setSearchFromQuery] = useState("");
+  const [searchToQuery, setSearchToQuery] = useState("");
+
+  const [departureDate, setDepartureDate] = useState("");
+  const [returnDate, setReturnDate] = useState("");
+
+  const [adults, setAdults] = useState(1);
+  const [children, setChildren] = useState(0);
+  const [infants, setInfants] = useState(0);
+  const [showPassengerDropdown, setShowPassengerDropdown] = useState(false);
+
+  const [selectedClass, setSelectedClass] = useState("Economy");
+  const [showClassDropdown, setShowClassDropdown] = useState(false);
+  const classDropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // Measure container size
+    const updateSize = () => {
+      if (containerRef.current) {
+        setContainerWidth(containerRef.current.offsetWidth);
+      }
+      setIsDesktop(window.innerWidth >= 768);
+    };
+
+    updateSize();
+    window.addEventListener('resize', updateSize);
+
+    // Trigger initial animation after 1 second to grab attention
+    const initialTimer = setTimeout(() => {
+      setTakeoffKey(1);
+    }, 1000);
+
+    // Trigger periodically every 10 seconds so the user cannot miss it
+    const intervalTimer = setInterval(() => {
+      setTakeoffKey(prev => (prev === 0 ? 1 : prev + 1));
+    }, 10000);
+
+    // Click outside listener to close dropdowns
+    const handleClickOutside = (e: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+        setShowFromDropdown(false);
+        setShowToDropdown(false);
+        setShowPassengerDropdown(false);
+      }
+      if (classDropdownRef.current && !classDropdownRef.current.contains(e.target as Node)) {
+        setShowClassDropdown(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      window.removeEventListener('resize', updateSize);
+      document.removeEventListener("mousedown", handleClickOutside);
+      clearTimeout(initialTimer);
+      clearInterval(intervalTimer);
+    };
+  }, []);
+
+  const triggerAnimation = () => {
+    setTakeoffKey(prev => (prev === 0 ? 1 : prev + 1));
+  };
+
+  const handleSwap = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const temp = fromAirport;
+    setFromAirport(toAirport);
+    setToAirport(temp);
+    triggerAnimation();
+  };
+
+  const isRtl = lang === 'ar' || lang === 'fa';
+  const startX = isRtl ? containerWidth - 32 : 32;
+  const endX = isRtl ? containerWidth / 2 - 32 : containerWidth / 2 + 32;
+  const controlX = (startX + endX) / 2;
+  const startY = 35;
+  const endY = 35;
+  const controlY = -90;
+
+  const filteredFromAirports = airports.filter(airport => 
+    airport.toLowerCase().includes(searchFromQuery.toLowerCase()) && airport !== toAirport
+  );
+
+  const filteredToAirports = airports.filter(airport => 
+    airport.toLowerCase().includes(searchToQuery.toLowerCase()) && airport !== fromAirport
+  );
 
   return (
     <motion.div 
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.7, delay: 0.4 }}
-      className="relative z-20 w-full px-8 md:px-12 xl:px-24 mt-24"
+      className="relative z-30 w-full px-8 md:px-12 xl:px-24 mt-24 animate-fade-in"
     >
-      <div className="relative w-full">
-        {/* We use a high-resolution SVG viewBox (1600x200) to ensure the top-edge slope remains perfectly steep and sharp without horizontal stretching */}
-        <div className="absolute inset-0 pointer-events-none z-0">
-          <svg className="w-full h-full drop-shadow-2xl" preserveAspectRatio="none" viewBox="0 0 1600 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0,20 Q0,0 20,0 L390,0 C405,0 415,15 430,15 L1580,15 Q1600,15 1600,35 L1600,180 Q1600,200 1580,200 L20,200 Q0,200 0,180 Z" fill="rgba(255, 255, 255, 0.08)" stroke="rgba(255, 255, 255, 0.28)" strokeWidth="1.5"/>
-          </svg>
-          <div className="absolute inset-0 rounded-[1.25rem] backdrop-blur-xl" style={{ clipPath: 'polygon(0 0, 24.375% 0, 26.875% 7.5%, 100% 7.5%, 100% 100%, 0 100%)' }}></div>
-        </div>
-
-        <div className="relative z-10 p-6 pt-5">
+      <div className="relative w-full bg-white border border-slate-100 rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.15)] p-6">
+        
+        {/* Top selectors row */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-slate-100">
           {/* Trip Type Selector */}
-          <div className="flex items-center gap-2 mb-6">
+          <div className="bg-slate-100/80 p-1.5 rounded-full flex items-center gap-1 w-fit">
             {tripTypes.map((type) => {
               const isActive = activeTrip === type.id;
-              const Icon = type.icon;
               return (
                 <button
                   key={type.id}
-                  onClick={() => setActiveTrip(type.id)}
+                  onClick={() => {
+                    setActiveTrip(type.id);
+                    if (type.id === 'oneway') {
+                      setReturnDate("");
+                    }
+                  }}
                   className={clsx(
-                    "flex items-center gap-2 px-6 py-3 rounded-2xl text-[14px] font-semibold transition-all cursor-pointer",
+                    "flex items-center gap-2 px-5 py-2 rounded-full text-[13px] font-semibold transition-all cursor-pointer",
                     isActive 
-                      ? ((lang === 'ar' || lang === 'fa')
-                          ? "bg-[#02102e] text-white shadow-[0_0_18px_rgba(212,175,55,0.45)] border border-[#D4AF37]"
-                          : "bg-[#02102e] text-white shadow-[0_0_18px_rgba(0,102,255,0.45)] border border-[#0066FF]") 
-                      : "bg-white/[0.03] text-white/70 hover:text-white border border-white/10 hover:bg-white/[0.06] hover:border-white/20"
+                      ? "bg-white text-blue-600 shadow-sm"
+                      : "text-slate-500 hover:text-slate-800"
                   )}
                 >
-                  <Icon className={clsx("w-4 h-4", isActive ? ((lang === 'ar' || lang === 'fa') ? "text-[#D4AF37]" : "text-[#4CA1FF]") : "text-white/60")} />
                   {type.label}
                 </button>
               );
             })}
           </div>
 
-          {/* Search Fields Grid with larger spacing and taller fields */}
-          <div className="flex flex-col xl:flex-row items-stretch w-full gap-3.5 relative">
-            
-            {/* From & To Wrapper (to position the swap button precisely) */}
-            <div className="flex flex-col md:flex-row relative gap-2.5 xl:flex-[2.2] min-w-0">
-              {/* From */}
-              <div className="flex-1 px-6 py-[18px] bg-black/[0.18] border border-white/20 rounded-2xl cursor-pointer hover:bg-black/[0.26] hover:border-white/35 transition-all duration-200 relative min-w-0 shadow-[0_2px_12px_rgba(0,0,0,0.15)]">
-                <span className="block text-[12px] text-white/60 mb-2 font-medium tracking-wide uppercase">From</span>
-                <div className="flex items-center gap-2 text-white">
-                  <MapPin className="w-4.5 h-4.5 text-white/70 shrink-0" />
-                  <span className="text-[15px] font-semibold whitespace-nowrap truncate">Select origin</span>
-                </div>
+          {/* Class Select Dropdown Button */}
+          <div ref={classDropdownRef} className="relative">
+            <button 
+              onClick={() => {
+                setShowClassDropdown(prev => !prev);
+                setShowFromDropdown(false);
+                setShowToDropdown(false);
+                setShowPassengerDropdown(false);
+              }}
+              className="border border-slate-200 hover:bg-slate-50 text-slate-600 text-[13px] font-semibold px-4 py-2.5 rounded-full flex items-center gap-2 transition-colors cursor-pointer w-fit"
+            >
+              <Sparkles className="w-4 h-4 text-indigo-500 fill-indigo-500/20" />
+              <span>{selectedClass}</span>
+              <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
+            </button>
+
+            {showClassDropdown && (
+              <div 
+                className="absolute left-0 mt-2 w-56 bg-white border border-slate-100 rounded-2xl shadow-xl z-50 p-2.5 flex flex-col gap-1"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {flightClasses.map((cls) => {
+                  const isSelected = selectedClass === cls;
+                  return (
+                    <button
+                      key={cls}
+                      onClick={() => {
+                        setSelectedClass(cls);
+                        setShowClassDropdown(false);
+                      }}
+                      className={clsx(
+                        "text-left w-full px-4 py-3 rounded-xl text-[14px] font-semibold transition-all cursor-pointer",
+                        isSelected 
+                          ? "text-blue-600 font-bold hover:bg-[#F0F5FF]" 
+                          : "text-slate-700 hover:bg-[#F0F5FF] hover:text-slate-800"
+                      )}
+                    >
+                      {cls}
+                    </button>
+                  );
+                })}
               </div>
-
-              {/* To */}
-              <div className="flex-1 px-6 py-[18px] bg-black/[0.18] border border-white/20 rounded-2xl cursor-pointer hover:bg-black/[0.26] hover:border-white/35 transition-all duration-200 pl-8 md:pl-10 min-w-0 shadow-[0_2px_12px_rgba(0,0,0,0.15)]">
-                <span className="block text-[12px] text-white/60 mb-2 font-medium tracking-wide uppercase">To</span>
-                <div className="flex items-center gap-2 text-white">
-                  <MapPin className="w-4.5 h-4.5 text-white/70 shrink-0" />
-                  <span className="text-[15px] font-semibold whitespace-nowrap truncate">Select destination</span>
-                </div>
-              </div>
-
-              {/* Swap Button */}
-              <button className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-[#121824] border border-white/20 flex items-center justify-center text-white hover:text-white z-10 hover:bg-[#1a2336] hover:border-white/35 transition-all shadow-lg cursor-pointer backdrop-blur-md">
-                <ArrowRightLeft className="w-4 h-4 text-white/80" />
-              </button>
-            </div>
-
-            {/* Departure */}
-            <div className="flex-1 px-6 py-[18px] bg-black/[0.18] border border-white/20 rounded-2xl cursor-pointer hover:bg-black/[0.26] hover:border-white/35 transition-all duration-200 min-w-0 shadow-[0_2px_12px_rgba(0,0,0,0.15)]">
-              <span className="block text-[12px] text-white/60 mb-2 font-medium tracking-wide uppercase">Departure</span>
-              <div className="flex items-center gap-2 text-white">
-                <Calendar className="w-4.5 h-4.5 text-white/70 shrink-0" />
-                <span className="text-[15px] font-semibold whitespace-nowrap">Select date</span>
-              </div>
-            </div>
-
-            {/* Deturn */}
-            <div className="flex-1 px-6 py-[18px] bg-black/[0.18] border border-white/20 rounded-2xl cursor-pointer hover:bg-black/[0.26] hover:border-white/35 transition-all duration-200 min-w-0 shadow-[0_2px_12px_rgba(0,0,0,0.15)]">
-              <span className="block text-[12px] text-white/60 mb-2 font-medium tracking-wide uppercase">Deturn</span>
-              <div className="flex items-center gap-2 text-white">
-                <Calendar className="w-4.5 h-4.5 text-white/70 shrink-0" />
-                <span className="text-[15px] font-semibold whitespace-nowrap">Select date</span>
-              </div>
-            </div>
-
-            {/* Passengers */}
-            <div className="flex-1 px-6 py-[18px] bg-black/[0.18] border border-white/20 rounded-2xl cursor-pointer hover:bg-black/[0.26] hover:border-white/35 transition-all duration-200 min-w-0 shadow-[0_2px_12px_rgba(0,0,0,0.15)]">
-              <span className="block text-[12px] text-white/60 mb-2 font-medium tracking-wide uppercase">Passengers</span>
-              <div className="flex items-center gap-2 text-white">
-                <User className="w-4.5 h-4.5 text-white/70 shrink-0" />
-                <span className="text-[15px] font-semibold whitespace-nowrap">1 Passenger</span>
-              </div>
-            </div>
-
-            {/* Class */}
-            <div className="flex-1 px-6 py-[18px] bg-black/[0.18] border border-white/20 rounded-2xl cursor-pointer hover:bg-black/[0.26] hover:border-white/35 transition-all duration-200 min-w-0 shadow-[0_2px_12px_rgba(0,0,0,0.15)]">
-              <span className="block text-[12px] text-white/60 mb-2 font-medium tracking-wide uppercase">Class</span>
-              <div className="flex items-center gap-2 text-white">
-                <Armchair className="w-4.5 h-4.5 text-white/70 shrink-0" />
-                <span className="text-[15px] font-semibold whitespace-nowrap">Economy</span>
-                <ChevronDown className="w-3.5 h-3.5 text-white/50 ml-auto" />
-              </div>
-            </div>
-
-            {/* Search Button (perfectly matches inputs in height and features a premium dynamic blue/gold linear gradient) */}
-            <Link href="/flights" className={`xl:w-auto w-full text-white px-8 py-[18px] rounded-2xl font-bold flex items-center justify-center gap-2.5 transition-all hover:scale-[1.02] active:scale-[0.98] whitespace-nowrap text-[16px] cursor-pointer ${
-              (lang === 'ar' || lang === 'fa')
-                ? "bg-gradient-to-r from-[#AA771C] to-[#F2C94C] hover:from-[#8B5A10] hover:to-[#D4AF37] shadow-[0_4px_20px_rgba(170,119,28,0.45)] hover:shadow-[0_4px_28px_rgba(170,119,28,0.75)]"
-                : "bg-gradient-to-r from-[#004BEE] to-[#0088FF] hover:from-[#003CD0] hover:to-[#0077EE] shadow-[0_4px_20px_rgba(0,102,255,0.45)] hover:shadow-[0_4px_28px_rgba(0,102,255,0.7)]"
-            }`}>
-              Search Flights
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-
+            )}
           </div>
+        </div>
+
+        {/* Search Fields Row */}
+        <div className="flex flex-col xl:flex-row items-center w-full gap-4 xl:gap-0 bg-slate-50/50 border border-slate-100 rounded-3xl p-2.5 relative">
+          
+          {/* From & To Wrapper */}
+          <div 
+            ref={containerRef}
+            className="flex flex-col md:flex-row relative items-center gap-0 xl:flex-[2.2] min-w-0 w-full"
+          >
+            {/* From */}
+            <div 
+              className="flex-1 w-full px-6 py-3 border-r border-slate-200/60 flex flex-col items-start gap-1 cursor-pointer hover:bg-slate-100/50 transition-all rounded-2xl md:rounded-r-none relative"
+            >
+              <span className="block text-[10px] text-blue-500 font-bold tracking-wider uppercase">FROM</span>
+              <div 
+                onClick={() => {
+                  setShowFromDropdown(true);
+                  setShowToDropdown(false);
+                  setShowPassengerDropdown(false);
+                }}
+                className="flex items-center gap-2 text-slate-700 w-full"
+              >
+                <MapPin className="w-4.5 h-4.5 text-blue-500 shrink-0" />
+                {showFromDropdown ? (
+                  <input
+                    type="text"
+                    placeholder="Search airport..."
+                    value={searchFromQuery}
+                    onChange={(e) => setSearchFromQuery(e.target.value)}
+                    autoFocus
+                    className="text-[14px] font-semibold text-slate-800 bg-transparent outline-none border-b border-blue-500 w-full"
+                    onClick={(e) => e.stopPropagation()}
+                  />
+                ) : (
+                  <span className="text-[14px] font-semibold whitespace-nowrap truncate">
+                    {fromAirport}
+                  </span>
+                )}
+              </div>
+
+              {/* From Dropdown */}
+              {showFromDropdown && (
+                <div 
+                  className="absolute left-0 top-full mt-2 w-72 bg-white border border-slate-100 rounded-2xl shadow-xl z-50 p-2 py-3 flex flex-col gap-1 max-h-60 overflow-y-auto"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <div className="text-[11px] font-semibold text-slate-400 px-3 pb-1 border-b border-slate-50 uppercase tracking-wider">Airports</div>
+                  {filteredFromAirports.length === 0 ? (
+                    <div className="text-sm text-slate-400 p-3">No airports found</div>
+                  ) : (
+                    filteredFromAirports.map((airport) => (
+                      <button
+                        key={airport}
+                        onClick={() => {
+                          setFromAirport(airport);
+                          setSearchFromQuery("");
+                          setShowFromDropdown(false);
+                          triggerAnimation();
+                        }}
+                        className="text-left w-full text-slate-700 hover:bg-blue-50 hover:text-blue-600 px-3 py-2 rounded-xl text-sm font-semibold transition-all flex items-center gap-2"
+                      >
+                        <Plane className="w-4 h-4 text-slate-400 shrink-0" />
+                        <span>{airport}</span>
+                      </button>
+                    ))
+                  )}
+                </div>
+              )}
+            </div>
+
+            {/* Swap Button */}
+            <button 
+              onClick={handleSwap}
+              className="relative z-10 w-9 h-9 rounded-full bg-white border border-slate-200 flex items-center justify-center text-blue-600 hover:bg-slate-50 hover:border-slate-35 shadow-sm transition-all cursor-pointer -my-2.5 md:-my-0 md:-mx-4.5 shrink-0"
+            >
+              <ArrowRightLeft className="w-4 h-4" />
+            </button>
+
+            {/* To */}
+            <div 
+              className="flex-1 w-full px-8 py-3 border-r border-slate-200/60 flex flex-col items-start gap-1 cursor-pointer hover:bg-slate-100/50 transition-all rounded-2xl md:rounded-l-none relative"
+            >
+              <span className="block text-[10px] text-blue-500 font-bold tracking-wider uppercase">TO</span>
+              <div 
+                onClick={() => {
+                  setShowToDropdown(true);
+                  setShowFromDropdown(false);
+                  setShowPassengerDropdown(false);
+                }}
+                className="flex items-center gap-2 text-slate-700 relative z-10 w-full"
+              >
+                <MapPin className="w-4.5 h-4.5 text-blue-500 shrink-0" />
+                {showToDropdown ? (
+                  <input
+                    type="text"
+                    placeholder="Search airport..."
+                    value={searchToQuery}
+                    onChange={(e) => setSearchToQuery(e.target.value)}
+                    autoFocus
+                    className="text-[14px] font-semibold text-slate-800 bg-transparent outline-none border-b border-blue-500 w-full"
+                    onClick={(e) => e.stopPropagation()}
+                  />
+                ) : (
+                  <span className="text-[14px] font-semibold whitespace-nowrap truncate">
+                    {toAirport}
+                  </span>
+                )}
+              </div>
+
+              {/* To Dropdown */}
+              {showToDropdown && (
+                <div 
+                  className="absolute left-0 top-full mt-2 w-72 bg-white border border-slate-100 rounded-2xl shadow-xl z-50 p-2 py-3 flex flex-col gap-1 max-h-60 overflow-y-auto"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <div className="text-[11px] font-semibold text-slate-400 px-3 pb-1 border-b border-slate-50 uppercase tracking-wider">Airports</div>
+                  {filteredToAirports.length === 0 ? (
+                    <div className="text-sm text-slate-400 p-3">No airports found</div>
+                  ) : (
+                    filteredToAirports.map((airport) => (
+                      <button
+                        key={airport}
+                        onClick={() => {
+                          setToAirport(airport);
+                          setSearchToQuery("");
+                          setShowToDropdown(false);
+                          triggerAnimation();
+                        }}
+                        className="text-left w-full text-slate-700 hover:bg-blue-50 hover:text-blue-600 px-3 py-2 rounded-xl text-sm font-semibold transition-all flex items-center gap-2"
+                      >
+                        <Plane className="w-4 h-4 text-slate-400 shrink-0" />
+                        <span>{airport}</span>
+                      </button>
+                    ))
+                  )}
+                </div>
+              )}
+            </div>
+
+            {/* Airplane Flight Path Animation Overlay */}
+            {isDesktop && takeoffKey > 0 && containerWidth > 0 && (
+              <div 
+                key={takeoffKey}
+                className="absolute inset-0 pointer-events-none z-30 overflow-visible"
+              >
+                {/* SVG Path */}
+                <svg className="absolute inset-0 w-full h-full overflow-visible pointer-events-none">
+                  <motion.path
+                    d={`M ${startX} ${startY} Q ${controlX} ${controlY} ${endX} ${endY}`}
+                    fill="none"
+                    stroke="#3B82F6"
+                    strokeWidth="1.5"
+                    strokeDasharray="4 4"
+                    initial={{ pathLength: 0, opacity: 0 }}
+                    animate={{ 
+                      pathLength: [0, 1, 1], 
+                      opacity: [0, 0.7, 0] 
+                    }}
+                    transition={{
+                      duration: 2.6,
+                      ease: "easeInOut",
+                      times: [0, 0.7, 1]
+                    }}
+                  />
+                </svg>
+
+                {/* Smoke Puffs (Particles trailing the plane) */}
+                {[0.06, 0.12, 0.18, 0.24, 0.30].map((delay, index) => (
+                  <motion.div
+                    key={`smoke-${index}`}
+                    initial={{ 
+                      x: startX, 
+                      y: startY, 
+                      scale: 0.2, 
+                      opacity: 0 
+                    }}
+                    animate={{
+                      x: [startX, controlX, endX],
+                      y: [startY, controlY, endY],
+                      scale: [0.2, 1.2, 2.0, 0.5],
+                      opacity: [0, 0.8, 0.4, 0],
+                    }}
+                    transition={{
+                      duration: 2.6,
+                      delay: delay,
+                      ease: "easeInOut",
+                    }}
+                    className="absolute rounded-full bg-slate-200/50 blur-[3px]"
+                    style={{
+                      left: 0,
+                      top: 0,
+                      width: '12px',
+                      height: '12px',
+                      marginLeft: '-6px',
+                      marginTop: '-6px',
+                    }}
+                  />
+                ))}
+
+                {/* Plane Icon */}
+                <motion.div
+                  initial={{ 
+                    x: startX, 
+                    y: startY, 
+                    scale: 0.6, 
+                    opacity: 0, 
+                    rotate: 0 
+                  }}
+                  animate={{
+                    x: [startX, controlX, endX],
+                    y: [startY, controlY, endY],
+                    rotate: [0, 45, 90],
+                    scale: [0.6, 1.1, 0.6],
+                    opacity: [0, 1, 1, 0],
+                  }}
+                  transition={{
+                    duration: 2.6,
+                    ease: "easeInOut",
+                  }}
+                  className="absolute"
+                  style={{
+                    left: 0,
+                    top: 0,
+                    marginLeft: '-10px',
+                    marginTop: '-10px',
+                    scaleX: isRtl ? -1 : 1, // Flip horizontally for RTL
+                    transformOrigin: 'center center'
+                  }}
+                >
+                  <Plane className="w-5 h-5 text-blue-500 fill-blue-500/20" />
+                </motion.div>
+              </div>
+            )}
+          </div>
+
+          {/* Departure */}
+          <div 
+            onClick={() => {
+              departureInputRef.current?.showPicker();
+            }}
+            className="flex-1 w-full px-6 py-3.5 border-r border-slate-200/60 flex items-center gap-4 cursor-pointer hover:bg-slate-100/50 transition-all rounded-2xl xl:rounded-none relative"
+          >
+            <div className="relative w-12 h-12 flex-shrink-0 flex items-center justify-center bg-blue-50 rounded-2xl border border-blue-100/50">
+              <Calendar className="w-6 h-6 text-blue-500" />
+              <span className="absolute -top-1 -right-1 text-[13px] select-none">🚀</span>
+            </div>
+            <div className="flex flex-col items-start min-w-0">
+              <span className="block text-[10px] text-blue-600 font-bold tracking-wider uppercase">TAKE OFF DATE</span>
+              <span className={clsx("text-[15px] font-bold tracking-tight", departureDate ? "text-slate-800" : "text-blue-400")}>
+                {departureDate ? new Date(departureDate).toLocaleDateString(lang || 'en', { month: 'short', day: 'numeric', year: 'numeric' }) : "dd/mm/yyyy"}
+              </span>
+              <span className="text-[11px] text-slate-400 font-medium whitespace-nowrap">When do you fly out?</span>
+            </div>
+            <input 
+              ref={departureInputRef}
+              type="date"
+              value={departureDate}
+              onChange={(e) => setDepartureDate(e.target.value)}
+              className="absolute inset-0 opacity-0 pointer-events-none w-full h-full"
+            />
+          </div>
+
+          {/* Return */}
+          <div 
+            onClick={() => {
+              if (activeTrip !== 'oneway') {
+                returnInputRef.current?.showPicker();
+              }
+            }}
+            className={clsx(
+              "flex-1 w-full px-6 py-3.5 border-r border-slate-200/60 flex items-center gap-4 transition-all rounded-2xl xl:rounded-none relative",
+              activeTrip === 'oneway' ? "cursor-not-allowed opacity-50" : "cursor-pointer hover:bg-slate-100/50"
+            )}
+          >
+            <div className="relative w-12 h-12 flex-shrink-0 flex items-center justify-center bg-purple-50 rounded-2xl border border-purple-100/50">
+              <Calendar className="w-6 h-6 text-purple-500" />
+              <span className="absolute -top-1 -right-1 text-[13px] select-none">🧭</span>
+            </div>
+            <div className="flex flex-col items-start min-w-0">
+              <span className="block text-[10px] text-blue-600 font-bold tracking-wider uppercase">LANDING DATE</span>
+              <span className={clsx("text-[15px] font-bold tracking-tight", activeTrip === 'oneway' ? "text-slate-400" : (returnDate ? "text-slate-800" : "text-blue-400"))}>
+                {activeTrip === 'oneway' 
+                  ? "—" 
+                  : (returnDate ? new Date(returnDate).toLocaleDateString(lang || 'en', { month: 'short', day: 'numeric', year: 'numeric' }) : "dd/mm/yyyy")}
+              </span>
+              <span className="text-[11px] text-slate-400 font-medium whitespace-nowrap">When do you return?</span>
+            </div>
+            <input 
+              ref={returnInputRef}
+              type="date"
+              value={returnDate}
+              onChange={(e) => setReturnDate(e.target.value)}
+              disabled={activeTrip === 'oneway'}
+              className="absolute inset-0 opacity-0 pointer-events-none w-full h-full"
+            />
+          </div>
+
+          {/* Passengers */}
+          <div 
+            onClick={() => {
+              setShowPassengerDropdown(prev => !prev);
+              setShowFromDropdown(false);
+              setShowToDropdown(false);
+            }}
+            className="flex-1 w-full px-6 py-3.5 flex items-center gap-4 cursor-pointer hover:bg-slate-100/50 transition-all rounded-2xl xl:rounded-none relative"
+          >
+            <div className="w-12 h-12 flex-shrink-0 flex items-center justify-center bg-blue-50 rounded-2xl border border-blue-100/50">
+              <Users className="w-6 h-6 text-blue-500" />
+            </div>
+            <div className="flex flex-col items-start min-w-0 w-full">
+              <span className="block text-[10px] text-blue-600 font-bold tracking-wider uppercase">PEOPLE ON BOARD</span>
+              <div className="flex items-center gap-1.5 text-slate-800 w-full">
+                <span className="text-[15px] font-bold tracking-tight">
+                  {adults + children + infants} Pax
+                </span>
+                <ChevronDown className="w-3 h-3 text-slate-400" />
+              </div>
+              <span className="text-[11px] text-slate-400 font-medium whitespace-nowrap">How many flying?</span>
+            </div>
+
+            {/* Passengers Dropdown */}
+            {showPassengerDropdown && (
+              <div 
+                className="absolute right-0 top-full mt-2 w-64 bg-white border border-slate-100 rounded-2xl shadow-xl z-50 p-4 flex flex-col gap-4"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {/* Adults */}
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-bold text-slate-700">Adults</p>
+                    <p className="text-xs text-slate-400">Age 12+</p>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <button
+                      onClick={() => setAdults(prev => Math.max(1, prev - 1))}
+                      className="w-7 h-7 rounded-full border border-slate-200 flex items-center justify-center font-bold text-slate-500 hover:bg-slate-50"
+                    >
+                      -
+                    </button>
+                    <span className="text-sm font-bold text-slate-700 w-4 text-center">{adults}</span>
+                    <button
+                      onClick={() => setAdults(prev => Math.min(9, prev + 1))}
+                      className="w-7 h-7 rounded-full border border-slate-200 flex items-center justify-center font-bold text-slate-500 hover:bg-slate-50"
+                    >
+                      +
+                    </button>
+                  </div>
+                </div>
+
+                {/* Children */}
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-bold text-slate-700">Children</p>
+                    <p className="text-xs text-slate-400">Age 2-11</p>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <button
+                      onClick={() => setChildren(prev => Math.max(0, prev - 1))}
+                      className="w-7 h-7 rounded-full border border-slate-200 flex items-center justify-center font-bold text-slate-500 hover:bg-slate-50"
+                    >
+                      -
+                    </button>
+                    <span className="text-sm font-bold text-slate-700 w-4 text-center">{children}</span>
+                    <button
+                      onClick={() => setChildren(prev => Math.min(9, prev + 1))}
+                      className="w-7 h-7 rounded-full border border-slate-200 flex items-center justify-center font-bold text-slate-500 hover:bg-slate-50"
+                    >
+                      +
+                    </button>
+                  </div>
+                </div>
+
+                {/* Infants */}
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-bold text-slate-700">Infants</p>
+                    <p className="text-xs text-slate-400">Under 2</p>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <button
+                      onClick={() => setInfants(prev => Math.max(0, prev - 1))}
+                      className="w-7 h-7 rounded-full border border-slate-200 flex items-center justify-center font-bold text-slate-500 hover:bg-slate-50"
+                    >
+                      -
+                    </button>
+                    <span className="text-sm font-bold text-slate-700 w-4 text-center">{infants}</span>
+                    <button
+                      onClick={() => setInfants(prev => Math.min(adults, prev + 1))}
+                      className="w-7 h-7 rounded-full border border-slate-200 flex items-center justify-center font-bold text-slate-500 hover:bg-slate-50"
+                    >
+                      +
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Search Button */}
+          <Link 
+            href={`/${lang || 'en'}/flights?from=${encodeURIComponent(fromAirport.split(' ')[0])}&to=${encodeURIComponent(toAirport.split(' ')[0])}`}
+            className="xl:w-auto w-full bg-blue-600 hover:bg-blue-700 text-white px-8 py-[14px] rounded-2xl font-bold flex items-center justify-center gap-2.5 transition-all hover:scale-[1.02] active:scale-[0.98] whitespace-nowrap text-[15px] cursor-pointer shadow-lg shadow-blue-500/25 ml-0 xl:ml-4"
+          >
+            <Plane className="w-4.5 h-4.5 rotate-45" />
+            Search Flights
+          </Link>
+
         </div>
       </div>
     </motion.div>

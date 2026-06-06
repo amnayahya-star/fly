@@ -1,13 +1,29 @@
+export const dynamic = 'force-dynamic';
+
 import React from 'react';
 import Link from 'next/link';
 import { getFlights } from '@/app/actions';
 import { getDictionary } from '@/i18n/getDictionary';
 import FlightsClient from '@/components/FlightsClient';
 
-export default async function FlightsResultsPage({ params }: { params: Promise<{ lang: string }> }) {
+export default async function FlightsResultsPage({ 
+  params,
+  searchParams
+}: { 
+  params: Promise<{ lang: string }>,
+  searchParams: Promise<{ from?: string, to?: string }>
+}) {
   const { lang } = await params;
+  const { from, to } = await searchParams;
   const dict = await getDictionary(lang as "en" | "ar" | "fa");
-  const flights = await getFlights();
+  let flights = await getFlights();
+
+  if (from) {
+    flights = flights.filter(f => f.from.toLowerCase().includes(from.toLowerCase()));
+  }
+  if (to) {
+    flights = flights.filter(f => f.to.toLowerCase().includes(to.toLowerCase()));
+  }
 
   return (
     <main className="relative min-h-screen w-full bg-[#060b19] selection:bg-[#4CA1FF] selection:text-white pb-20">

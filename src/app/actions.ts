@@ -1,18 +1,14 @@
 "use server";
 
-import { prisma } from "@/lib/prisma";
+import { db } from "@/lib/db";
 import { createSession, getSession } from "@/lib/auth";
 
 export async function getFlights() {
-  return await prisma.flight.findMany({
-    orderBy: { createdAt: 'desc' }
-  });
+  return await db.getFlights();
 }
 
 export async function getFlightById(id: string) {
-  return await prisma.flight.findUnique({
-    where: { id }
-  });
+  return await db.getFlightById(id);
 }
 
 export async function createBooking(flightId: string) {
@@ -24,12 +20,10 @@ export async function createBooking(flightId: string) {
 
     const pnr = 'AERO-' + Math.random().toString(36).substring(2, 8).toUpperCase();
     
-    const booking = await prisma.booking.create({
-      data: {
-        pnr,
-        userId: session.user.id,
-        flightId
-      }
+    await db.createBooking({
+      pnr,
+      userId: session.user.id,
+      flightId
     });
     
     return { success: true, pnr };
@@ -39,38 +33,30 @@ export async function createBooking(flightId: string) {
 }
 
 export async function getHotels() {
-  return await prisma.hotel.findMany({
-    orderBy: { createdAt: 'desc' }
-  });
+  return await db.getHotels();
 }
 
 export async function getDeals() {
-  return await prisma.deal.findMany({
-    orderBy: { createdAt: 'desc' }
-  });
+  return await db.getDeals();
 }
 
 export async function lookupBooking(pnr: string, lastName: string) {
   // In a real app we'd check lastName too, but for simplicity we mock check PNR
-  const booking = await prisma.booking.findUnique({
-    where: { pnr: pnr.toUpperCase() },
-    include: {
-      flight: true,
-      user: true
-    }
-  });
-
+  const booking = await db.lookupBooking(pnr);
   return booking;
 }
 
 export async function signup(name: string, email: string, password: string) {
   try {
-    const user = await prisma.user.create({
-      data: {
-        name,
-        email,
-        password // In a real app we would hash this using bcrypt
-      }
+    const existing = await db.getUserByEmail(email);
+    if (existing) {
+      return { success: false, error: 'Email already exists or invalid data' };
+    }
+
+    const user = await db.createUser({
+      name,
+      email,
+      password // In a real app we would hash this using bcrypt
     });
     await createSession({ id: user.id, email: user.email, role: user.role });
     return { success: true, user };
@@ -81,7 +67,7 @@ export async function signup(name: string, email: string, password: string) {
 
 export async function login(email: string, password: string) {
   try {
-    const user = await prisma.user.findUnique({ where: { email } });
+    const user = await db.getUserByEmail(email);
     if (!user || user.password !== password) {
       return { success: false, error: 'Invalid email or password' };
     }
@@ -94,18 +80,16 @@ export async function login(email: string, password: string) {
 
 export async function addFlight(data: any) {
   try {
-    const flight = await prisma.flight.create({
-      data: {
-        airline: data.airline,
-        logo: data.logo,
-        departureTime: data.departureTime,
-        arrivalTime: data.arrivalTime,
-        duration: data.duration,
-        from: data.from,
-        to: data.to,
-        price: data.price,
-        type: data.type,
-      }
+    const flight = await db.addFlight({
+      airline: data.airline,
+      logo: data.logo,
+      departureTime: data.departureTime,
+      arrivalTime: data.arrivalTime,
+      duration: data.duration,
+      from: data.from,
+      to: data.to,
+      price: data.price,
+      type: data.type,
     });
     return { success: true, flight };
   } catch (error) {
@@ -114,40 +98,25 @@ export async function addFlight(data: any) {
 }
 
 export async function getDashboardStats() {
-  const users = await prisma.user.count();
-  const flights = await prisma.flight.count();
-  const hotels = await prisma.hotel.count();
-  const deals = await prisma.deal.count();
+  const users = await db.getUserCount();
+  const flights = await db.getFlightCount();
+  const hotels = await db.getHotelCount();
+  const deals = await db.getDealCount();
 
   return { users, flights, hotels, deals };
 }
 
 export async function getRecentBookings() {
-  return await prisma.booking.findMany({
-    orderBy: { createdAt: 'desc' },
-    take: 5,
-    include: {
-      user: true,
-      flight: true
-    }
-  });
+  return await db.getRecentBookings(5);
 }
 
 export async function getAllBookings() {
-  return await prisma.booking.findMany({
-    orderBy: { createdAt: 'desc' },
-    include: {
-      user: true,
-      flight: true
-    }
-  });
+  return await db.getAllBookings();
 }
 
 export async function deleteFlight(id: string) {
   try {
-    // Delete associated bookings first to maintain referential integrity
-    await prisma.booking.deleteMany({ where: { flightId: id } });
-    await prisma.flight.delete({ where: { id } });
+    await db.deleteFlight(id);
     return { success: true };
   } catch (error) {
     return { success: false, error: 'Failed to delete flight' };
@@ -156,7 +125,7 @@ export async function deleteFlight(id: string) {
 
 export async function deleteHotel(id: string) {
   try {
-    await prisma.hotel.delete({ where: { id } });
+    await db.deleteHotel(id);
     return { success: true };
   } catch (error) {
     return { success: false, error: 'Failed to delete hotel' };
@@ -165,7 +134,7 @@ export async function deleteHotel(id: string) {
 
 export async function deleteDeal(id: string) {
   try {
-    await prisma.deal.delete({ where: { id } });
+    await db.deleteDeal(id);
     return { success: true };
   } catch (error) {
     return { success: false, error: 'Failed to delete deal' };
@@ -174,7 +143,7 @@ export async function deleteDeal(id: string) {
 
 export async function deleteBooking(id: string) {
   try {
-    await prisma.booking.delete({ where: { id } });
+    await db.deleteBooking(id);
     return { success: true };
   } catch (error) {
     return { success: false, error: 'Failed to delete booking' };
@@ -183,16 +152,14 @@ export async function deleteBooking(id: string) {
 
 export async function addHotel(data: any) {
   try {
-    const hotel = await prisma.hotel.create({
-      data: {
-        name: data.name,
-        location: data.location,
-        image: data.image,
-        price: data.price,
-        rating: data.rating,
-        reviews: data.reviews,
-        amenities: data.amenities
-      }
+    const hotel = await db.addHotel({
+      name: data.name,
+      location: data.location,
+      image: data.image,
+      price: data.price,
+      rating: parseFloat(data.rating),
+      reviews: parseInt(data.reviews),
+      amenities: data.amenities
     });
     return { success: true, hotel };
   } catch (error) {
@@ -202,17 +169,15 @@ export async function addHotel(data: any) {
 
 export async function addDeal(data: any) {
   try {
-    const deal = await prisma.deal.create({
-      data: {
-        title: data.title,
-        description: data.description,
-        image: data.image,
-        originalPrice: data.originalPrice,
-        discountPrice: data.discountPrice,
-        tag: data.tag,
-        expiresIn: data.expiresIn,
-        type: data.type
-      }
+    const deal = await db.addDeal({
+      title: data.title,
+      description: data.description,
+      image: data.image,
+      originalPrice: data.originalPrice,
+      discountPrice: data.discountPrice,
+      tag: data.tag,
+      expiresIn: data.expiresIn,
+      type: data.type
     });
     return { success: true, deal };
   } catch (error) {

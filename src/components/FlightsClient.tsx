@@ -58,61 +58,88 @@ export default function FlightsClient({ dict, flights, lang }: { dict: any, flig
         </div>
 
         {/* Flight Cards */}
-        {flights.map((flight, index) => (
-          <motion.div 
-            key={flight.id}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: index * 0.1 }}
-            className="w-full rounded-2xl bg-white/[0.03] hover:bg-white/[0.06] border border-white/10 hover:border-white/20 backdrop-blur-md transition-all p-5 flex flex-col sm:flex-row items-center gap-6 group cursor-pointer"
-          >
-            {/* Airline Info */}
-            <div className="w-full sm:w-1/4 flex items-center gap-4">
-              <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center text-lg font-bold text-white border border-white/10">
-                {flight.logo}
-              </div>
-              <div>
-                <h3 className="font-semibold text-white">{flight.airline}</h3>
-                <p className="text-xs text-white/50">{flight.type}</p>
-              </div>
+        {flights.length === 0 ? (
+          <div className="w-full text-center py-16 px-6 bg-white/[0.02] border border-white/10 rounded-3xl backdrop-blur-md flex flex-col items-center justify-center gap-4">
+            <Plane className="w-12 h-12 text-[#4CA1FF] rotate-45 stroke-[1.5] drop-shadow-[0_0_8px_rgba(76,161,255,0.4)]" />
+            <h3 className="text-xl font-bold text-white">No Flights Found</h3>
+            <p className="text-sm text-white/60 max-w-md">
+              We couldn't find any flights matching your search criteria. Try popular routes like:
+            </p>
+            <div className="flex flex-wrap items-center justify-center gap-3 mt-2 text-xs">
+              <span className="bg-white/5 border border-white/10 px-3.5 py-1.5 rounded-full text-[#4CA1FF] font-semibold">
+                DXB (Dubai) ➔ LHR (London)
+              </span>
+              <span className="bg-white/5 border border-white/10 px-3.5 py-1.5 rounded-full text-[#4CA1FF] font-semibold">
+                JFK (New York) ➔ CDG (Paris)
+              </span>
+              <span className="bg-white/5 border border-white/10 px-3.5 py-1.5 rounded-full text-[#4CA1FF] font-semibold">
+                HND (Tokyo) ➔ ICN (Seoul)
+              </span>
             </div>
-
-            {/* Flight Times */}
-            <div className="flex-1 w-full flex items-center justify-between px-2 sm:px-6">
-              <div className="text-center">
-                <p className="text-xl font-bold text-white mb-0.5">{flight.departureTime}</p>
-                <p className="text-sm text-white/50">{flight.from}</p>
-              </div>
-              
-              <div className="flex-1 px-4 flex flex-col items-center">
-                <p className="text-xs text-white/40 mb-2">{flight.duration}</p>
-                <div className="w-full flex items-center justify-center">
-                  <div className="w-2 h-2 rounded-full bg-white/20"></div>
-                  <div className="flex-1 h-[1px] bg-gradient-to-r from-white/20 via-[#4CA1FF] to-white/20 relative">
-                    <Plane className="w-4 h-4 text-[#4CA1FF] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#060b19]" />
-                  </div>
-                  <div className="w-2 h-2 rounded-full border border-[#4CA1FF] bg-transparent"></div>
+            <Link 
+              href={`/${lang}`}
+              className="mt-6 bg-[#0066FF] hover:bg-[#0052CC] text-white px-6 py-2.5 rounded-xl font-semibold transition-colors text-sm cursor-pointer"
+            >
+              Modify Search
+            </Link>
+          </div>
+        ) : (
+          flights.map((flight, index) => (
+            <motion.div 
+              key={flight.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: index * 0.1 }}
+              className="w-full rounded-2xl bg-white/[0.03] hover:bg-white/[0.06] border border-white/10 hover:border-white/20 backdrop-blur-md transition-all p-5 flex flex-col sm:flex-row items-center gap-6 group cursor-pointer"
+            >
+              {/* Airline Info */}
+              <div className="w-full sm:w-1/4 flex items-center gap-4">
+                <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center text-lg font-bold text-white border border-white/10">
+                  {flight.logo}
+                </div>
+                <div>
+                  <h3 className="font-semibold text-white">{flight.airline}</h3>
+                  <p className="text-xs text-white/50">{flight.type}</p>
                 </div>
               </div>
 
-              <div className="text-center">
-                <p className="text-xl font-bold text-white mb-0.5">{flight.arrivalTime}</p>
-                <p className="text-sm text-white/50">{flight.to}</p>
-              </div>
-            </div>
+              {/* Flight Times */}
+              <div className="flex-1 w-full flex items-center justify-between px-2 sm:px-6">
+                <div className="text-center">
+                  <p className="text-xl font-bold text-white mb-0.5">{flight.departureTime}</p>
+                  <p className="text-sm text-white/50">{flight.from}</p>
+                </div>
+                
+                <div className="flex-1 px-4 flex flex-col items-center">
+                  <p className="text-xs text-white/40 mb-2">{flight.duration}</p>
+                  <div className="w-full flex items-center justify-center">
+                    <div className="w-2 h-2 rounded-full bg-white/20"></div>
+                    <div className="flex-1 h-[1px] bg-gradient-to-r from-white/20 via-[#4CA1FF] to-white/20 relative">
+                      <Plane className="w-4 h-4 text-[#4CA1FF] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#060b19]" />
+                    </div>
+                    <div className="w-2 h-2 rounded-full border border-[#4CA1FF] bg-transparent"></div>
+                  </div>
+                </div>
 
-            {/* Price and Action */}
-            <div className="w-full sm:w-auto flex sm:flex-col items-center sm:items-end justify-between sm:justify-center border-t sm:border-t-0 sm:border-l border-white/10 pt-4 sm:pt-0 sm:pl-6 gap-4 sm:gap-2">
-              <div className="text-left sm:text-right">
-                <p className="text-[11px] text-white/50 font-medium tracking-wide uppercase">{dict.flightsPage.totalFrom}</p>
-                <p className="text-2xl font-bold text-white">{flight.price}</p>
+                <div className="text-center">
+                  <p className="text-xl font-bold text-white mb-0.5">{flight.arrivalTime}</p>
+                  <p className="text-sm text-white/50">{flight.to}</p>
+                </div>
               </div>
-              <Link href={`/${lang}/checkout/${flight.id}`} className="bg-[#0066FF]/20 hover:bg-[#0066FF] text-[#4CA1FF] hover:text-white px-5 py-2 rounded-xl font-semibold transition-colors flex items-center gap-2 text-sm">
-                {dict.flightsPage.select}
-              </Link>
-            </div>
-          </motion.div>
-        ))}
+
+              {/* Price and Action */}
+              <div className="w-full sm:w-auto flex sm:flex-col items-center sm:items-end justify-between sm:justify-center border-t sm:border-t-0 sm:border-l border-white/10 pt-4 sm:pt-0 sm:pl-6 gap-4 sm:gap-2">
+                <div className="text-left sm:text-right">
+                  <p className="text-[11px] text-white/50 font-medium tracking-wide uppercase">{dict.flightsPage.totalFrom}</p>
+                  <p className="text-2xl font-bold text-white">{flight.price}</p>
+                </div>
+                <Link href={`/${lang}/checkout/${flight.id}`} className="bg-[#0066FF]/20 hover:bg-[#0066FF] text-[#4CA1FF] hover:text-white px-5 py-2 rounded-xl font-semibold transition-colors flex items-center gap-2 text-sm">
+                  {dict.flightsPage.select}
+                </Link>
+              </div>
+            </motion.div>
+          ))
+        )}
       </div>
 
     </div>
