@@ -18,7 +18,7 @@ export async function createBooking(flightId: string) {
       return { success: false, error: 'Unauthorized' };
     }
 
-    const pnr = 'AERO-' + Math.random().toString(36).substring(2, 8).toUpperCase();
+    const pnr = 'SHATI-' + Math.random().toString(36).substring(2, 8).toUpperCase();
     
     await db.createBooking({
       pnr,

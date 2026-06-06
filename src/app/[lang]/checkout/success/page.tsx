@@ -30,7 +30,7 @@ export default async function SuccessPage({ params, searchParams }: { params: Pr
               Booking Reference (PNR)
             </div>
             <div className="text-3xl font-bold text-white tracking-widest bg-clip-text text-transparent bg-gradient-to-r from-[#4CA1FF] to-[#36D1DC]">
-              {pnr || 'AERO-XXXXXX'}
+              {pnr || 'SHATI-XXXXXX'}
             </div>
           </div>
 

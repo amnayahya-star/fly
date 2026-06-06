@@ -39,7 +39,9 @@ export default async function FlightsResultsPage({
             <path d="M 6 31 Q 35 15 88 14 Q 45 25 18 29 Z" />
             <path d="M 12 37 Q 40 25 82 28 Q 40 35 24 35 Z" />
           </svg>
-          <span className="text-xl font-bold tracking-[0.15em] text-white">AERO</span>
+          <span className="text-lg font-bold tracking-tight text-white">
+            {(lang === 'ar' || lang === 'fa') ? "شاطئ الهندية" : "Shati Alhindia"}
+          </span>
         </Link>
         <Link href={`/${lang}`} className="text-sm font-medium text-white/70 hover:text-white transition-colors flex items-center gap-2">
           {dict.flightsPage.backToSearch}

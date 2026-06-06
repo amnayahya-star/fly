@@ -3,11 +3,14 @@ import React, { useState } from 'react';
 import * as motion from 'framer-motion/client';
 import Image from "next/image";
 import Link from 'next/link';
+import { useParams } from 'next/navigation';
 import { Mail, Lock, User, ArrowRight, Plane, Globe } from 'lucide-react';
 
 import { signup } from '@/app/actions';
 
 export default function SignUpPage() {
+  const params = useParams();
+  const lang = params.lang as string;
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -19,7 +22,7 @@ export default function SignUpPage() {
     const result = await signup(formData.name, formData.email, formData.password);
     if (result.success) {
       alert('Sign up successful!');
-      window.location.href = '/';
+      window.location.href = `/${lang}`;
     } else {
       alert(result.error);
     }
@@ -43,15 +46,17 @@ export default function SignUpPage() {
 
       {/* Navigation - simple version for auth pages */}
       <nav className="absolute top-0 left-0 w-full z-50 px-8 py-6 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-3 cursor-pointer group">
+        <Link href={`/${lang}`} className="flex items-center gap-3 cursor-pointer group">
           <svg className="w-10 h-auto text-white transform group-hover:scale-105 transition-transform duration-300" viewBox="0 0 100 45" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
             <path d="M 0 25 Q 30 5 95 0 Q 50 15 12 23 Z" />
             <path d="M 6 31 Q 35 15 88 14 Q 45 25 18 29 Z" />
             <path d="M 12 37 Q 40 25 82 28 Q 40 35 24 35 Z" />
           </svg>
-          <span className="text-xl font-bold tracking-[0.15em] text-white">AERO</span>
+          <span className="text-lg font-bold tracking-tight text-white">
+            {(lang === 'ar' || lang === 'fa') ? "شاطئ الهندية" : "Shati Alhindia"}
+          </span>
         </Link>
-        <Link href="/" className="text-sm font-medium text-white/70 hover:text-white transition-colors flex items-center gap-2">
+        <Link href={`/${lang}`} className="text-sm font-medium text-white/70 hover:text-white transition-colors flex items-center gap-2">
           Back to Home
         </Link>
       </nav>
@@ -73,7 +78,9 @@ export default function SignUpPage() {
             >
               <Globe className="w-8 h-8 text-[#4CA1FF]" />
             </motion.div>
-            <h1 className="text-3xl font-bold text-white mb-2">Join AERO</h1>
+            <h1 className="text-3xl font-bold text-white mb-2">
+              {(lang === 'ar' || lang === 'fa') ? "انضم إلى شاطئ الهندية" : "Join Shati Alhindia"}
+            </h1>
             <p className="text-white/60 text-sm">Create an account to book flights faster and unlock exclusive deals.</p>
           </div>
 

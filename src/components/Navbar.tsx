@@ -43,11 +43,11 @@ export default function Navbar({ dict, lang }: { dict: any, lang: string }) {
           </svg>
         </Link>
         <Link href={`/${lang}`} className="flex flex-col justify-center pt-1">
-          <span className="text-3xl font-bold tracking-[0.15em] leading-none text-white font-sans drop-shadow-sm">
-            AERO
+          <span className="text-xl md:text-2xl font-bold tracking-tight md:tracking-wide leading-none text-white font-sans drop-shadow-sm">
+            {(lang === 'ar' || lang === 'fa') ? "شاطئ الهندية" : "Shati Alhindia"}
           </span>
-          <span className="text-[0.6rem] tracking-[0.4em] text-white/80 uppercase mt-1.5 ml-0.5 font-medium">
-            Fly Beyond
+          <span className="text-[0.6rem] tracking-[0.2em] text-white/80 uppercase mt-1.5 ml-0.5 font-medium">
+            {(lang === 'ar' || lang === 'fa') ? "حلق بعيداً" : "Fly Beyond"}
           </span>
         </Link>
       </div>

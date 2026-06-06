@@ -3,13 +3,15 @@ import React, { useState } from 'react';
 import * as motion from 'framer-motion/client';
 import Image from "next/image";
 import Link from 'next/link';
+import { useParams } from 'next/navigation';
 import Navbar from "@/components/Navbar";
 import { User, KeyRound, ArrowRight, Settings2, Plane, Ticket, Loader2 } from 'lucide-react';
 import { lookupBooking } from '@/app/actions';
 
 export default function Page() {
+  const params = useParams();
+  const lang = (params?.lang as string) || "en";
   const dict = { navbar: {} };
-  const lang = "en";
 
   const [formData, setFormData] = useState({
     pnr: '',
@@ -99,7 +101,7 @@ export default function Page() {
                       value={formData.pnr}
                       onChange={(e) => setFormData({...formData, pnr: e.target.value.toUpperCase()})}
                       className="w-full pl-12 pr-4 py-3.5 bg-black/20 border border-white/10 rounded-xl text-white placeholder-white/30 focus:outline-none focus:border-[#4CA1FF]/50 focus:bg-black/40 transition-all text-sm uppercase tracking-wider"
-                      placeholder="e.g. AERO-X9KL"
+                      placeholder="e.g. SHATI-X9KL"
                     />
                   </div>
                 </div>
