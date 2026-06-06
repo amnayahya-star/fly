@@ -119,8 +119,8 @@ export default function BookingEngine({ lang }: { lang?: string }) {
   };
 
   const isRtl = lang === 'ar' || lang === 'fa';
-  const startX = isRtl ? containerWidth - 32 : 32;
-  const endX = isRtl ? containerWidth / 2 - 32 : containerWidth / 2 + 32;
+  const startX = isRtl ? containerWidth * 0.75 : containerWidth * 0.25;
+  const endX = isRtl ? containerWidth * 0.25 : containerWidth * 0.75;
   const controlX = (startX + endX) / 2;
   const startY = 35;
   const endY = 35;
@@ -139,9 +139,9 @@ export default function BookingEngine({ lang }: { lang?: string }) {
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.7, delay: 0.4 }}
-      className="relative z-30 w-full px-8 md:px-12 xl:px-24 mt-24 animate-fade-in"
+      className="relative z-30 w-full px-4 sm:px-8 md:px-12 xl:px-24 mt-12 md:mt-24 animate-fade-in"
     >
-      <div className="relative w-full bg-white border border-slate-100 rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.15)] p-6">
+      <div className="relative w-full bg-white border border-slate-100 rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.15)] p-4 sm:p-6">
         
         {/* Top selectors row */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-slate-100">
@@ -189,7 +189,7 @@ export default function BookingEngine({ lang }: { lang?: string }) {
 
             {showClassDropdown && (
               <div 
-                className="absolute left-0 mt-2 w-56 bg-white border border-slate-100 rounded-2xl shadow-xl z-50 p-2.5 flex flex-col gap-1"
+                className="absolute start-0 sm:start-auto sm:end-0 mt-2 w-56 bg-white border border-slate-100 rounded-2xl shadow-xl z-50 p-2.5 flex flex-col gap-1"
                 onClick={(e) => e.stopPropagation()}
               >
                 {flightClasses.map((cls) => {
@@ -218,16 +218,16 @@ export default function BookingEngine({ lang }: { lang?: string }) {
         </div>
 
         {/* Search Fields Row */}
-        <div className="flex flex-col xl:flex-row items-center w-full gap-4 xl:gap-0 bg-slate-50/50 border border-slate-100 rounded-3xl p-2.5 relative">
+        <div className="flex flex-col md:grid md:grid-cols-2 xl:flex xl:flex-row xl:items-stretch items-center w-full gap-4 xl:gap-0 bg-slate-50/50 border border-slate-100 rounded-3xl p-2.5 relative">
           
           {/* From & To Wrapper */}
           <div 
             ref={containerRef}
-            className="flex flex-col md:flex-row relative items-center gap-0 xl:flex-[2.2] min-w-0 w-full"
+            className="flex flex-col md:flex-row relative items-stretch gap-0 md:col-span-2 xl:flex-[2.2] min-w-0 w-full bg-white xl:bg-transparent border border-slate-200/60 xl:border-0 rounded-2xl xl:rounded-none shadow-sm xl:shadow-none"
           >
             {/* From */}
             <div 
-              className="flex-1 w-full px-6 py-3 border-r border-slate-200/60 flex flex-col items-start gap-1 cursor-pointer hover:bg-slate-100/50 transition-all rounded-2xl md:rounded-r-none relative"
+              className="flex-1 w-full min-w-0 px-6 py-3.5 border-b md:border-b-0 md:border-r border-slate-200/60 flex flex-col items-start justify-center gap-1 cursor-pointer hover:bg-slate-50 xl:hover:bg-slate-100/50 transition-all rounded-t-2xl rounded-b-none md:rounded-l-2xl md:rounded-r-none xl:rounded-none relative"
             >
               <span className="block text-[10px] text-blue-500 font-bold tracking-wider uppercase">FROM</span>
               <div 
@@ -236,7 +236,7 @@ export default function BookingEngine({ lang }: { lang?: string }) {
                   setShowToDropdown(false);
                   setShowPassengerDropdown(false);
                 }}
-                className="flex items-center gap-2 text-slate-700 w-full"
+                className="flex items-center gap-2 text-slate-700 w-full min-w-0"
               >
                 <MapPin className="w-4.5 h-4.5 text-blue-500 shrink-0" />
                 {showFromDropdown ? (
@@ -246,11 +246,11 @@ export default function BookingEngine({ lang }: { lang?: string }) {
                     value={searchFromQuery}
                     onChange={(e) => setSearchFromQuery(e.target.value)}
                     autoFocus
-                    className="text-[14px] font-semibold text-slate-800 bg-transparent outline-none border-b border-blue-500 w-full"
+                    className="text-base md:text-[14px] font-semibold text-slate-800 bg-transparent outline-none border-b border-blue-500 w-full min-w-0"
                     onClick={(e) => e.stopPropagation()}
                   />
                 ) : (
-                  <span className="text-[14px] font-semibold whitespace-nowrap truncate">
+                  <span className="text-base md:text-[14px] font-semibold whitespace-nowrap truncate">
                     {fromAirport}
                   </span>
                 )}
@@ -259,7 +259,7 @@ export default function BookingEngine({ lang }: { lang?: string }) {
               {/* From Dropdown */}
               {showFromDropdown && (
                 <div 
-                  className="absolute left-0 top-full mt-2 w-72 bg-white border border-slate-100 rounded-2xl shadow-xl z-50 p-2 py-3 flex flex-col gap-1 max-h-60 overflow-y-auto"
+                  className="absolute start-0 top-full mt-2 w-72 bg-white border border-slate-100 rounded-2xl shadow-xl z-50 p-2 py-3 flex flex-col gap-1 max-h-60 overflow-y-auto"
                   onClick={(e) => e.stopPropagation()}
                 >
                   <div className="text-[11px] font-semibold text-slate-400 px-3 pb-1 border-b border-slate-50 uppercase tracking-wider">Airports</div>
@@ -289,14 +289,14 @@ export default function BookingEngine({ lang }: { lang?: string }) {
             {/* Swap Button */}
             <button 
               onClick={handleSwap}
-              className="relative z-10 w-9 h-9 rounded-full bg-white border border-slate-200 flex items-center justify-center text-blue-600 hover:bg-slate-50 hover:border-slate-35 shadow-sm transition-all cursor-pointer -my-2.5 md:-my-0 md:-mx-4.5 shrink-0"
+              className="relative z-10 w-9 h-9 rounded-full bg-white border border-slate-200 flex items-center justify-center text-blue-600 hover:bg-slate-50 hover:border-slate-300 shadow-sm transition-all cursor-pointer -my-2.5 md:-my-0 md:-mx-4.5 shrink-0"
             >
-              <ArrowRightLeft className="w-4 h-4" />
+              <ArrowRightLeft className="w-4 h-4 rotate-90 md:rotate-0" />
             </button>
 
             {/* To */}
             <div 
-              className="flex-1 w-full px-8 py-3 border-r border-slate-200/60 flex flex-col items-start gap-1 cursor-pointer hover:bg-slate-100/50 transition-all rounded-2xl md:rounded-l-none relative"
+              className="flex-1 w-full min-w-0 px-6 py-3.5 border-r-0 xl:border-r border-slate-200/60 flex flex-col items-start justify-center gap-1 cursor-pointer hover:bg-slate-50 xl:hover:bg-slate-100/50 transition-all rounded-b-2xl rounded-t-none md:rounded-r-2xl md:rounded-l-none xl:rounded-none relative"
             >
               <span className="block text-[10px] text-blue-500 font-bold tracking-wider uppercase">TO</span>
               <div 
@@ -305,7 +305,7 @@ export default function BookingEngine({ lang }: { lang?: string }) {
                   setShowFromDropdown(false);
                   setShowPassengerDropdown(false);
                 }}
-                className="flex items-center gap-2 text-slate-700 relative z-10 w-full"
+                className="flex items-center gap-2 text-slate-700 relative z-10 w-full min-w-0"
               >
                 <MapPin className="w-4.5 h-4.5 text-blue-500 shrink-0" />
                 {showToDropdown ? (
@@ -315,11 +315,11 @@ export default function BookingEngine({ lang }: { lang?: string }) {
                     value={searchToQuery}
                     onChange={(e) => setSearchToQuery(e.target.value)}
                     autoFocus
-                    className="text-[14px] font-semibold text-slate-800 bg-transparent outline-none border-b border-blue-500 w-full"
+                    className="text-base md:text-[14px] font-semibold text-slate-800 bg-transparent outline-none border-b border-blue-500 w-full min-w-0"
                     onClick={(e) => e.stopPropagation()}
                   />
                 ) : (
-                  <span className="text-[14px] font-semibold whitespace-nowrap truncate">
+                  <span className="text-base md:text-[14px] font-semibold whitespace-nowrap truncate">
                     {toAirport}
                   </span>
                 )}
@@ -328,7 +328,7 @@ export default function BookingEngine({ lang }: { lang?: string }) {
               {/* To Dropdown */}
               {showToDropdown && (
                 <div 
-                  className="absolute left-0 top-full mt-2 w-72 bg-white border border-slate-100 rounded-2xl shadow-xl z-50 p-2 py-3 flex flex-col gap-1 max-h-60 overflow-y-auto"
+                  className="absolute start-0 md:start-auto md:end-0 top-full mt-2 w-72 bg-white border border-slate-100 rounded-2xl shadow-xl z-50 p-2 py-3 flex flex-col gap-1 max-h-60 overflow-y-auto"
                   onClick={(e) => e.stopPropagation()}
                 >
                   <div className="text-[11px] font-semibold text-slate-400 px-3 pb-1 border-b border-slate-50 uppercase tracking-wider">Airports</div>
@@ -456,7 +456,7 @@ export default function BookingEngine({ lang }: { lang?: string }) {
             onClick={() => {
               departureInputRef.current?.showPicker();
             }}
-            className="flex-1 w-full px-6 py-3.5 border-r border-slate-200/60 flex items-center gap-4 cursor-pointer hover:bg-slate-100/50 transition-all rounded-2xl xl:rounded-none relative"
+            className="w-full xl:w-auto xl:min-w-0 xl:flex-1 px-6 py-3.5 flex items-center gap-4 cursor-pointer transition-all bg-white border border-slate-200/60 shadow-sm rounded-2xl hover:bg-slate-50 xl:bg-transparent xl:border-0 xl:border-r xl:shadow-none xl:rounded-none xl:hover:bg-slate-100/50 relative"
           >
             <div className="relative w-12 h-12 flex-shrink-0 flex items-center justify-center bg-blue-50 rounded-2xl border border-blue-100/50">
               <Calendar className="w-6 h-6 text-blue-500" />
@@ -486,8 +486,12 @@ export default function BookingEngine({ lang }: { lang?: string }) {
               }
             }}
             className={clsx(
-              "flex-1 w-full px-6 py-3.5 border-r border-slate-200/60 flex items-center gap-4 transition-all rounded-2xl xl:rounded-none relative",
-              activeTrip === 'oneway' ? "cursor-not-allowed opacity-50" : "cursor-pointer hover:bg-slate-100/50"
+              "w-full xl:w-auto xl:min-w-0 xl:flex-1 px-6 py-3.5 flex items-center gap-4 transition-all relative",
+              "bg-white border border-slate-200/60 shadow-sm rounded-2xl",
+              "xl:bg-transparent xl:border-0 xl:border-r xl:shadow-none xl:rounded-none",
+              activeTrip === 'oneway' 
+                ? "cursor-not-allowed opacity-50" 
+                : "cursor-pointer hover:bg-slate-50 xl:hover:bg-slate-100/50"
             )}
           >
             <div className="relative w-12 h-12 flex-shrink-0 flex items-center justify-center bg-purple-50 rounded-2xl border border-purple-100/50">
@@ -520,7 +524,7 @@ export default function BookingEngine({ lang }: { lang?: string }) {
               setShowFromDropdown(false);
               setShowToDropdown(false);
             }}
-            className="flex-1 w-full px-6 py-3.5 flex items-center gap-4 cursor-pointer hover:bg-slate-100/50 transition-all rounded-2xl xl:rounded-none relative"
+            className="w-full xl:w-auto xl:min-w-0 xl:flex-1 px-6 py-3.5 flex items-center gap-4 cursor-pointer transition-all bg-white border border-slate-200/60 shadow-sm rounded-2xl hover:bg-slate-50 xl:bg-transparent xl:border-0 xl:shadow-none xl:rounded-none xl:hover:bg-slate-100/50 relative"
           >
             <div className="w-12 h-12 flex-shrink-0 flex items-center justify-center bg-blue-50 rounded-2xl border border-blue-100/50">
               <Users className="w-6 h-6 text-blue-500" />
@@ -539,7 +543,7 @@ export default function BookingEngine({ lang }: { lang?: string }) {
             {/* Passengers Dropdown */}
             {showPassengerDropdown && (
               <div 
-                className="absolute right-0 top-full mt-2 w-64 bg-white border border-slate-100 rounded-2xl shadow-xl z-50 p-4 flex flex-col gap-4"
+                className="absolute start-0 xl:start-auto xl:end-0 top-full mt-2 w-64 bg-white border border-slate-100 rounded-2xl shadow-xl z-50 p-4 flex flex-col gap-4"
                 onClick={(e) => e.stopPropagation()}
               >
                 {/* Adults */}
