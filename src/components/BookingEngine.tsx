@@ -8,6 +8,7 @@ import clsx from 'clsx';
 const tripTypes = [
   { id: 'round', label: 'Round Trip', icon: RotateCw },
   { id: 'oneway', label: 'One Way', icon: Plane },
+  { id: 'multicity', label: 'Multi City', icon: Route },
 ];
 
 const airports = [
@@ -145,41 +146,55 @@ export default function BookingEngine({ lang, dict }: { lang?: string, dict?: an
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.7, delay: 0.4 }}
-      className="relative z-30 w-full px-4 sm:px-8 md:px-12 xl:px-24 mt-12 md:mt-24 animate-fade-in"
+      className="relative z-30 w-full px-4 sm:px-8 md:px-12 xl:px-24 mt-12 md:mt-24 animate-fade-in flex flex-col gap-0"
     >
-      <div className="relative w-full bg-white/12 backdrop-blur-3xl border border-white/20 rounded-[2rem] shadow-[0_25px_50px_-12px_rgba(0,0,0,0.5)] p-4 sm:p-6">
+      {/* Top Raised Selectors Row */}
+      <div className="flex items-end justify-between w-full relative z-20 -mb-[1px]">
         
-        {/* Top selectors row */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-white/10">
-          {/* Trip Type Selector */}
-          <div className="bg-white/5 border border-white/10 p-1.5 rounded-full flex items-center gap-1 w-fit">
-            {tripTypes.map((type) => {
-              const isActive = activeTrip === type.id;
-              const displayLabel = type.id === 'round' 
-                ? (dict?.roundTrip || type.label)
-                : (dict?.oneWay || type.label);
-              return (
-                <button
-                  key={type.id}
-                  onClick={() => {
-                    setActiveTrip(type.id);
-                    if (type.id === 'oneway') {
-                      setReturnDate("");
-                    }
-                  }}
-                  className={clsx(
-                    "flex items-center gap-2 px-5 py-2 rounded-full text-[13px] font-semibold transition-all cursor-pointer",
-                    isActive 
-                      ? "bg-[#0B162C] text-white border border-blue-500/80 shadow-[0_0_12px_rgba(59,130,246,0.3)]"
-                      : "text-white/60 hover:text-white"
-                  )}
-                >
-                  {displayLabel}
-                </button>
-              );
-            })}
-          </div>
+        {/* Trip Type Selector raised tab */}
+        <div className="relative bg-[#0B1021]/90 backdrop-blur-[40px] border-t border-l border-white/20 rounded-tl-2xl px-4 py-3 flex items-center gap-2.5 w-fit min-h-[62px]">
+          {tripTypes.map((type) => {
+            const isActive = activeTrip === type.id;
+            const displayLabel = type.id === 'round' 
+              ? (dict?.roundTrip || type.label)
+              : type.id === 'oneway'
+                ? (dict?.oneWay || type.label)
+                : (dict?.multiCity || type.label);
+            return (
+              <button
+                key={type.id}
+                onClick={() => {
+                  setActiveTrip(type.id);
+                  if (type.id === 'oneway') {
+                    setReturnDate("");
+                  }
+                }}
+                className={clsx(
+                  "flex items-center gap-2.5 px-6 py-2.5 rounded-full text-[14px] md:text-[15px] font-bold transition-all cursor-pointer whitespace-nowrap",
+                  isActive 
+                    ? "bg-[#0B162C] text-white border border-blue-500/80 shadow-[0_0_12px_rgba(59,130,246,0.3)]"
+                    : "bg-white/5 border border-white/10 text-white/70 hover:bg-white/10 hover:text-white"
+                )}
+              >
+                <type.icon className={clsx("w-4 h-4", isActive ? "text-blue-400" : "text-white/40")} />
+                <span>{displayLabel}</span>
+              </button>
+            );
+          })}
 
+          {/* Slant Transition SVG */}
+          <svg 
+            className="absolute top-0 bottom-0 left-full w-6 text-white/20 backdrop-blur-[40px] pointer-events-none" 
+            viewBox="0 0 24 62" 
+            preserveAspectRatio="none"
+          >
+            <polygon points="0,0 0,62 24,62" fill="rgba(11, 16, 33, 0.9)" />
+            <line x1="0" y1="0" x2="24" y2="62" stroke="currentColor" strokeWidth="1" />
+          </svg>
+        </div>
+
+        {/* Right side alignment line with Class dropdown button hovering over it */}
+        <div className="flex-1 flex justify-end items-center border-b border-white/35 pb-2.5 min-h-[62px]">
           {/* Class Select Dropdown Button */}
           <div ref={classDropdownRef} className="relative">
             <button 
@@ -189,7 +204,7 @@ export default function BookingEngine({ lang, dict }: { lang?: string, dict?: an
                 setShowToDropdown(false);
                 setShowPassengerDropdown(false);
               }}
-              className="bg-white/5 border border-white/10 hover:bg-white/10 text-white/80 hover:text-white text-[13px] font-semibold px-4 py-2.5 rounded-full flex items-center gap-2 transition-all cursor-pointer w-fit"
+              className="bg-[#0B1021]/90 border border-white/20 hover:border-white/30 text-white/80 hover:text-white text-[13px] md:text-[14px] font-bold px-5 py-3 rounded-full flex items-center gap-2 transition-all cursor-pointer w-fit"
             >
               <Sparkles className="w-4 h-4 text-indigo-400 fill-indigo-400/20" />
               <span>{dict?.classes?.[selectedClass] || selectedClass}</span>
@@ -226,8 +241,13 @@ export default function BookingEngine({ lang, dict }: { lang?: string, dict?: an
           </div>
         </div>
 
+      </div>
+
+      {/* Main card containing Search fields */}
+      <div className="relative w-full bg-white/35 backdrop-blur-[60px] border-x border-b border-white/35 rounded-b-[2.25rem] rounded-tr-[2.25rem] rounded-tl-none shadow-[0_25px_60px_-10px_rgba(0,0,0,0.7)] p-6 sm:p-8">
+        
         {/* Search Fields Row */}
-        <div className="flex flex-col md:grid md:grid-cols-2 xl:flex xl:flex-row xl:items-stretch items-center w-full gap-4 xl:gap-0 bg-white/[0.04] border border-white/10 rounded-3xl p-2.5 relative">
+        <div className="flex flex-col md:grid md:grid-cols-2 xl:flex xl:flex-row xl:items-stretch items-center w-full gap-4 xl:gap-0 bg-black/20 border border-white/20 rounded-[2rem] p-3 sm:p-4.5 relative">
           
           {/* From & To Wrapper */}
           <div 
@@ -236,9 +256,9 @@ export default function BookingEngine({ lang, dict }: { lang?: string, dict?: an
           >
             {/* From */}
             <div 
-              className="flex-1 w-full min-w-0 px-6 py-3.5 border-b md:border-b-0 md:border-r border-white/10 flex flex-col items-start justify-center gap-1 cursor-pointer hover:bg-white/20 xl:hover:bg-white/12 transition-all rounded-t-2xl rounded-b-none md:rounded-l-2xl md:rounded-r-none xl:rounded-none relative"
+              className="flex-1 w-full min-w-0 px-8 py-5.5 border-b md:border-b-0 md:border-r border-white/10 flex flex-col items-start justify-center gap-1.5 cursor-pointer hover:bg-white/20 xl:hover:bg-white/12 transition-all rounded-t-2xl rounded-b-none md:rounded-l-2xl md:rounded-r-none xl:rounded-none relative"
             >
-              <span className="block text-[10px] text-blue-400/80 font-bold tracking-wider uppercase">{dict?.from || "FROM"}</span>
+              <span className="block text-[13px] text-blue-400/95 font-bold tracking-wider uppercase">{dict?.from || "FROM"}</span>
               <div 
                 onClick={() => {
                   setShowFromDropdown(true);
@@ -255,7 +275,7 @@ export default function BookingEngine({ lang, dict }: { lang?: string, dict?: an
                     value={searchFromQuery}
                     onChange={(e) => setSearchFromQuery(e.target.value)}
                     autoFocus
-                    className="text-lg md:text-base font-bold text-white bg-transparent outline-none border-b border-blue-500/50 w-full min-w-0"
+                    className="text-lg md:text-base font-bold text-white bg-transparent outline-none border-b border-blue-500/50 w-full min-w-0 placeholder:text-sm placeholder:font-normal placeholder:text-white/40"
                     onClick={(e) => e.stopPropagation()}
                   />
                 ) : (
@@ -305,9 +325,9 @@ export default function BookingEngine({ lang, dict }: { lang?: string, dict?: an
 
             {/* To */}
             <div 
-              className="flex-1 w-full min-w-0 px-6 py-3.5 border-r-0 xl:border-r border-white/10 flex flex-col items-start justify-center gap-1 cursor-pointer hover:bg-white/20 xl:hover:bg-white/12 transition-all rounded-b-2xl rounded-t-none md:rounded-r-2xl md:rounded-l-none xl:rounded-none relative"
+              className="flex-1 w-full min-w-0 px-8 py-5.5 border-r-0 xl:border-r border-white/10 flex flex-col items-start justify-center gap-1.5 cursor-pointer hover:bg-white/20 xl:hover:bg-white/12 transition-all rounded-b-2xl rounded-t-none md:rounded-r-2xl md:rounded-l-none xl:rounded-none relative"
             >
-              <span className="block text-[10px] text-blue-400/80 font-bold tracking-wider uppercase">{dict?.to || "TO"}</span>
+              <span className="block text-[13px] text-blue-400/95 font-bold tracking-wider uppercase">{dict?.to || "TO"}</span>
               <div 
                 onClick={() => {
                   setShowToDropdown(true);
@@ -324,7 +344,7 @@ export default function BookingEngine({ lang, dict }: { lang?: string, dict?: an
                     value={searchToQuery}
                     onChange={(e) => setSearchToQuery(e.target.value)}
                     autoFocus
-                    className="text-lg md:text-base font-bold text-white bg-transparent outline-none border-b border-blue-500/50 w-full min-w-0"
+                    className="text-lg md:text-base font-bold text-white bg-transparent outline-none border-b border-blue-500/50 w-full min-w-0 placeholder:text-sm placeholder:font-normal placeholder:text-white/40"
                     onClick={(e) => e.stopPropagation()}
                   />
                 ) : (
@@ -465,15 +485,15 @@ export default function BookingEngine({ lang, dict }: { lang?: string, dict?: an
             onClick={() => {
               departureInputRef.current?.showPicker();
             }}
-            className="w-full xl:w-auto xl:min-w-0 xl:flex-1 px-6 py-3.5 flex items-center gap-4 cursor-pointer transition-all bg-white/12 border border-white/15 shadow-lg rounded-2xl hover:bg-white/20 xl:bg-transparent xl:border-0 xl:border-r xl:shadow-none xl:rounded-none xl:hover:bg-white/12 relative"
+            className="w-full xl:w-auto xl:min-w-0 xl:flex-1 px-8 py-5.5 flex items-center gap-4 cursor-pointer transition-all bg-white/12 border border-white/15 shadow-lg rounded-2xl hover:bg-white/20 xl:bg-transparent xl:border-0 xl:border-r xl:shadow-none xl:rounded-none xl:hover:bg-white/12 relative"
           >
             <div className="relative w-12 h-12 flex-shrink-0 flex items-center justify-center bg-blue-500/10 rounded-2xl border border-blue-500/20">
               <Calendar className="w-6 h-6 text-blue-400" />
               <span className="absolute -top-1 -right-1 text-[13px] select-none">🚀</span>
             </div>
             <div className="flex flex-col items-start min-w-0">
-              <span className="block text-[10px] text-blue-400/80 font-bold tracking-wider uppercase">{dict?.takeOffDate || "TAKE OFF DATE"}</span>
-              <span className={clsx("text-lg md:text-base font-extrabold tracking-tight", departureDate ? "text-white" : "text-white/40")}>
+              <span className="block text-[13px] text-blue-400/95 font-bold tracking-wider uppercase">{dict?.takeOffDate || "TAKE OFF DATE"}</span>
+              <span className={clsx("tracking-tight transition-all", departureDate ? "text-lg md:text-base font-extrabold text-white" : "text-sm font-normal text-white/50")}>
                 {departureDate ? new Date(departureDate).toLocaleDateString(lang || 'en', { month: 'short', day: 'numeric', year: 'numeric' }) : (dict?.datePlaceholder || "dd/mm/yyyy")}
               </span>
               <span className="text-[11px] text-white/40 font-medium whitespace-nowrap">{dict?.flyOutDesc || "When do you fly out?"}</span>
@@ -495,7 +515,7 @@ export default function BookingEngine({ lang, dict }: { lang?: string, dict?: an
               }
             }}
             className={clsx(
-              "w-full xl:w-auto xl:min-w-0 xl:flex-1 px-6 py-3.5 flex items-center gap-4 transition-all relative",
+              "w-full xl:w-auto xl:min-w-0 xl:flex-1 px-8 py-5.5 flex items-center gap-4 transition-all relative",
               "bg-white/12 border border-white/15 shadow-lg rounded-2xl",
               "xl:bg-transparent xl:border-0 xl:border-r xl:shadow-none xl:rounded-none",
               activeTrip === 'oneway' 
@@ -508,8 +528,8 @@ export default function BookingEngine({ lang, dict }: { lang?: string, dict?: an
               <span className="absolute -top-1 -right-1 text-[13px] select-none">🧭</span>
             </div>
             <div className="flex flex-col items-start min-w-0">
-              <span className="block text-[10px] text-blue-400/80 font-bold tracking-wider uppercase">{dict?.landingDate || "LANDING DATE"}</span>
-              <span className={clsx("text-lg md:text-base font-extrabold tracking-tight", activeTrip === 'oneway' ? "text-white/20" : (returnDate ? "text-white" : "text-white/40"))}>
+              <span className="block text-[13px] text-blue-400/95 font-bold tracking-wider uppercase">{dict?.landingDate || "LANDING DATE"}</span>
+              <span className={clsx("tracking-tight transition-all", activeTrip === 'oneway' ? "text-lg md:text-base font-extrabold text-white/20" : (returnDate ? "text-lg md:text-base font-extrabold text-white" : "text-sm font-normal text-white/50"))}>
                 {activeTrip === 'oneway' 
                   ? "—" 
                   : (returnDate ? new Date(returnDate).toLocaleDateString(lang || 'en', { month: 'short', day: 'numeric', year: 'numeric' }) : (dict?.datePlaceholder || "dd/mm/yyyy"))}
@@ -533,13 +553,13 @@ export default function BookingEngine({ lang, dict }: { lang?: string, dict?: an
               setShowFromDropdown(false);
               setShowToDropdown(false);
             }}
-            className="w-full xl:w-auto xl:min-w-0 xl:flex-1 px-6 py-3.5 flex items-center gap-4 cursor-pointer transition-all bg-white/12 border border-white/15 shadow-lg rounded-2xl hover:bg-white/20 xl:bg-transparent xl:border-0 xl:shadow-none xl:rounded-none xl:hover:bg-white/12 relative"
+            className="w-full xl:w-auto xl:min-w-0 xl:flex-1 px-8 py-5.5 flex items-center gap-4 cursor-pointer transition-all bg-white/12 border border-white/15 shadow-lg rounded-2xl hover:bg-white/20 xl:bg-transparent xl:border-0 xl:shadow-none xl:rounded-none xl:hover:bg-white/12 relative"
           >
             <div className="w-12 h-12 flex-shrink-0 flex items-center justify-center bg-blue-500/10 rounded-2xl border border-blue-500/20">
               <Users className="w-6 h-6 text-blue-400" />
             </div>
             <div className="flex flex-col items-start min-w-0 w-full">
-              <span className="block text-[10px] text-blue-400/80 font-bold tracking-wider uppercase">{dict?.peopleOnBoard || "PEOPLE ON BOARD"}</span>
+              <span className="block text-[13px] text-blue-400/95 font-bold tracking-wider uppercase">{dict?.peopleOnBoard || "PEOPLE ON BOARD"}</span>
               <div className="flex items-center gap-1.5 text-white w-full">
                 <span className="text-lg md:text-base font-extrabold tracking-tight">
                   {adults + children + infants} {dict?.pax || "Pax"}
@@ -630,7 +650,7 @@ export default function BookingEngine({ lang, dict }: { lang?: string, dict?: an
           {/* Search Button */}
           <Link 
             href={`/${lang || 'en'}/flights?from=${encodeURIComponent(fromAirport.split(' ')[0])}&to=${encodeURIComponent(toAirport.split(' ')[0])}`}
-            className="xl:w-auto w-full bg-blue-600 hover:bg-blue-700 text-white px-8 py-[14px] rounded-2xl font-bold flex items-center justify-center gap-2.5 transition-all hover:scale-[1.02] active:scale-[0.98] whitespace-nowrap text-[15px] cursor-pointer shadow-lg shadow-blue-500/25 ml-0 xl:ml-4"
+            className="xl:w-auto w-full bg-blue-600 hover:bg-blue-700 text-white px-10 py-[20px] rounded-3xl font-bold flex items-center justify-center gap-2.5 transition-all hover:scale-[1.02] active:scale-[0.98] whitespace-nowrap text-[17px] cursor-pointer shadow-lg shadow-blue-500/25 ml-0 xl:ml-4"
           >
             <Plane className="w-4.5 h-4.5 rotate-45" />
             {dict?.searchFlights || "Search Flights"}

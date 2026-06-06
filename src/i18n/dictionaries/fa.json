@@ -63,6 +63,7 @@
   "bookingEngine": {
     "roundTrip": "رفت و برگشت",
     "oneWay": "یک‌طرفه",
+    "multiCity": "چند مسیره",
     "from": "از",
     "to": "به",
     "takeOffDate": "تاریخ رفت",
@@ -82,7 +83,7 @@
     "infants": "نوزاد",
     "infantsAge": "زیر ۲ سال",
     "pax": "مسافر",
-    "datePlaceholder": "روز/ماه/سال",
+    "datePlaceholder": "۱۲/۰۶/۲۰۲۶",
     "classes": {
       "Economy": "اکونومی",
       "Premium Economy": "پریمیوم اکونومی",

@@ -63,6 +63,7 @@
   "bookingEngine": {
     "roundTrip": "ذهاب وعودة",
     "oneWay": "ذهاب فقط",
+    "multiCity": "وجهات متعددة",
     "from": "من",
     "to": "إلى",
     "takeOffDate": "تاريخ المغادرة",
@@ -82,7 +83,7 @@
     "infants": "رضع",
     "infantsAge": "تحت السنتين",
     "pax": "مسافر",
-    "datePlaceholder": "يوم/شهر/سنة",
+    "datePlaceholder": "١٢/٠٦/٢٠٢٦",
     "classes": {
       "Economy": "الدرجة السياحية",
       "Premium Economy": "السياحية الممتازة",
