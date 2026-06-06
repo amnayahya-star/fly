@@ -146,13 +146,13 @@ export default function BookingEngine({ lang, dict }: { lang?: string, dict?: an
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.7, delay: 0.4 }}
-      className="relative z-30 w-full px-4 sm:px-8 md:px-12 xl:px-24 mt-12 md:mt-24 animate-fade-in flex flex-col gap-0"
+      className="relative z-30 w-full max-w-[1600px] mx-auto px-2 sm:px-4 md:px-8 xl:px-12 mt-12 md:mt-24 animate-fade-in flex flex-col gap-0"
     >
       {/* Top Raised Selectors Row */}
       <div className="flex items-end justify-between w-full relative z-20 -mb-[1px]">
         
         {/* Trip Type Selector raised tab */}
-        <div className="relative bg-[#0B1021]/90 backdrop-blur-[40px] border-t border-l border-white/20 rounded-tl-2xl px-4 py-3 flex items-center gap-2.5 w-fit min-h-[62px]">
+        <div className="relative bg-[#0B1021]/30 backdrop-blur-md border-t border-l border-white/10 rounded-tl-2xl px-4 py-3 flex items-center gap-2.5 w-fit min-h-[62px]">
           {tripTypes.map((type) => {
             const isActive = activeTrip === type.id;
             const displayLabel = type.id === 'round' 
@@ -188,7 +188,7 @@ export default function BookingEngine({ lang, dict }: { lang?: string, dict?: an
             viewBox="0 0 24 62" 
             preserveAspectRatio="none"
           >
-            <polygon points="0,0 0,62 24,62" fill="rgba(11, 16, 33, 0.9)" />
+            <polygon points="0,0 0,62 24,62" fill="rgba(11, 16, 33, 0.3)" />
             <line x1="0" y1="0" x2="24" y2="62" stroke="currentColor" strokeWidth="1" />
           </svg>
         </div>
@@ -204,7 +204,7 @@ export default function BookingEngine({ lang, dict }: { lang?: string, dict?: an
                 setShowToDropdown(false);
                 setShowPassengerDropdown(false);
               }}
-              className="bg-[#0B1021]/90 border border-white/20 hover:border-white/30 text-white/80 hover:text-white text-[13px] md:text-[14px] font-bold px-5 py-3 rounded-full flex items-center gap-2 transition-all cursor-pointer w-fit"
+              className="bg-[#0B1021]/30 border border-white/10 hover:border-white/20 text-white/80 hover:text-white text-[13px] md:text-[14px] font-bold px-5 py-3 rounded-full flex items-center gap-2 transition-all cursor-pointer w-fit"
             >
               <Sparkles className="w-4 h-4 text-indigo-400 fill-indigo-400/20" />
               <span>{dict?.classes?.[selectedClass] || selectedClass}</span>
@@ -244,7 +244,7 @@ export default function BookingEngine({ lang, dict }: { lang?: string, dict?: an
       </div>
 
       {/* Main card containing Search fields */}
-      <div className="relative w-full bg-white/35 backdrop-blur-[60px] border-x border-b border-white/35 rounded-b-[2.25rem] rounded-tr-[2.25rem] rounded-tl-none shadow-[0_25px_60px_-10px_rgba(0,0,0,0.7)] p-6 sm:p-8">
+      <div className="relative w-full bg-white/5 backdrop-blur-md border-x border-b border-white/10 rounded-b-[2.25rem] rounded-tr-[2.25rem] rounded-tl-none shadow-[0_25px_60px_-10px_rgba(0,0,0,0.5)] p-6 sm:p-8">
         
         {/* Search Fields Row */}
         <div className="flex flex-col md:grid md:grid-cols-2 xl:flex xl:flex-row xl:items-stretch items-center w-full gap-4 xl:gap-0 bg-black/20 border border-white/20 rounded-[2rem] p-3 sm:p-4.5 relative">
