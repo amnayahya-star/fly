@@ -55,7 +55,10 @@
     "selectDeparture": "Select your departure flight",
     "flightSubtitle": "Worldwide Flights • 1 Passenger • Economy",
     "totalFrom": "Total from",
-    "select": "Select"
+    "select": "Select",
+    "noFlightsFound": "No Flights Found",
+    "noFlightsDesc": "We couldn't find any flights matching your search criteria. Try popular routes like:",
+    "modifySearch": "Modify Search"
   },
   "bookingEngine": {
     "roundTrip": "Round Trip",
@@ -78,11 +81,28 @@
     "childrenAge": "Age 2-11",
     "infants": "Infants",
     "infantsAge": "Under 2",
+    "pax": "Pax",
+    "datePlaceholder": "dd/mm/yyyy",
     "classes": {
       "Economy": "Economy",
       "Premium Economy": "Premium Economy",
       "Business": "Business",
       "First": "First"
+    },
+    "airports": {
+      "DXB (Dubai)": "DXB (Dubai)",
+      "LHR (London)": "LHR (London)",
+      "JFK (New York)": "JFK (New York)",
+      "CDG (Paris)": "CDG (Paris)",
+      "HND (Tokyo)": "HND (Tokyo)",
+      "ICN (Seoul)": "ICN (Seoul)",
+      "SYD (Sydney)": "SYD (Sydney)",
+      "AKL (Auckland)": "AKL (Auckland)",
+      "DOH (Doha)": "DOH (Doha)",
+      "FRA (Frankfurt)": "FRA (Frankfurt)",
+      "MXP (Milan)": "MXP (Milan)",
+      "MUC (Munich)": "MUC (Munich)",
+      "MAD (Madrid)": "MAD (Madrid)"
     }
   },
   "statistics": {
@@ -109,6 +129,24 @@
       "Trending": "Trending",
       "Hot Deal": "Hot Deal",
       "Culture": "Culture"
+    },
+    "destinations": {
+      "Paris": {
+        "name": "Paris",
+        "location": "France · CDG"
+      },
+      "Rome": {
+        "name": "Rome",
+        "location": "Italy · FCO"
+      },
+      "Beijing": {
+        "name": "Beijing",
+        "location": "China · PEK"
+      },
+      "New Delhi": {
+        "name": "New Delhi",
+        "location": "India · DEL"
+      }
     }
   }
 }

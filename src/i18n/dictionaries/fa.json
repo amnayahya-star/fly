@@ -55,7 +55,10 @@
     "selectDeparture": "پرواز رفت خود را انتخاب کنید",
     "flightSubtitle": "پروازهای جهانی • ۱ مسافر • اکونومی",
     "totalFrom": "مجموع از",
-    "select": "انتخاب"
+    "select": "انتخاب",
+    "noFlightsFound": "پروازی پیدا نشد",
+    "noFlightsDesc": "ما نتوانستیم پروازی مطابق با معیارهای جستجوی شما پیدا کنیم. مسیرهای محبوب را امتحان کنید مانند:",
+    "modifySearch": "ویرایش جستجو"
   },
   "bookingEngine": {
     "roundTrip": "رفت و برگشت",
@@ -78,11 +81,28 @@
     "childrenAge": "۲ تا ۱۱ سال",
     "infants": "نوزاد",
     "infantsAge": "زیر ۲ سال",
+    "pax": "مسافر",
+    "datePlaceholder": "روز/ماه/سال",
     "classes": {
       "Economy": "اکونومی",
       "Premium Economy": "پریمیوم اکونومی",
       "Business": "بیزینس کلاس",
       "First": "فرست کلاس"
+    },
+    "airports": {
+      "DXB (Dubai)": "DXB (دبی)",
+      "LHR (London)": "LHR (لندن)",
+      "JFK (New York)": "JFK (نیویورک)",
+      "CDG (Paris)": "CDG (پاریس)",
+      "HND (Tokyo)": "HND (توکیو)",
+      "ICN (Seoul)": "ICN (سئول)",
+      "SYD (Sydney)": "SYD (سیدنی)",
+      "AKL (Auckland)": "AKL (اوکلند)",
+      "DOH (Doha)": "DOH (دوحه)",
+      "FRA (Frankfurt)": "FRA (فرانکفورت)",
+      "MXP (Milan)": "MXP (میلان)",
+      "MUC (Munich)": "MUC (مونیخ)",
+      "MAD (Madrid)": "MAD (مادرید)"
     }
   },
   "statistics": {
@@ -109,6 +129,24 @@
       "Trending": "پرطرفدار",
       "Hot Deal": "تخفیف ویژه",
       "Culture": "فرهنگی تاریخی"
+    },
+    "destinations": {
+      "Paris": {
+        "name": "پاریس",
+        "location": "فرانسه · CDG"
+      },
+      "Rome": {
+        "name": "رم",
+        "location": "ایتالیا · FCO"
+      },
+      "Beijing": {
+        "name": "پکن",
+        "location": "چین · PEK"
+      },
+      "New Delhi": {
+        "name": "دهلی نو",
+        "location": "هند · DEL"
+      }
     }
   }
 }

@@ -61,26 +61,26 @@ export default function FlightsClient({ dict, flights, lang }: { dict: any, flig
         {flights.length === 0 ? (
           <div className="w-full text-center py-16 px-6 bg-white/[0.02] border border-white/10 rounded-3xl backdrop-blur-md flex flex-col items-center justify-center gap-4">
             <Plane className="w-12 h-12 text-[#4CA1FF] rotate-45 stroke-[1.5] drop-shadow-[0_0_8px_rgba(76,161,255,0.4)]" />
-            <h3 className="text-xl font-bold text-white">No Flights Found</h3>
+            <h3 className="text-xl font-bold text-white">{dict.flightsPage.noFlightsFound || "No Flights Found"}</h3>
             <p className="text-sm text-white/60 max-w-md">
-              We couldn't find any flights matching your search criteria. Try popular routes like:
+              {dict.flightsPage.noFlightsDesc || "We couldn't find any flights matching your search criteria. Try popular routes like:"}
             </p>
             <div className="flex flex-wrap items-center justify-center gap-3 mt-2 text-xs">
               <span className="bg-white/5 border border-white/10 px-3.5 py-1.5 rounded-full text-[#4CA1FF] font-semibold">
-                DXB (Dubai) ➔ LHR (London)
+                {dict.bookingEngine?.airports?.["DXB (Dubai)"] || "DXB (Dubai)"} ➔ {dict.bookingEngine?.airports?.["LHR (London)"] || "LHR (London)"}
               </span>
               <span className="bg-white/5 border border-white/10 px-3.5 py-1.5 rounded-full text-[#4CA1FF] font-semibold">
-                JFK (New York) ➔ CDG (Paris)
+                {dict.bookingEngine?.airports?.["JFK (New York)"] || "JFK (New York)"} ➔ {dict.bookingEngine?.airports?.["CDG (Paris)"] || "CDG (Paris)"}
               </span>
               <span className="bg-white/5 border border-white/10 px-3.5 py-1.5 rounded-full text-[#4CA1FF] font-semibold">
-                HND (Tokyo) ➔ ICN (Seoul)
+                {dict.bookingEngine?.airports?.["HND (Tokyo)"] || "HND (Tokyo)"} ➔ {dict.bookingEngine?.airports?.["ICN (Seoul)"] || "ICN (Seoul)"}
               </span>
             </div>
             <Link 
               href={`/${lang}`}
               className="mt-6 bg-[#0066FF] hover:bg-[#0052CC] text-white px-6 py-2.5 rounded-xl font-semibold transition-colors text-sm cursor-pointer"
             >
-              Modify Search
+              {dict.flightsPage.modifySearch || "Modify Search"}
             </Link>
           </div>
         ) : (
@@ -128,8 +128,8 @@ export default function FlightsClient({ dict, flights, lang }: { dict: any, flig
               </div>
 
               {/* Price and Action */}
-              <div className="w-full sm:w-auto flex sm:flex-col items-center sm:items-end justify-between sm:justify-center border-t sm:border-t-0 sm:border-l border-white/10 pt-4 sm:pt-0 sm:pl-6 gap-4 sm:gap-2">
-                <div className="text-left sm:text-right">
+              <div className="w-full sm:w-auto flex sm:flex-col items-center sm:items-end justify-between sm:justify-center border-t sm:border-t-0 sm:border-s border-white/10 pt-4 sm:pt-0 sm:ps-6 gap-4 sm:gap-2">
+                <div className="text-start sm:text-end">
                   <p className="text-[11px] text-white/50 font-medium tracking-wide uppercase">{dict.flightsPage.totalFrom}</p>
                   <p className="text-2xl font-bold text-white">{flight.price}</p>
                 </div>

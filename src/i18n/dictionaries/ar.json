@@ -55,7 +55,10 @@
     "selectDeparture": "اختر رحلة المغادرة",
     "flightSubtitle": "رحلات عالمية • 1 مسافر • الدرجة السياحية",
     "totalFrom": "الإجمالي يبدأ من",
-    "select": "اختيار"
+    "select": "اختيار",
+    "noFlightsFound": "لم يتم العثور على رحلات طيران",
+    "noFlightsDesc": "لم نتمكن من العثور على أي رحلات طيران تطابق معايير بحثك. جرب الوجهات الشهيرة مثل:",
+    "modifySearch": "تعديل البحث"
   },
   "bookingEngine": {
     "roundTrip": "ذهاب وعودة",
@@ -78,11 +81,28 @@
     "childrenAge": "بعمر 2-11",
     "infants": "رضع",
     "infantsAge": "تحت السنتين",
+    "pax": "مسافر",
+    "datePlaceholder": "يوم/شهر/سنة",
     "classes": {
       "Economy": "الدرجة السياحية",
       "Premium Economy": "السياحية الممتازة",
       "Business": "درجة رجال الأعمال",
       "First": "الدرجة الأولى"
+    },
+    "airports": {
+      "DXB (Dubai)": "DXB (دبي)",
+      "LHR (London)": "LHR (لندن)",
+      "JFK (New York)": "JFK (نيويورك)",
+      "CDG (Paris)": "CDG (باريس)",
+      "HND (Tokyo)": "HND (طوكيو)",
+      "ICN (Seoul)": "ICN (سيول)",
+      "SYD (Sydney)": "SYD (سيدني)",
+      "AKL (Auckland)": "AKL (أوكلاند)",
+      "DOH (Doha)": "DOH (الدوحة)",
+      "FRA (Frankfurt)": "FRA (فرانكفورت)",
+      "MXP (Milan)": "MXP (ميلان)",
+      "MUC (Munich)": "MUC (ميونخ)",
+      "MAD (Madrid)": "MAD (مدريد)"
     }
   },
   "statistics": {
@@ -109,6 +129,24 @@
       "Trending": "رائج الآن",
       "Hot Deal": "عرض ساخن",
       "Culture": "ثقافة وفنون"
+    },
+    "destinations": {
+      "Paris": {
+        "name": "باريس",
+        "location": "فرنسا · CDG"
+      },
+      "Rome": {
+        "name": "روما",
+        "location": "إيطاليا · FCO"
+      },
+      "Beijing": {
+        "name": "بكين",
+        "location": "الصين · PEK"
+      },
+      "New Delhi": {
+        "name": "نيودلهي",
+        "location": "الهند · DEL"
+      }
     }
   }
 }

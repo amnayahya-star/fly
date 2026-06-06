@@ -126,13 +126,19 @@ export default function BookingEngine({ lang, dict }: { lang?: string, dict?: an
   const endY = 35;
   const controlY = -90;
 
-  const filteredFromAirports = airports.filter(airport => 
-    airport.toLowerCase().includes(searchFromQuery.toLowerCase()) && airport !== toAirport
-  );
+  const filteredFromAirports = airports.filter(airport => {
+    const translated = dict?.airports?.[airport] || airport;
+    const matchesQuery = airport.toLowerCase().includes(searchFromQuery.toLowerCase()) || 
+                         translated.toLowerCase().includes(searchFromQuery.toLowerCase());
+    return matchesQuery && airport !== toAirport;
+  });
 
-  const filteredToAirports = airports.filter(airport => 
-    airport.toLowerCase().includes(searchToQuery.toLowerCase()) && airport !== fromAirport
-  );
+  const filteredToAirports = airports.filter(airport => {
+    const translated = dict?.airports?.[airport] || airport;
+    const matchesQuery = airport.toLowerCase().includes(searchToQuery.toLowerCase()) || 
+                         translated.toLowerCase().includes(searchToQuery.toLowerCase());
+    return matchesQuery && airport !== fromAirport;
+  });
 
   return (
     <motion.div 
@@ -205,7 +211,7 @@ export default function BookingEngine({ lang, dict }: { lang?: string, dict?: an
                         setShowClassDropdown(false);
                       }}
                       className={clsx(
-                        "text-left w-full px-4 py-3 rounded-xl text-[14px] font-semibold transition-all cursor-pointer",
+                        "text-start w-full px-4 py-3 rounded-xl text-[14px] font-semibold transition-all cursor-pointer",
                         isSelected 
                           ? "text-blue-400 font-bold bg-white/5" 
                           : "text-white/80 hover:bg-white/5 hover:text-white"
@@ -254,7 +260,7 @@ export default function BookingEngine({ lang, dict }: { lang?: string, dict?: an
                   />
                 ) : (
                   <span className="text-lg md:text-base font-bold text-white whitespace-nowrap truncate">
-                    {fromAirport}
+                    {dict?.airports?.[fromAirport] || fromAirport}
                   </span>
                 )}
               </div>
@@ -278,10 +284,10 @@ export default function BookingEngine({ lang, dict }: { lang?: string, dict?: an
                           setShowFromDropdown(false);
                           triggerAnimation();
                         }}
-                        className="text-left w-full text-white/80 hover:bg-white/5 hover:text-white px-3 py-2 rounded-xl text-sm font-semibold transition-all flex items-center gap-2"
+                        className="text-start w-full text-white/80 hover:bg-white/5 hover:text-white px-3 py-2 rounded-xl text-sm font-semibold transition-all flex items-center gap-2"
                       >
                         <Plane className="w-4 h-4 text-white/40 shrink-0" />
-                        <span>{airport}</span>
+                        <span>{dict?.airports?.[airport] || airport}</span>
                       </button>
                     ))
                   )}
@@ -323,7 +329,7 @@ export default function BookingEngine({ lang, dict }: { lang?: string, dict?: an
                   />
                 ) : (
                   <span className="text-lg md:text-base font-bold text-white whitespace-nowrap truncate">
-                    {toAirport}
+                    {dict?.airports?.[toAirport] || toAirport}
                   </span>
                 )}
               </div>
@@ -347,10 +353,10 @@ export default function BookingEngine({ lang, dict }: { lang?: string, dict?: an
                           setShowToDropdown(false);
                           triggerAnimation();
                         }}
-                        className="text-left w-full text-white/80 hover:bg-white/5 hover:text-white px-3 py-2 rounded-xl text-sm font-semibold transition-all flex items-center gap-2"
+                        className="text-start w-full text-white/80 hover:bg-white/5 hover:text-white px-3 py-2 rounded-xl text-sm font-semibold transition-all flex items-center gap-2"
                       >
                         <Plane className="w-4 h-4 text-white/40 shrink-0" />
-                        <span>{airport}</span>
+                        <span>{dict?.airports?.[airport] || airport}</span>
                       </button>
                     ))
                   )}
@@ -468,7 +474,7 @@ export default function BookingEngine({ lang, dict }: { lang?: string, dict?: an
             <div className="flex flex-col items-start min-w-0">
               <span className="block text-[10px] text-blue-400/80 font-bold tracking-wider uppercase">{dict?.takeOffDate || "TAKE OFF DATE"}</span>
               <span className={clsx("text-lg md:text-base font-extrabold tracking-tight", departureDate ? "text-white" : "text-white/40")}>
-                {departureDate ? new Date(departureDate).toLocaleDateString(lang || 'en', { month: 'short', day: 'numeric', year: 'numeric' }) : "dd/mm/yyyy"}
+                {departureDate ? new Date(departureDate).toLocaleDateString(lang || 'en', { month: 'short', day: 'numeric', year: 'numeric' }) : (dict?.datePlaceholder || "dd/mm/yyyy")}
               </span>
               <span className="text-[11px] text-white/40 font-medium whitespace-nowrap">{dict?.flyOutDesc || "When do you fly out?"}</span>
             </div>
@@ -506,7 +512,7 @@ export default function BookingEngine({ lang, dict }: { lang?: string, dict?: an
               <span className={clsx("text-lg md:text-base font-extrabold tracking-tight", activeTrip === 'oneway' ? "text-white/20" : (returnDate ? "text-white" : "text-white/40"))}>
                 {activeTrip === 'oneway' 
                   ? "—" 
-                  : (returnDate ? new Date(returnDate).toLocaleDateString(lang || 'en', { month: 'short', day: 'numeric', year: 'numeric' }) : "dd/mm/yyyy")}
+                  : (returnDate ? new Date(returnDate).toLocaleDateString(lang || 'en', { month: 'short', day: 'numeric', year: 'numeric' }) : (dict?.datePlaceholder || "dd/mm/yyyy"))}
               </span>
               <span className="text-[11px] text-white/40 font-medium whitespace-nowrap">{dict?.returnDesc || "When do you return?"}</span>
             </div>
@@ -536,7 +542,7 @@ export default function BookingEngine({ lang, dict }: { lang?: string, dict?: an
               <span className="block text-[10px] text-blue-400/80 font-bold tracking-wider uppercase">{dict?.peopleOnBoard || "PEOPLE ON BOARD"}</span>
               <div className="flex items-center gap-1.5 text-white w-full">
                 <span className="text-lg md:text-base font-extrabold tracking-tight">
-                  {adults + children + infants} Pax
+                  {adults + children + infants} {dict?.pax || "Pax"}
                 </span>
                 <ChevronDown className="w-3.5 h-3.5 text-white/40" />
               </div>

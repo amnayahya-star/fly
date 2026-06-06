@@ -51,12 +51,15 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
 
       {/* Background Video Layer */}
       <div className="absolute top-0 left-0 w-full h-[100vh] pointer-events-none overflow-hidden z-0">
-        <iframe
+        <video
           className="absolute top-1/2 left-1/2 w-[100vw] h-[56.25vw] min-h-[100vh] min-w-[177.77vh] -translate-x-1/2 -translate-y-1/2 pointer-events-none opacity-90"
-          src="https://www.youtube.com/embed/hVvEISFw9w0?autoplay=1&mute=1&loop=1&playlist=hVvEISFw9w0&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
-          allow="autoplay; encrypted-media"
-          title="Luxury Tourism Background"
-        ></iframe>
+          autoPlay
+          muted
+          loop
+          playsInline
+        >
+          <source src="/hero-v2.mp4" type="video/mp4" />
+        </video>
         {/* Softer overlay gradient just enough for text readability */}
         <div className="absolute inset-0 bg-gradient-to-r from-[#030d22]/75 via-[#030d22]/30 to-transparent z-10" />
         <div className="absolute inset-0 bg-gradient-to-t from-[#030d22]/50 via-transparent to-transparent z-10" />
@@ -106,13 +109,17 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
                   {/* Info area */}
                   <div className="p-4.5 flex flex-col flex-1">
                     <div className="flex items-start justify-between mb-1 gap-2">
-                      <h3 className="text-base font-bold text-slate-800 tracking-tight">{dest.name}</h3>
+                      <h3 className="text-base font-bold text-slate-800 tracking-tight">
+                        {(dict.popularDestinations.destinations as any)?.[dest.name]?.name || dest.name}
+                      </h3>
                       <div className="text-right shrink-0">
                         <span className="block text-[10px] text-slate-400 font-bold uppercase tracking-wider leading-none mb-0.5">{dict.popularDestinations.from}</span>
                         <span className="text-base font-extrabold text-blue-600 leading-none">{dest.price}</span>
                       </div>
                     </div>
-                    <p className="text-[11px] text-slate-400 font-semibold mb-3">{dest.location}</p>
+                    <p className="text-[11px] text-slate-400 font-semibold mb-3">
+                      {(dict.popularDestinations.destinations as any)?.[dest.name]?.location || dest.location}
+                    </p>
                     
                     <div className="flex items-center gap-1 mt-auto pt-3 border-t border-slate-50">
                       <div className="flex items-center gap-0.5">
