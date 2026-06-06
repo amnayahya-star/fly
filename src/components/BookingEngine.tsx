@@ -33,7 +33,7 @@ const flightClasses = [
   "First"
 ];
 
-export default function BookingEngine({ lang }: { lang?: string }) {
+export default function BookingEngine({ lang, dict }: { lang?: string, dict?: any }) {
   const [activeTrip, setActiveTrip] = useState('round');
   const [takeoffKey, setTakeoffKey] = useState(0);
 
@@ -141,14 +141,17 @@ export default function BookingEngine({ lang }: { lang?: string }) {
       transition={{ duration: 0.7, delay: 0.4 }}
       className="relative z-30 w-full px-4 sm:px-8 md:px-12 xl:px-24 mt-12 md:mt-24 animate-fade-in"
     >
-      <div className="relative w-full bg-white border border-slate-100 rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.15)] p-4 sm:p-6">
+      <div className="relative w-full bg-white/12 backdrop-blur-3xl border border-white/20 rounded-[2rem] shadow-[0_25px_50px_-12px_rgba(0,0,0,0.5)] p-4 sm:p-6">
         
         {/* Top selectors row */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-slate-100">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-white/10">
           {/* Trip Type Selector */}
-          <div className="bg-slate-100/80 p-1.5 rounded-full flex items-center gap-1 w-fit">
+          <div className="bg-white/5 border border-white/10 p-1.5 rounded-full flex items-center gap-1 w-fit">
             {tripTypes.map((type) => {
               const isActive = activeTrip === type.id;
+              const displayLabel = type.id === 'round' 
+                ? (dict?.roundTrip || type.label)
+                : (dict?.oneWay || type.label);
               return (
                 <button
                   key={type.id}
@@ -161,11 +164,11 @@ export default function BookingEngine({ lang }: { lang?: string }) {
                   className={clsx(
                     "flex items-center gap-2 px-5 py-2 rounded-full text-[13px] font-semibold transition-all cursor-pointer",
                     isActive 
-                      ? "bg-white text-blue-600 shadow-sm"
-                      : "text-slate-500 hover:text-slate-800"
+                      ? "bg-[#0B162C] text-white border border-blue-500/80 shadow-[0_0_12px_rgba(59,130,246,0.3)]"
+                      : "text-white/60 hover:text-white"
                   )}
                 >
-                  {type.label}
+                  {displayLabel}
                 </button>
               );
             })}
@@ -180,16 +183,16 @@ export default function BookingEngine({ lang }: { lang?: string }) {
                 setShowToDropdown(false);
                 setShowPassengerDropdown(false);
               }}
-              className="border border-slate-200 hover:bg-slate-50 text-slate-600 text-[13px] font-semibold px-4 py-2.5 rounded-full flex items-center gap-2 transition-colors cursor-pointer w-fit"
+              className="bg-white/5 border border-white/10 hover:bg-white/10 text-white/80 hover:text-white text-[13px] font-semibold px-4 py-2.5 rounded-full flex items-center gap-2 transition-all cursor-pointer w-fit"
             >
-              <Sparkles className="w-4 h-4 text-indigo-500 fill-indigo-500/20" />
-              <span>{selectedClass}</span>
-              <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
+              <Sparkles className="w-4 h-4 text-indigo-400 fill-indigo-400/20" />
+              <span>{dict?.classes?.[selectedClass] || selectedClass}</span>
+              <ChevronDown className="w-3.5 h-3.5 text-white/45" />
             </button>
 
             {showClassDropdown && (
               <div 
-                className="absolute start-0 sm:start-auto sm:end-0 mt-2 w-56 bg-white border border-slate-100 rounded-2xl shadow-xl z-50 p-2.5 flex flex-col gap-1"
+                className="absolute start-0 sm:start-auto sm:end-0 mt-2 w-56 bg-[#0B1021]/95 backdrop-blur-3xl border border-white/10 rounded-2xl shadow-2xl z-50 p-2.5 flex flex-col gap-1"
                 onClick={(e) => e.stopPropagation()}
               >
                 {flightClasses.map((cls) => {
@@ -204,11 +207,11 @@ export default function BookingEngine({ lang }: { lang?: string }) {
                       className={clsx(
                         "text-left w-full px-4 py-3 rounded-xl text-[14px] font-semibold transition-all cursor-pointer",
                         isSelected 
-                          ? "text-blue-600 font-bold hover:bg-[#F0F5FF]" 
-                          : "text-slate-700 hover:bg-[#F0F5FF] hover:text-slate-800"
+                          ? "text-blue-400 font-bold bg-white/5" 
+                          : "text-white/80 hover:bg-white/5 hover:text-white"
                       )}
                     >
-                      {cls}
+                      {dict?.classes?.[cls] || cls}
                     </button>
                   );
                 })}
@@ -218,39 +221,39 @@ export default function BookingEngine({ lang }: { lang?: string }) {
         </div>
 
         {/* Search Fields Row */}
-        <div className="flex flex-col md:grid md:grid-cols-2 xl:flex xl:flex-row xl:items-stretch items-center w-full gap-4 xl:gap-0 bg-slate-50/50 border border-slate-100 rounded-3xl p-2.5 relative">
+        <div className="flex flex-col md:grid md:grid-cols-2 xl:flex xl:flex-row xl:items-stretch items-center w-full gap-4 xl:gap-0 bg-white/[0.04] border border-white/10 rounded-3xl p-2.5 relative">
           
           {/* From & To Wrapper */}
           <div 
             ref={containerRef}
-            className="flex flex-col md:flex-row relative items-stretch gap-0 md:col-span-2 xl:flex-[2.2] min-w-0 w-full bg-white xl:bg-transparent border border-slate-200/60 xl:border-0 rounded-2xl xl:rounded-none shadow-sm xl:shadow-none"
+            className="flex flex-col md:flex-row relative items-stretch gap-0 md:col-span-2 xl:flex-[2.2] min-w-0 w-full bg-white/12 xl:bg-transparent border border-white/15 xl:border-0 rounded-2xl xl:rounded-none shadow-lg xl:shadow-none"
           >
             {/* From */}
             <div 
-              className="flex-1 w-full min-w-0 px-6 py-3.5 border-b md:border-b-0 md:border-r border-slate-200/60 flex flex-col items-start justify-center gap-1 cursor-pointer hover:bg-slate-50 xl:hover:bg-slate-100/50 transition-all rounded-t-2xl rounded-b-none md:rounded-l-2xl md:rounded-r-none xl:rounded-none relative"
+              className="flex-1 w-full min-w-0 px-6 py-3.5 border-b md:border-b-0 md:border-r border-white/10 flex flex-col items-start justify-center gap-1 cursor-pointer hover:bg-white/20 xl:hover:bg-white/12 transition-all rounded-t-2xl rounded-b-none md:rounded-l-2xl md:rounded-r-none xl:rounded-none relative"
             >
-              <span className="block text-[10px] text-blue-500 font-bold tracking-wider uppercase">FROM</span>
+              <span className="block text-[10px] text-blue-400/80 font-bold tracking-wider uppercase">{dict?.from || "FROM"}</span>
               <div 
                 onClick={() => {
                   setShowFromDropdown(true);
                   setShowToDropdown(false);
                   setShowPassengerDropdown(false);
                 }}
-                className="flex items-center gap-2 text-slate-700 w-full min-w-0"
+                className="flex items-center gap-2 text-white/90 w-full min-w-0"
               >
-                <MapPin className="w-4.5 h-4.5 text-blue-500 shrink-0" />
+                <MapPin className="w-4.5 h-4.5 text-blue-400 shrink-0" />
                 {showFromDropdown ? (
                   <input
                     type="text"
-                    placeholder="Search airport..."
+                    placeholder={dict?.searchAirportPlaceholder || "Search airport..."}
                     value={searchFromQuery}
                     onChange={(e) => setSearchFromQuery(e.target.value)}
                     autoFocus
-                    className="text-base md:text-[14px] font-semibold text-slate-800 bg-transparent outline-none border-b border-blue-500 w-full min-w-0"
+                    className="text-lg md:text-base font-bold text-white bg-transparent outline-none border-b border-blue-500/50 w-full min-w-0"
                     onClick={(e) => e.stopPropagation()}
                   />
                 ) : (
-                  <span className="text-base md:text-[14px] font-semibold whitespace-nowrap truncate">
+                  <span className="text-lg md:text-base font-bold text-white whitespace-nowrap truncate">
                     {fromAirport}
                   </span>
                 )}
@@ -259,12 +262,12 @@ export default function BookingEngine({ lang }: { lang?: string }) {
               {/* From Dropdown */}
               {showFromDropdown && (
                 <div 
-                  className="absolute start-0 top-full mt-2 w-72 bg-white border border-slate-100 rounded-2xl shadow-xl z-50 p-2 py-3 flex flex-col gap-1 max-h-60 overflow-y-auto"
+                  className="absolute start-0 top-full mt-2 w-72 bg-[#0B1021]/95 backdrop-blur-3xl border border-white/10 rounded-2xl shadow-2xl z-50 p-2 py-3 flex flex-col gap-1 max-h-60 overflow-y-auto"
                   onClick={(e) => e.stopPropagation()}
                 >
-                  <div className="text-[11px] font-semibold text-slate-400 px-3 pb-1 border-b border-slate-50 uppercase tracking-wider">Airports</div>
+                  <div className="text-[11px] font-semibold text-white/40 px-3 pb-1 border-b border-white/5 uppercase tracking-wider">{dict?.airportsTitle || "Airports"}</div>
                   {filteredFromAirports.length === 0 ? (
-                    <div className="text-sm text-slate-400 p-3">No airports found</div>
+                    <div className="text-sm text-white/40 p-3">{dict?.noAirportsFound || "No airports found"}</div>
                   ) : (
                     filteredFromAirports.map((airport) => (
                       <button
@@ -275,9 +278,9 @@ export default function BookingEngine({ lang }: { lang?: string }) {
                           setShowFromDropdown(false);
                           triggerAnimation();
                         }}
-                        className="text-left w-full text-slate-700 hover:bg-blue-50 hover:text-blue-600 px-3 py-2 rounded-xl text-sm font-semibold transition-all flex items-center gap-2"
+                        className="text-left w-full text-white/80 hover:bg-white/5 hover:text-white px-3 py-2 rounded-xl text-sm font-semibold transition-all flex items-center gap-2"
                       >
-                        <Plane className="w-4 h-4 text-slate-400 shrink-0" />
+                        <Plane className="w-4 h-4 text-white/40 shrink-0" />
                         <span>{airport}</span>
                       </button>
                     ))
@@ -289,37 +292,37 @@ export default function BookingEngine({ lang }: { lang?: string }) {
             {/* Swap Button */}
             <button 
               onClick={handleSwap}
-              className="relative z-10 w-9 h-9 rounded-full bg-white border border-slate-200 flex items-center justify-center text-blue-600 hover:bg-slate-50 hover:border-slate-300 shadow-sm transition-all cursor-pointer -my-2.5 md:-my-0 md:-mx-4.5 shrink-0"
+              className="relative z-10 w-9 h-9 rounded-full bg-[#0B1021] border border-white/15 flex items-center justify-center text-white hover:bg-slate-900 hover:border-white/30 shadow-sm transition-all cursor-pointer -my-2.5 md:-my-0 md:-mx-4.5 shrink-0"
             >
               <ArrowRightLeft className="w-4 h-4 rotate-90 md:rotate-0" />
             </button>
 
             {/* To */}
             <div 
-              className="flex-1 w-full min-w-0 px-6 py-3.5 border-r-0 xl:border-r border-slate-200/60 flex flex-col items-start justify-center gap-1 cursor-pointer hover:bg-slate-50 xl:hover:bg-slate-100/50 transition-all rounded-b-2xl rounded-t-none md:rounded-r-2xl md:rounded-l-none xl:rounded-none relative"
+              className="flex-1 w-full min-w-0 px-6 py-3.5 border-r-0 xl:border-r border-white/10 flex flex-col items-start justify-center gap-1 cursor-pointer hover:bg-white/20 xl:hover:bg-white/12 transition-all rounded-b-2xl rounded-t-none md:rounded-r-2xl md:rounded-l-none xl:rounded-none relative"
             >
-              <span className="block text-[10px] text-blue-500 font-bold tracking-wider uppercase">TO</span>
+              <span className="block text-[10px] text-blue-400/80 font-bold tracking-wider uppercase">{dict?.to || "TO"}</span>
               <div 
                 onClick={() => {
                   setShowToDropdown(true);
                   setShowFromDropdown(false);
                   setShowPassengerDropdown(false);
                 }}
-                className="flex items-center gap-2 text-slate-700 relative z-10 w-full min-w-0"
+                className="flex items-center gap-2 text-white/90 relative z-10 w-full min-w-0"
               >
-                <MapPin className="w-4.5 h-4.5 text-blue-500 shrink-0" />
+                <MapPin className="w-4.5 h-4.5 text-blue-400 shrink-0" />
                 {showToDropdown ? (
                   <input
                     type="text"
-                    placeholder="Search airport..."
+                    placeholder={dict?.searchAirportPlaceholder || "Search airport..."}
                     value={searchToQuery}
                     onChange={(e) => setSearchToQuery(e.target.value)}
                     autoFocus
-                    className="text-base md:text-[14px] font-semibold text-slate-800 bg-transparent outline-none border-b border-blue-500 w-full min-w-0"
+                    className="text-lg md:text-base font-bold text-white bg-transparent outline-none border-b border-blue-500/50 w-full min-w-0"
                     onClick={(e) => e.stopPropagation()}
                   />
                 ) : (
-                  <span className="text-base md:text-[14px] font-semibold whitespace-nowrap truncate">
+                  <span className="text-lg md:text-base font-bold text-white whitespace-nowrap truncate">
                     {toAirport}
                   </span>
                 )}
@@ -328,12 +331,12 @@ export default function BookingEngine({ lang }: { lang?: string }) {
               {/* To Dropdown */}
               {showToDropdown && (
                 <div 
-                  className="absolute start-0 md:start-auto md:end-0 top-full mt-2 w-72 bg-white border border-slate-100 rounded-2xl shadow-xl z-50 p-2 py-3 flex flex-col gap-1 max-h-60 overflow-y-auto"
+                  className="absolute start-0 md:start-auto md:end-0 top-full mt-2 w-72 bg-[#0B1021]/95 backdrop-blur-3xl border border-white/10 rounded-2xl shadow-2xl z-50 p-2 py-3 flex flex-col gap-1 max-h-60 overflow-y-auto"
                   onClick={(e) => e.stopPropagation()}
                 >
-                  <div className="text-[11px] font-semibold text-slate-400 px-3 pb-1 border-b border-slate-50 uppercase tracking-wider">Airports</div>
+                  <div className="text-[11px] font-semibold text-white/40 px-3 pb-1 border-b border-white/5 uppercase tracking-wider">{dict?.airportsTitle || "Airports"}</div>
                   {filteredToAirports.length === 0 ? (
-                    <div className="text-sm text-slate-400 p-3">No airports found</div>
+                    <div className="text-sm text-white/40 p-3">{dict?.noAirportsFound || "No airports found"}</div>
                   ) : (
                     filteredToAirports.map((airport) => (
                       <button
@@ -344,9 +347,9 @@ export default function BookingEngine({ lang }: { lang?: string }) {
                           setShowToDropdown(false);
                           triggerAnimation();
                         }}
-                        className="text-left w-full text-slate-700 hover:bg-blue-50 hover:text-blue-600 px-3 py-2 rounded-xl text-sm font-semibold transition-all flex items-center gap-2"
+                        className="text-left w-full text-white/80 hover:bg-white/5 hover:text-white px-3 py-2 rounded-xl text-sm font-semibold transition-all flex items-center gap-2"
                       >
-                        <Plane className="w-4 h-4 text-slate-400 shrink-0" />
+                        <Plane className="w-4 h-4 text-white/40 shrink-0" />
                         <span>{airport}</span>
                       </button>
                     ))
@@ -456,18 +459,18 @@ export default function BookingEngine({ lang }: { lang?: string }) {
             onClick={() => {
               departureInputRef.current?.showPicker();
             }}
-            className="w-full xl:w-auto xl:min-w-0 xl:flex-1 px-6 py-3.5 flex items-center gap-4 cursor-pointer transition-all bg-white border border-slate-200/60 shadow-sm rounded-2xl hover:bg-slate-50 xl:bg-transparent xl:border-0 xl:border-r xl:shadow-none xl:rounded-none xl:hover:bg-slate-100/50 relative"
+            className="w-full xl:w-auto xl:min-w-0 xl:flex-1 px-6 py-3.5 flex items-center gap-4 cursor-pointer transition-all bg-white/12 border border-white/15 shadow-lg rounded-2xl hover:bg-white/20 xl:bg-transparent xl:border-0 xl:border-r xl:shadow-none xl:rounded-none xl:hover:bg-white/12 relative"
           >
-            <div className="relative w-12 h-12 flex-shrink-0 flex items-center justify-center bg-blue-50 rounded-2xl border border-blue-100/50">
-              <Calendar className="w-6 h-6 text-blue-500" />
+            <div className="relative w-12 h-12 flex-shrink-0 flex items-center justify-center bg-blue-500/10 rounded-2xl border border-blue-500/20">
+              <Calendar className="w-6 h-6 text-blue-400" />
               <span className="absolute -top-1 -right-1 text-[13px] select-none">🚀</span>
             </div>
             <div className="flex flex-col items-start min-w-0">
-              <span className="block text-[10px] text-blue-600 font-bold tracking-wider uppercase">TAKE OFF DATE</span>
-              <span className={clsx("text-[15px] font-bold tracking-tight", departureDate ? "text-slate-800" : "text-blue-400")}>
+              <span className="block text-[10px] text-blue-400/80 font-bold tracking-wider uppercase">{dict?.takeOffDate || "TAKE OFF DATE"}</span>
+              <span className={clsx("text-lg md:text-base font-extrabold tracking-tight", departureDate ? "text-white" : "text-white/40")}>
                 {departureDate ? new Date(departureDate).toLocaleDateString(lang || 'en', { month: 'short', day: 'numeric', year: 'numeric' }) : "dd/mm/yyyy"}
               </span>
-              <span className="text-[11px] text-slate-400 font-medium whitespace-nowrap">When do you fly out?</span>
+              <span className="text-[11px] text-white/40 font-medium whitespace-nowrap">{dict?.flyOutDesc || "When do you fly out?"}</span>
             </div>
             <input 
               ref={departureInputRef}
@@ -487,25 +490,25 @@ export default function BookingEngine({ lang }: { lang?: string }) {
             }}
             className={clsx(
               "w-full xl:w-auto xl:min-w-0 xl:flex-1 px-6 py-3.5 flex items-center gap-4 transition-all relative",
-              "bg-white border border-slate-200/60 shadow-sm rounded-2xl",
+              "bg-white/12 border border-white/15 shadow-lg rounded-2xl",
               "xl:bg-transparent xl:border-0 xl:border-r xl:shadow-none xl:rounded-none",
               activeTrip === 'oneway' 
                 ? "cursor-not-allowed opacity-50" 
-                : "cursor-pointer hover:bg-slate-50 xl:hover:bg-slate-100/50"
+                : "cursor-pointer hover:bg-white/20 xl:hover:bg-white/12"
             )}
           >
-            <div className="relative w-12 h-12 flex-shrink-0 flex items-center justify-center bg-purple-50 rounded-2xl border border-purple-100/50">
-              <Calendar className="w-6 h-6 text-purple-500" />
+            <div className="relative w-12 h-12 flex-shrink-0 flex items-center justify-center bg-purple-500/10 rounded-2xl border border-purple-500/20">
+              <Calendar className="w-6 h-6 text-purple-400" />
               <span className="absolute -top-1 -right-1 text-[13px] select-none">🧭</span>
             </div>
             <div className="flex flex-col items-start min-w-0">
-              <span className="block text-[10px] text-blue-600 font-bold tracking-wider uppercase">LANDING DATE</span>
-              <span className={clsx("text-[15px] font-bold tracking-tight", activeTrip === 'oneway' ? "text-slate-400" : (returnDate ? "text-slate-800" : "text-blue-400"))}>
+              <span className="block text-[10px] text-blue-400/80 font-bold tracking-wider uppercase">{dict?.landingDate || "LANDING DATE"}</span>
+              <span className={clsx("text-lg md:text-base font-extrabold tracking-tight", activeTrip === 'oneway' ? "text-white/20" : (returnDate ? "text-white" : "text-white/40"))}>
                 {activeTrip === 'oneway' 
                   ? "—" 
                   : (returnDate ? new Date(returnDate).toLocaleDateString(lang || 'en', { month: 'short', day: 'numeric', year: 'numeric' }) : "dd/mm/yyyy")}
               </span>
-              <span className="text-[11px] text-slate-400 font-medium whitespace-nowrap">When do you return?</span>
+              <span className="text-[11px] text-white/40 font-medium whitespace-nowrap">{dict?.returnDesc || "When do you return?"}</span>
             </div>
             <input 
               ref={returnInputRef}
@@ -524,45 +527,45 @@ export default function BookingEngine({ lang }: { lang?: string }) {
               setShowFromDropdown(false);
               setShowToDropdown(false);
             }}
-            className="w-full xl:w-auto xl:min-w-0 xl:flex-1 px-6 py-3.5 flex items-center gap-4 cursor-pointer transition-all bg-white border border-slate-200/60 shadow-sm rounded-2xl hover:bg-slate-50 xl:bg-transparent xl:border-0 xl:shadow-none xl:rounded-none xl:hover:bg-slate-100/50 relative"
+            className="w-full xl:w-auto xl:min-w-0 xl:flex-1 px-6 py-3.5 flex items-center gap-4 cursor-pointer transition-all bg-white/12 border border-white/15 shadow-lg rounded-2xl hover:bg-white/20 xl:bg-transparent xl:border-0 xl:shadow-none xl:rounded-none xl:hover:bg-white/12 relative"
           >
-            <div className="w-12 h-12 flex-shrink-0 flex items-center justify-center bg-blue-50 rounded-2xl border border-blue-100/50">
-              <Users className="w-6 h-6 text-blue-500" />
+            <div className="w-12 h-12 flex-shrink-0 flex items-center justify-center bg-blue-500/10 rounded-2xl border border-blue-500/20">
+              <Users className="w-6 h-6 text-blue-400" />
             </div>
             <div className="flex flex-col items-start min-w-0 w-full">
-              <span className="block text-[10px] text-blue-600 font-bold tracking-wider uppercase">PEOPLE ON BOARD</span>
-              <div className="flex items-center gap-1.5 text-slate-800 w-full">
-                <span className="text-[15px] font-bold tracking-tight">
+              <span className="block text-[10px] text-blue-400/80 font-bold tracking-wider uppercase">{dict?.peopleOnBoard || "PEOPLE ON BOARD"}</span>
+              <div className="flex items-center gap-1.5 text-white w-full">
+                <span className="text-lg md:text-base font-extrabold tracking-tight">
                   {adults + children + infants} Pax
                 </span>
-                <ChevronDown className="w-3 h-3 text-slate-400" />
+                <ChevronDown className="w-3.5 h-3.5 text-white/40" />
               </div>
-              <span className="text-[11px] text-slate-400 font-medium whitespace-nowrap">How many flying?</span>
+              <span className="text-[11px] text-white/40 font-medium whitespace-nowrap">{dict?.howManyDesc || "How many flying?"}</span>
             </div>
 
             {/* Passengers Dropdown */}
             {showPassengerDropdown && (
               <div 
-                className="absolute start-0 xl:start-auto xl:end-0 top-full mt-2 w-64 bg-white border border-slate-100 rounded-2xl shadow-xl z-50 p-4 flex flex-col gap-4"
+                className="absolute start-0 xl:start-auto xl:end-0 top-full mt-2 w-64 bg-[#0B1021]/95 backdrop-blur-3xl border border-white/10 rounded-2xl shadow-2xl z-50 p-4 flex flex-col gap-4 text-white"
                 onClick={(e) => e.stopPropagation()}
               >
                 {/* Adults */}
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-bold text-slate-700">Adults</p>
-                    <p className="text-xs text-slate-400">Age 12+</p>
+                    <p className="text-sm font-bold text-white/95">{dict?.adults || "Adults"}</p>
+                    <p className="text-xs text-white/40">{dict?.adultsAge || "Age 12+"}</p>
                   </div>
                   <div className="flex items-center gap-3">
                     <button
                       onClick={() => setAdults(prev => Math.max(1, prev - 1))}
-                      className="w-7 h-7 rounded-full border border-slate-200 flex items-center justify-center font-bold text-slate-500 hover:bg-slate-50"
+                      className="w-7 h-7 rounded-full border border-white/20 flex items-center justify-center font-bold text-white/80 hover:bg-white/5 hover:border-white/40"
                     >
                       -
                     </button>
-                    <span className="text-sm font-bold text-slate-700 w-4 text-center">{adults}</span>
+                    <span className="text-sm font-bold text-white w-4 text-center">{adults}</span>
                     <button
                       onClick={() => setAdults(prev => Math.min(9, prev + 1))}
-                      className="w-7 h-7 rounded-full border border-slate-200 flex items-center justify-center font-bold text-slate-500 hover:bg-slate-50"
+                      className="w-7 h-7 rounded-full border border-white/20 flex items-center justify-center font-bold text-white/80 hover:bg-white/5 hover:border-white/40"
                     >
                       +
                     </button>
@@ -572,20 +575,20 @@ export default function BookingEngine({ lang }: { lang?: string }) {
                 {/* Children */}
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-bold text-slate-700">Children</p>
-                    <p className="text-xs text-slate-400">Age 2-11</p>
+                    <p className="text-sm font-bold text-white/95">{dict?.children || "Children"}</p>
+                    <p className="text-xs text-white/40">{dict?.childrenAge || "Age 2-11"}</p>
                   </div>
                   <div className="flex items-center gap-3">
                     <button
                       onClick={() => setChildren(prev => Math.max(0, prev - 1))}
-                      className="w-7 h-7 rounded-full border border-slate-200 flex items-center justify-center font-bold text-slate-500 hover:bg-slate-50"
+                      className="w-7 h-7 rounded-full border border-white/20 flex items-center justify-center font-bold text-white/80 hover:bg-white/5 hover:border-white/40"
                     >
                       -
                     </button>
-                    <span className="text-sm font-bold text-slate-700 w-4 text-center">{children}</span>
+                    <span className="text-sm font-bold text-white w-4 text-center">{children}</span>
                     <button
                       onClick={() => setChildren(prev => Math.min(9, prev + 1))}
-                      className="w-7 h-7 rounded-full border border-slate-200 flex items-center justify-center font-bold text-slate-500 hover:bg-slate-50"
+                      className="w-7 h-7 rounded-full border border-white/20 flex items-center justify-center font-bold text-white/80 hover:bg-white/5 hover:border-white/40"
                     >
                       +
                     </button>
@@ -595,20 +598,20 @@ export default function BookingEngine({ lang }: { lang?: string }) {
                 {/* Infants */}
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-bold text-slate-700">Infants</p>
-                    <p className="text-xs text-slate-400">Under 2</p>
+                    <p className="text-sm font-bold text-white/95">{dict?.infants || "Infants"}</p>
+                    <p className="text-xs text-white/40">{dict?.infantsAge || "Under 2"}</p>
                   </div>
                   <div className="flex items-center gap-3">
                     <button
                       onClick={() => setInfants(prev => Math.max(0, prev - 1))}
-                      className="w-7 h-7 rounded-full border border-slate-200 flex items-center justify-center font-bold text-slate-500 hover:bg-slate-50"
+                      className="w-7 h-7 rounded-full border border-white/20 flex items-center justify-center font-bold text-white/80 hover:bg-white/5 hover:border-white/40"
                     >
                       -
                     </button>
-                    <span className="text-sm font-bold text-slate-700 w-4 text-center">{infants}</span>
+                    <span className="text-sm font-bold text-white w-4 text-center">{infants}</span>
                     <button
                       onClick={() => setInfants(prev => Math.min(adults, prev + 1))}
-                      className="w-7 h-7 rounded-full border border-slate-200 flex items-center justify-center font-bold text-slate-500 hover:bg-slate-50"
+                      className="w-7 h-7 rounded-full border border-white/20 flex items-center justify-center font-bold text-white/80 hover:bg-white/5 hover:border-white/40"
                     >
                       +
                     </button>
@@ -624,7 +627,7 @@ export default function BookingEngine({ lang }: { lang?: string }) {
             className="xl:w-auto w-full bg-blue-600 hover:bg-blue-700 text-white px-8 py-[14px] rounded-2xl font-bold flex items-center justify-center gap-2.5 transition-all hover:scale-[1.02] active:scale-[0.98] whitespace-nowrap text-[15px] cursor-pointer shadow-lg shadow-blue-500/25 ml-0 xl:ml-4"
           >
             <Plane className="w-4.5 h-4.5 rotate-45" />
-            Search Flights
+            {dict?.searchFlights || "Search Flights"}
           </Link>
 
         </div>

@@ -56,5 +56,59 @@
     "flightSubtitle": "Worldwide Flights • 1 Passenger • Economy",
     "totalFrom": "Total from",
     "select": "Select"
+  },
+  "bookingEngine": {
+    "roundTrip": "Round Trip",
+    "oneWay": "One Way",
+    "from": "FROM",
+    "to": "TO",
+    "takeOffDate": "TAKE OFF DATE",
+    "landingDate": "LANDING DATE",
+    "peopleOnBoard": "PEOPLE ON BOARD",
+    "searchFlights": "Search Flights",
+    "searchAirportPlaceholder": "Search airport...",
+    "noAirportsFound": "No airports found",
+    "airportsTitle": "Airports",
+    "flyOutDesc": "When do you fly out?",
+    "returnDesc": "When do you return?",
+    "howManyDesc": "How many flying?",
+    "adults": "Adults",
+    "adultsAge": "Age 12+",
+    "children": "Children",
+    "childrenAge": "Age 2-11",
+    "infants": "Infants",
+    "infantsAge": "Under 2",
+    "classes": {
+      "Economy": "Economy",
+      "Premium Economy": "Premium Economy",
+      "Business": "Business",
+      "First": "First"
+    }
+  },
+  "statistics": {
+    "airlinesTitle": "700+",
+    "airlinesSub": "Airlines",
+    "airlinesDesc": "Worldwide network",
+    "countriesTitle": "150+",
+    "countriesSub": "Countries",
+    "countriesDesc": "Global destinations",
+    "priceTitle": "Best Price",
+    "priceSub": "Guarantee",
+    "priceDesc": "We match any price",
+    "supportTitle": "24/7",
+    "supportSub": "Support",
+    "supportDesc": "Always here to help"
+  },
+  "popularDestinations": {
+    "explore": "EXPLORE",
+    "title": "Popular Destinations",
+    "viewAll": "View all",
+    "from": "from",
+    "badges": {
+      "Most Popular": "Most Popular",
+      "Trending": "Trending",
+      "Hot Deal": "Hot Deal",
+      "Culture": "Culture"
+    }
   }
 }

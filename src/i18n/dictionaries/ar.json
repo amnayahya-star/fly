@@ -56,5 +56,59 @@
     "flightSubtitle": "رحلات عالمية • 1 مسافر • الدرجة السياحية",
     "totalFrom": "الإجمالي يبدأ من",
     "select": "اختيار"
+  },
+  "bookingEngine": {
+    "roundTrip": "ذهاب وعودة",
+    "oneWay": "ذهاب فقط",
+    "from": "من",
+    "to": "إلى",
+    "takeOffDate": "تاريخ المغادرة",
+    "landingDate": "تاريخ العودة",
+    "peopleOnBoard": "المسافرون",
+    "searchFlights": "البحث عن رحلات",
+    "searchAirportPlaceholder": "ابحث عن مطار...",
+    "noAirportsFound": "لم يتم العثور على مطارات",
+    "airportsTitle": "المطارات",
+    "flyOutDesc": "متى ستغادر؟",
+    "returnDesc": "متى ستعود؟",
+    "howManyDesc": "كم عدد المسافرين؟",
+    "adults": "بالغون",
+    "adultsAge": "بعمر 12+",
+    "children": "أطفال",
+    "childrenAge": "بعمر 2-11",
+    "infants": "رضع",
+    "infantsAge": "تحت السنتين",
+    "classes": {
+      "Economy": "الدرجة السياحية",
+      "Premium Economy": "السياحية الممتازة",
+      "Business": "درجة رجال الأعمال",
+      "First": "الدرجة الأولى"
+    }
+  },
+  "statistics": {
+    "airlinesTitle": "700+",
+    "airlinesSub": "خطوط جوية",
+    "airlinesDesc": "شبكة تغطي العالم",
+    "countriesTitle": "150+",
+    "countriesSub": "دولة",
+    "countriesDesc": "وجهات حول العالم",
+    "priceTitle": "أفضل سعر",
+    "priceSub": "مضمون",
+    "priceDesc": "نطابق أي سعر معلن",
+    "supportTitle": "24/7",
+    "supportSub": "دعم متواصل",
+    "supportDesc": "مستعدون دائماً للمساعدة"
+  },
+  "popularDestinations": {
+    "explore": "استكشف",
+    "title": "الوجهات الأكثر شعبية",
+    "viewAll": "عرض الكل",
+    "from": "تبدأ من",
+    "badges": {
+      "Most Popular": "الأكثر شعبية",
+      "Trending": "رائج الآن",
+      "Hot Deal": "عرض ساخن",
+      "Culture": "ثقافة وفنون"
+    }
   }
 }

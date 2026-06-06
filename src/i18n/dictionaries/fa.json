@@ -56,5 +56,59 @@
     "flightSubtitle": "پروازهای جهانی • ۱ مسافر • اکونومی",
     "totalFrom": "مجموع از",
     "select": "انتخاب"
+  },
+  "bookingEngine": {
+    "roundTrip": "رفت و برگشت",
+    "oneWay": "یک‌طرفه",
+    "from": "از",
+    "to": "به",
+    "takeOffDate": "تاریخ رفت",
+    "landingDate": "تاریخ برگشت",
+    "peopleOnBoard": "مسافران پرواز",
+    "searchFlights": "جستجوی پروازها",
+    "searchAirportPlaceholder": "جستجوی فرودگاه...",
+    "noAirportsFound": "فرودگاهی پیدا نشد",
+    "airportsTitle": "فرودگاه‌ها",
+    "flyOutDesc": "چه زمانی پرواز می‌کنید؟",
+    "returnDesc": "چه زمانی برمی‌گردید؟",
+    "howManyDesc": "چند نفر سفر می‌کنند؟",
+    "adults": "بزرگسال",
+    "adultsAge": "۱۲ سال به بالا",
+    "children": "کودک",
+    "childrenAge": "۲ تا ۱۱ سال",
+    "infants": "نوزاد",
+    "infantsAge": "زیر ۲ سال",
+    "classes": {
+      "Economy": "اکونومی",
+      "Premium Economy": "پریمیوم اکونومی",
+      "Business": "بیزینس کلاس",
+      "First": "فرست کلاس"
+    }
+  },
+  "statistics": {
+    "airlinesTitle": "700+",
+    "airlinesSub": "ایرلاین‌ها",
+    "airlinesDesc": "شبکه پروازی جهانی",
+    "countriesTitle": "150+",
+    "countriesSub": "کشورها",
+    "countriesDesc": "مقاصد بین‌المللی",
+    "priceTitle": "بهترین قیمت",
+    "priceSub": "تضمین شده",
+    "priceDesc": "تضمین کمترین قیمت پرواز",
+    "supportTitle": "24/7",
+    "supportSub": "پشتیبانی شبانه‌روزی",
+    "supportDesc": "همیشه برای کمک آماده‌ایم"
+  },
+  "popularDestinations": {
+    "explore": "کشف کنید",
+    "title": "مقاصد پرطرفدار",
+    "viewAll": "مشاهده همه",
+    "from": "شروع قیمت از",
+    "badges": {
+      "Most Popular": "محبوب‌ترین",
+      "Trending": "پرطرفدار",
+      "Hot Deal": "تخفیف ویژه",
+      "Culture": "فرهنگی تاریخی"
+    }
   }
 }
