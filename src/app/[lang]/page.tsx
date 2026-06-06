@@ -52,16 +52,12 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
 
       {/* Background Video Layer */}
       <div className="absolute top-0 left-0 w-full h-[100vh] pointer-events-none overflow-hidden z-0">
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="w-full h-full object-cover"
-          poster={heroSrc}
-        >
-          <source src="/hero.mp4" type="video/mp4" />
-        </video>
+        <iframe
+          className="absolute top-1/2 left-1/2 w-[100vw] h-[56.25vw] min-h-[100vh] min-w-[177.77vh] -translate-x-1/2 -translate-y-1/2 pointer-events-none opacity-90"
+          src="https://www.youtube.com/embed/hVvEISFw9w0?autoplay=1&mute=1&loop=1&playlist=hVvEISFw9w0&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
+          allow="autoplay; encrypted-media"
+          title="Luxury Tourism Background"
+        ></iframe>
         {/* Softer overlay gradient just enough for text readability */}
         <div className="absolute inset-0 bg-gradient-to-r from-[#030d22]/75 via-[#030d22]/30 to-transparent z-10" />
         <div className="absolute inset-0 bg-gradient-to-t from-[#030d22]/50 via-transparent to-transparent z-10" />
