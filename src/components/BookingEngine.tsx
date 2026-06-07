@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect, useRef } from 'react';
 import * as motion from 'framer-motion/client';
+import { useMotionValue, useTransform, animate } from 'framer-motion';
 import Link from 'next/link';
 import { MapPin, Calendar, User, Users, ArrowRightLeft, Route, Plane, ChevronDown, RotateCw, Sparkles } from 'lucide-react';
 import clsx from 'clsx';
@@ -36,13 +37,13 @@ const flightClasses = [
 
 export default function BookingEngine({ lang, dict }: { lang?: string, dict?: any }) {
   const [activeTrip, setActiveTrip] = useState('round');
-  const [takeoffKey, setTakeoffKey] = useState(0);
+  const [compassRotation, setCompassRotation] = useState(0);
+  const [compassPulse, setCompassPulse] = useState(false);
+  const [airportFlash, setAirportFlash] = useState(false);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const departureInputRef = useRef<HTMLInputElement>(null);
   const returnInputRef = useRef<HTMLInputElement>(null);
-  const [containerWidth, setContainerWidth] = useState(0);
-  const [isDesktop, setIsDesktop] = useState(false);
 
   // Search Fields State
   const [fromAirport, setFromAirport] = useState("DXB (Dubai)");
@@ -64,26 +65,37 @@ export default function BookingEngine({ lang, dict }: { lang?: string, dict?: an
   const [showClassDropdown, setShowClassDropdown] = useState(false);
   const classDropdownRef = useRef<HTMLDivElement>(null);
 
+  const triggerAnimation = () => {
+    setCompassRotation(prev => prev + 360);
+    setCompassPulse(true);
+    setTimeout(() => setCompassPulse(false), 600);
+    setAirportFlash(true);
+    setTimeout(() => setAirportFlash(false), 500);
+  };
+
+  const handleSwap = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const temp = fromAirport;
+    setFromAirport(toAirport);
+    setToAirport(temp);
+    
+    setCompassRotation(prev => prev + 180);
+    setCompassPulse(true);
+    setTimeout(() => setCompassPulse(false), 600);
+    setAirportFlash(true);
+    setTimeout(() => setAirportFlash(false), 500);
+  };
+
   useEffect(() => {
-    // Measure container size
-    const updateSize = () => {
-      if (containerRef.current) {
-        setContainerWidth(containerRef.current.offsetWidth);
-      }
-      setIsDesktop(window.innerWidth >= 768);
-    };
-
-    updateSize();
-    window.addEventListener('resize', updateSize);
-
-    // Trigger initial animation after 1 second to grab attention
+    // Trigger initial compass spin after 1 second
     const initialTimer = setTimeout(() => {
-      setTakeoffKey(1);
+      triggerAnimation();
     }, 1000);
 
-    // Trigger periodically every 10 seconds so the user cannot miss it
+    // Periodic micro-interaction: a soft compass pulse every 10 seconds
     const intervalTimer = setInterval(() => {
-      setTakeoffKey(prev => (prev === 0 ? 1 : prev + 1));
+      setCompassPulse(true);
+      setTimeout(() => setCompassPulse(false), 600);
     }, 10000);
 
     // Click outside listener to close dropdowns
@@ -100,32 +112,13 @@ export default function BookingEngine({ lang, dict }: { lang?: string, dict?: an
     document.addEventListener("mousedown", handleClickOutside);
 
     return () => {
-      window.removeEventListener('resize', updateSize);
       document.removeEventListener("mousedown", handleClickOutside);
       clearTimeout(initialTimer);
       clearInterval(intervalTimer);
     };
   }, []);
 
-  const triggerAnimation = () => {
-    setTakeoffKey(prev => (prev === 0 ? 1 : prev + 1));
-  };
-
-  const handleSwap = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    const temp = fromAirport;
-    setFromAirport(toAirport);
-    setToAirport(temp);
-    triggerAnimation();
-  };
-
   const isRtl = lang === 'ar' || lang === 'fa';
-  const startX = isRtl ? containerWidth * 0.75 : containerWidth * 0.25;
-  const endX = isRtl ? containerWidth * 0.25 : containerWidth * 0.75;
-  const controlX = (startX + endX) / 2;
-  const startY = 35;
-  const endY = 35;
-  const controlY = -90;
 
   const filteredFromAirports = airports.filter(airport => {
     const translated = dict?.airports?.[airport] || airport;
@@ -279,7 +272,7 @@ export default function BookingEngine({ lang, dict }: { lang?: string, dict?: an
                     onClick={(e) => e.stopPropagation()}
                   />
                 ) : (
-                  <span className="text-lg md:text-base font-bold text-white whitespace-nowrap truncate">
+                  <span className={clsx("text-lg md:text-base font-bold whitespace-nowrap truncate transition-all duration-300", airportFlash ? "text-blue-400 drop-shadow-[0_0_8px_rgba(59,130,246,0.8)]" : "text-white")}>
                     {dict?.airports?.[fromAirport] || fromAirport}
                   </span>
                 )}
@@ -315,13 +308,55 @@ export default function BookingEngine({ lang, dict }: { lang?: string, dict?: an
               )}
             </div>
 
-            {/* Swap Button */}
-            <button 
-              onClick={handleSwap}
-              className="relative z-10 w-9 h-9 rounded-full bg-[#0B1021] border border-white/15 flex items-center justify-center text-white hover:bg-slate-900 hover:border-white/30 shadow-sm transition-all cursor-pointer -my-2.5 md:-my-0 md:-mx-4.5 shrink-0"
-            >
-              <ArrowRightLeft className="w-4 h-4 rotate-90 md:rotate-0" />
-            </button>
+            {/* Luxury Compass Swap Button */}
+            <div className="relative flex items-center justify-center -my-2.5 md:-my-0 md:-mx-4.5 shrink-0 z-40">
+              
+              {/* Localized Compass Pulse Shockwave */}
+              {compassPulse && (
+                <motion.div
+                  initial={{ scale: 0.8, opacity: 0.6 }}
+                  animate={{ scale: 1.8, opacity: 0 }}
+                  transition={{ duration: 0.6, ease: "easeOut" }}
+                  className="absolute rounded-full border border-blue-500/50 bg-blue-500/5 pointer-events-none"
+                  style={{ width: '48px', height: '48px' }}
+                />
+              )}
+
+              <motion.button 
+                onClick={handleSwap}
+                animate={{ rotate: compassRotation }}
+                transition={{ type: "spring", stiffness: 100, damping: 15 }}
+                className="relative w-12 h-12 rounded-full bg-[#070B19]/90 border border-white/20 flex items-center justify-center text-white hover:border-blue-500/80 shadow-[0_0_15px_rgba(0,0,0,0.6)] hover:shadow-[0_0_20px_rgba(59,130,246,0.35)] transition-all cursor-pointer overflow-hidden group"
+              >
+                {/* SVG Compass Face Background */}
+                <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" className="absolute inset-0 w-full h-full opacity-60 group-hover:opacity-100 transition-opacity">
+                  {/* Outer glowing/metallic ring */}
+                  <circle cx="24" cy="24" r="22" stroke="url(#compassMetallic)" strokeWidth="1.5" strokeOpacity="0.3" />
+                  <circle cx="24" cy="24" r="19" stroke="url(#compassTicksGrad)" strokeWidth="1" strokeDasharray="1 3" />
+                  
+                  {/* Cardinal Ticks */}
+                  <line x1="24" y1="4" x2="24" y2="7" stroke="#3B82F6" strokeWidth="1.5" />
+                  <line x1="24" y1="41" x2="24" y2="44" stroke="rgba(255,255,255,0.4)" strokeWidth="1" />
+                  <line x1="4" y1="24" x2="7" y2="24" stroke="rgba(255,255,255,0.4)" strokeWidth="1" />
+                  <line x1="41" y1="24" x2="44" y2="24" stroke="rgba(255,255,255,0.4)" strokeWidth="1" />
+                  
+                  <defs>
+                    <linearGradient id="compassMetallic" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse">
+                      <stop offset="0%" stopColor="#3B82F6" />
+                      <stop offset="50%" stopColor="rgba(255,255,255,0.2)" />
+                      <stop offset="100%" stopColor="#EC4899" />
+                    </linearGradient>
+                    <linearGradient id="compassTicksGrad" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse">
+                      <stop offset="0%" stopColor="rgba(255,255,255,0.5)" />
+                      <stop offset="100%" stopColor="rgba(255,255,255,0.1)" />
+                    </linearGradient>
+                  </defs>
+                </svg>
+
+                {/* Swap Arrow Icon */}
+                <ArrowRightLeft className="w-4.5 h-4.5 text-blue-400 group-hover:text-white transition-colors relative z-10" />
+              </motion.button>
+            </div>
 
             {/* To */}
             <div 
@@ -348,7 +383,7 @@ export default function BookingEngine({ lang, dict }: { lang?: string, dict?: an
                     onClick={(e) => e.stopPropagation()}
                   />
                 ) : (
-                  <span className="text-lg md:text-base font-bold text-white whitespace-nowrap truncate">
+                  <span className={clsx("text-lg md:text-base font-bold whitespace-nowrap truncate transition-all duration-300", airportFlash ? "text-pink-400 drop-shadow-[0_0_8px_rgba(236,72,153,0.8)]" : "text-white")}>
                     {dict?.airports?.[toAirport] || toAirport}
                   </span>
                 )}
@@ -384,100 +419,7 @@ export default function BookingEngine({ lang, dict }: { lang?: string, dict?: an
               )}
             </div>
 
-            {/* Airplane Flight Path Animation Overlay */}
-            {isDesktop && takeoffKey > 0 && containerWidth > 0 && (
-              <div 
-                key={takeoffKey}
-                className="absolute inset-0 pointer-events-none z-30 overflow-visible"
-              >
-                {/* SVG Path */}
-                <svg className="absolute inset-0 w-full h-full overflow-visible pointer-events-none">
-                  <motion.path
-                    d={`M ${startX} ${startY} Q ${controlX} ${controlY} ${endX} ${endY}`}
-                    fill="none"
-                    stroke="#3B82F6"
-                    strokeWidth="1.5"
-                    strokeDasharray="4 4"
-                    initial={{ pathLength: 0, opacity: 0 }}
-                    animate={{ 
-                      pathLength: [0, 1, 1], 
-                      opacity: [0, 0.7, 0] 
-                    }}
-                    transition={{
-                      duration: 2.6,
-                      ease: "easeInOut",
-                      times: [0, 0.7, 1]
-                    }}
-                  />
-                </svg>
 
-                {/* Smoke Puffs (Particles trailing the plane) */}
-                {[0.06, 0.12, 0.18, 0.24, 0.30].map((delay, index) => (
-                  <motion.div
-                    key={`smoke-${index}`}
-                    initial={{ 
-                      x: startX, 
-                      y: startY, 
-                      scale: 0.2, 
-                      opacity: 0 
-                    }}
-                    animate={{
-                      x: [startX, controlX, endX],
-                      y: [startY, controlY, endY],
-                      scale: [0.2, 1.2, 2.0, 0.5],
-                      opacity: [0, 0.8, 0.4, 0],
-                    }}
-                    transition={{
-                      duration: 2.6,
-                      delay: delay,
-                      ease: "easeInOut",
-                    }}
-                    className="absolute rounded-full bg-slate-200/50 blur-[3px]"
-                    style={{
-                      left: 0,
-                      top: 0,
-                      width: '12px',
-                      height: '12px',
-                      marginLeft: '-6px',
-                      marginTop: '-6px',
-                    }}
-                  />
-                ))}
-
-                {/* Plane Icon */}
-                <motion.div
-                  initial={{ 
-                    x: startX, 
-                    y: startY, 
-                    scale: 0.6, 
-                    opacity: 0, 
-                    rotate: 0 
-                  }}
-                  animate={{
-                    x: [startX, controlX, endX],
-                    y: [startY, controlY, endY],
-                    rotate: [0, 45, 90],
-                    scale: [0.6, 1.1, 0.6],
-                    opacity: [0, 1, 1, 0],
-                  }}
-                  transition={{
-                    duration: 2.6,
-                    ease: "easeInOut",
-                  }}
-                  className="absolute"
-                  style={{
-                    left: 0,
-                    top: 0,
-                    marginLeft: '-10px',
-                    marginTop: '-10px',
-                    scaleX: isRtl ? -1 : 1, // Flip horizontally for RTL
-                    transformOrigin: 'center center'
-                  }}
-                >
-                  <Plane className="w-5 h-5 text-blue-500 fill-blue-500/20" />
-                </motion.div>
-              </div>
-            )}
           </div>
 
           {/* Departure */}
