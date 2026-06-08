@@ -251,16 +251,16 @@ export default function BookingEngine({ lang, dict }: { lang?: string, dict?: an
             <div 
               className="flex-1 w-full min-w-0 px-8 py-5.5 border-b md:border-b-0 md:border-r border-white/10 flex flex-col items-start justify-center gap-1.5 cursor-pointer hover:bg-white/20 xl:hover:bg-white/12 transition-all rounded-t-2xl rounded-b-none md:rounded-l-2xl md:rounded-r-none xl:rounded-none relative"
             >
-              <span className="block text-[13px] text-blue-400/95 font-bold tracking-wider uppercase">{dict?.from || "FROM"}</span>
+              <span className="block text-lg md:text-base text-blue-400 font-extrabold tracking-wider uppercase">{dict?.from || "FROM"}</span>
               <div 
                 onClick={() => {
                   setShowFromDropdown(true);
                   setShowToDropdown(false);
                   setShowPassengerDropdown(false);
                 }}
-                className="flex items-center gap-2 text-white/90 w-full min-w-0"
+                className="flex items-center gap-1.5 text-white/80 w-full min-w-0"
               >
-                <MapPin className="w-4.5 h-4.5 text-blue-400 shrink-0" />
+                <MapPin className="w-3.5 h-3.5 text-blue-400 shrink-0" />
                 {showFromDropdown ? (
                   <input
                     type="text"
@@ -268,11 +268,11 @@ export default function BookingEngine({ lang, dict }: { lang?: string, dict?: an
                     value={searchFromQuery}
                     onChange={(e) => setSearchFromQuery(e.target.value)}
                     autoFocus
-                    className="text-lg md:text-base font-bold text-white bg-transparent outline-none border-b border-blue-500/50 w-full min-w-0 placeholder:text-sm placeholder:font-normal placeholder:text-white/40"
+                    className="text-sm font-semibold text-white bg-transparent outline-none border-b border-blue-500/50 w-full min-w-0 placeholder:text-xs placeholder:font-normal placeholder:text-white/40"
                     onClick={(e) => e.stopPropagation()}
                   />
                 ) : (
-                  <span className={clsx("text-lg md:text-base font-bold whitespace-nowrap truncate transition-all duration-300", airportFlash ? "text-blue-400 drop-shadow-[0_0_8px_rgba(59,130,246,0.8)]" : "text-white")}>
+                  <span className={clsx("text-sm font-bold whitespace-nowrap truncate transition-all duration-300", airportFlash ? "text-blue-400 drop-shadow-[0_0_8px_rgba(59,130,246,0.8)]" : "text-white/90")}>
                     {dict?.airports?.[fromAirport] || fromAirport}
                   </span>
                 )}
@@ -362,16 +362,16 @@ export default function BookingEngine({ lang, dict }: { lang?: string, dict?: an
             <div 
               className="flex-1 w-full min-w-0 px-8 py-5.5 border-r-0 xl:border-r border-white/10 flex flex-col items-start justify-center gap-1.5 cursor-pointer hover:bg-white/20 xl:hover:bg-white/12 transition-all rounded-b-2xl rounded-t-none md:rounded-r-2xl md:rounded-l-none xl:rounded-none relative"
             >
-              <span className="block text-[13px] text-blue-400/95 font-bold tracking-wider uppercase">{dict?.to || "TO"}</span>
+              <span className="block text-lg md:text-base text-blue-400 font-extrabold tracking-wider uppercase">{dict?.to || "TO"}</span>
               <div 
                 onClick={() => {
                   setShowToDropdown(true);
                   setShowFromDropdown(false);
                   setShowPassengerDropdown(false);
                 }}
-                className="flex items-center gap-2 text-white/90 relative z-10 w-full min-w-0"
+                className="flex items-center gap-1.5 text-white/80 relative z-10 w-full min-w-0"
               >
-                <MapPin className="w-4.5 h-4.5 text-blue-400 shrink-0" />
+                <MapPin className="w-3.5 h-3.5 text-blue-400 shrink-0" />
                 {showToDropdown ? (
                   <input
                     type="text"
@@ -379,11 +379,11 @@ export default function BookingEngine({ lang, dict }: { lang?: string, dict?: an
                     value={searchToQuery}
                     onChange={(e) => setSearchToQuery(e.target.value)}
                     autoFocus
-                    className="text-lg md:text-base font-bold text-white bg-transparent outline-none border-b border-blue-500/50 w-full min-w-0 placeholder:text-sm placeholder:font-normal placeholder:text-white/40"
+                    className="text-sm font-semibold text-white bg-transparent outline-none border-b border-blue-500/50 w-full min-w-0 placeholder:text-xs placeholder:font-normal placeholder:text-white/40"
                     onClick={(e) => e.stopPropagation()}
                   />
                 ) : (
-                  <span className={clsx("text-lg md:text-base font-bold whitespace-nowrap truncate transition-all duration-300", airportFlash ? "text-pink-400 drop-shadow-[0_0_8px_rgba(236,72,153,0.8)]" : "text-white")}>
+                  <span className={clsx("text-sm font-bold whitespace-nowrap truncate transition-all duration-300", airportFlash ? "text-pink-400 drop-shadow-[0_0_8px_rgba(236,72,153,0.8)]" : "text-white/90")}>
                     {dict?.airports?.[toAirport] || toAirport}
                   </span>
                 )}

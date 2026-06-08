@@ -17,7 +17,7 @@ export default async function Page({ params }: { params: Promise<{ lang: string 
   const hotels = await getHotels();
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#060b19] selection:bg-[#4CA1FF] selection:text-white pb-20">
+    <main className="relative min-h-screen w-full overflow-hidden bg-background selection:bg-[#4CA1FF] selection:text-white pb-20">
       
       {/* Background Hero Layer */}
       <div className="absolute top-0 left-0 w-full h-[60vh] pointer-events-none">
@@ -29,7 +29,7 @@ export default async function Page({ params }: { params: Promise<{ lang: string 
           className="object-cover object-center"
           quality={100}
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#060b19]/60 via-[#060b19]/80 to-[#060b19]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#060b19]/60 via-background/80 to-background" />
       </div>
 
       <Navbar dict={dict.navbar} lang={lang} />
@@ -42,8 +42,8 @@ export default async function Page({ params }: { params: Promise<{ lang: string 
           transition={{ duration: 0.7 }}
           className="mb-12"
         >
-          <h1 className="text-4xl md:text-6xl font-bold text-white mb-4">{dict.hotels.title}</h1>
-          <p className="text-white/70 text-lg max-w-2xl">{dict.hotels.subtitle}</p>
+          <h1 className="text-4xl md:text-6xl font-bold text-white mb-4 drop-shadow-md">{dict.hotels.title}</h1>
+          <p className="text-white/80 text-lg max-w-2xl drop-shadow-sm">{dict.hotels.subtitle}</p>
         </motion.div>
 
         {/* Hotel Search Engine */}
@@ -53,52 +53,52 @@ export default async function Page({ params }: { params: Promise<{ lang: string 
           transition={{ duration: 0.7, delay: 0.2 }}
           className="relative w-full mb-20"
         >
-          <div className="absolute inset-0 bg-white/5 backdrop-blur-2xl rounded-[1.5rem] border border-white/10 shadow-2xl z-0"></div>
+          <div className="absolute inset-0 bg-background/40 backdrop-blur-2xl rounded-[1.5rem] border border-foreground/10 shadow-2xl z-0"></div>
           
           <div className="relative z-10 p-6 flex flex-col xl:flex-row items-stretch w-full gap-4">
             
             {/* Destination */}
-            <div className="flex-[2] px-5 py-3.5 bg-black/20 border border-white/10 rounded-xl cursor-pointer hover:bg-black/30 transition-colors group">
-              <span className="block text-xs text-white/50 mb-1 font-medium tracking-wide">{dict.hotels.destination}</span>
-              <div className="flex items-center gap-3 text-white/90">
-                <MapPin className="w-5 h-5 text-white/40 group-hover:text-[#4CA1FF] transition-colors" />
+            <div className="flex-[2] px-5 py-3.5 bg-foreground/5 border border-foreground/10 rounded-xl cursor-pointer hover:bg-foreground/10 transition-colors group">
+              <span className="block text-xs text-foreground/50 mb-1 font-medium tracking-wide">{dict.hotels.destination}</span>
+              <div className="flex items-center gap-3 text-foreground/90">
+                <MapPin className="w-5 h-5 text-foreground/40 group-hover:text-[#4CA1FF] transition-colors" />
                 <input 
                   type="text" 
                   placeholder={dict.hotels.placeholder}
-                  className="bg-transparent border-none outline-none text-base font-semibold w-full placeholder-white/30"
+                  className="bg-transparent border-none outline-none text-base font-semibold w-full placeholder-foreground/30 text-foreground"
                 />
               </div>
             </div>
 
             {/* Check-in / Check-out */}
             <div className="flex-[2] flex gap-2">
-              <div className="flex-1 px-5 py-3.5 bg-black/20 border border-white/10 rounded-xl cursor-pointer hover:bg-black/30 transition-colors group">
-                <span className="block text-xs text-white/50 mb-1 font-medium tracking-wide">{dict.hotels.checkIn}</span>
-                <div className="flex items-center gap-3 text-white/90">
-                  <Calendar className="w-5 h-5 text-white/40 group-hover:text-[#4CA1FF] transition-colors" />
-                  <span className="text-base font-semibold">{dict.hotels.addDates}</span>
+              <div className="flex-1 px-5 py-3.5 bg-foreground/5 border border-foreground/10 rounded-xl cursor-pointer hover:bg-foreground/10 transition-colors group">
+                <span className="block text-xs text-foreground/50 mb-1 font-medium tracking-wide">{dict.hotels.checkIn}</span>
+                <div className="flex items-center gap-3 text-foreground/90">
+                  <Calendar className="w-5 h-5 text-foreground/40 group-hover:text-[#4CA1FF] transition-colors" />
+                  <span className="text-base font-semibold text-foreground">{dict.hotels.addDates}</span>
                 </div>
               </div>
-              <div className="flex-1 px-5 py-3.5 bg-black/20 border border-white/10 rounded-xl cursor-pointer hover:bg-black/30 transition-colors group">
-                <span className="block text-xs text-white/50 mb-1 font-medium tracking-wide">{dict.hotels.checkOut}</span>
-                <div className="flex items-center gap-3 text-white/90">
-                  <Calendar className="w-5 h-5 text-white/40 group-hover:text-[#4CA1FF] transition-colors" />
-                  <span className="text-base font-semibold">{dict.hotels.addDates}</span>
+              <div className="flex-1 px-5 py-3.5 bg-foreground/5 border border-foreground/10 rounded-xl cursor-pointer hover:bg-foreground/10 transition-colors group">
+                <span className="block text-xs text-foreground/50 mb-1 font-medium tracking-wide">{dict.hotels.checkOut}</span>
+                <div className="flex items-center gap-3 text-foreground/90">
+                  <Calendar className="w-5 h-5 text-foreground/40 group-hover:text-[#4CA1FF] transition-colors" />
+                  <span className="text-base font-semibold text-foreground">{dict.hotels.addDates}</span>
                 </div>
               </div>
             </div>
 
             {/* Guests & Rooms */}
-            <div className="flex-1 px-5 py-3.5 bg-black/20 border border-white/10 rounded-xl cursor-pointer hover:bg-black/30 transition-colors group">
-              <span className="block text-xs text-white/50 mb-1 font-medium tracking-wide">{dict.hotels.guests}</span>
-              <div className="flex items-center gap-3 text-white/90">
-                <Users className="w-5 h-5 text-white/40 group-hover:text-[#4CA1FF] transition-colors" />
-                <span className="text-base font-semibold">{dict.hotels.guestsValue}</span>
+            <div className="flex-1 px-5 py-3.5 bg-foreground/5 border border-foreground/10 rounded-xl cursor-pointer hover:bg-foreground/10 transition-colors group">
+              <span className="block text-xs text-foreground/50 mb-1 font-medium tracking-wide">{dict.hotels.guests}</span>
+              <div className="flex items-center gap-3 text-foreground/90">
+                <Users className="w-5 h-5 text-foreground/40 group-hover:text-[#4CA1FF] transition-colors" />
+                <span className="text-base font-semibold text-foreground">{dict.hotels.guestsValue}</span>
               </div>
             </div>
 
             {/* Search Button */}
-            <button className="xl:w-auto w-full bg-[#0066FF] hover:bg-[#0052cc] text-white px-8 py-3.5 rounded-xl font-semibold flex items-center justify-center gap-2 transition-all shadow-[0_4px_20px_rgba(0,102,255,0.4)] whitespace-nowrap text-base group">
+            <button className="xl:w-auto w-full bg-[#0066FF] hover:bg-[#0052cc] text-white px-8 py-3.5 rounded-xl font-semibold flex items-center justify-center gap-2 transition-all shadow-[0_4px_20px_rgba(0,102,255,0.4)] whitespace-nowrap text-base group cursor-pointer">
               <Search className="w-5 h-5 group-hover:scale-110 transition-transform" />
               {dict.hotels.search}
             </button>
@@ -110,10 +110,10 @@ export default async function Page({ params }: { params: Promise<{ lang: string 
         <div>
           <div className="flex items-end justify-between mb-8">
             <div>
-              <h2 className="text-2xl font-bold text-white mb-2">{dict.hotels.trending}</h2>
-              <p className="text-white/60">{dict.hotels.trendingSub}</p>
+              <h2 className="text-2xl font-bold text-foreground mb-2">{dict.hotels.trending}</h2>
+              <p className="text-foreground/60">{dict.hotels.trendingSub}</p>
             </div>
-            <Link href="#" className="text-[#4CA1FF] hover:text-white text-sm font-medium transition-colors flex items-center gap-1">
+            <Link href="#" className="text-[#4CA1FF] hover:text-[#0052cc] text-sm font-medium transition-colors flex items-center gap-1">
               {dict.hotels.seeAll} <Map className="w-4 h-4" />
             </Link>
           </div>
@@ -125,7 +125,7 @@ export default async function Page({ params }: { params: Promise<{ lang: string 
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.3 + (index * 0.1) }}
-                className="group relative rounded-2xl overflow-hidden bg-white/5 border border-white/10 hover:border-white/20 transition-all cursor-pointer shadow-lg"
+                className="group relative rounded-2xl overflow-hidden bg-foreground/5 border border-foreground/10 hover:border-foreground/20 transition-all cursor-pointer shadow-lg"
               >
                 <div className="relative h-64 w-full overflow-hidden">
                   <Image
@@ -152,18 +152,18 @@ export default async function Page({ params }: { params: Promise<{ lang: string 
 
                   <div className="flex flex-wrap gap-2 mb-6">
                     {hotel.amenities?.split(',').map((amenity: string, i: number) => (
-                      <span key={i} className="px-2.5 py-1 text-xs font-medium bg-white/10 text-white/80 rounded-md border border-white/5">
+                      <span key={i} className="px-2.5 py-1 text-xs font-medium bg-foreground/10 text-foreground/80 rounded-md border border-foreground/5">
                         {amenity}
                       </span>
                     ))}
                   </div>
 
-                  <div className="flex items-end justify-between pt-4 border-t border-white/10">
+                  <div className="flex items-end justify-between pt-4 border-t border-foreground/10">
                     <div>
-                      <p className="text-xs text-white/50 mb-0.5 uppercase tracking-wider">{dict.hotels.startingFrom}</p>
-                      <p className="text-2xl font-bold text-white">{hotel.price} <span className="text-sm font-normal text-white/50">{dict.hotels.night}</span></p>
+                      <p className="text-xs text-foreground/50 mb-0.5 uppercase tracking-wider">{dict.hotels.startingFrom}</p>
+                      <p className="text-2xl font-bold text-foreground">{hotel.price} <span className="text-sm font-normal text-foreground/50">{dict.hotels.night}</span></p>
                     </div>
-                    <button className="bg-white/10 hover:bg-[#4CA1FF] text-white px-4 py-2 rounded-lg font-medium transition-colors text-sm">
+                    <button className="bg-foreground/10 hover:bg-[#4CA1FF] text-foreground hover:text-white px-4 py-2 rounded-lg font-medium transition-colors text-sm cursor-pointer">
                       {dict.hotels.viewDeal}
                     </button>
                   </div>

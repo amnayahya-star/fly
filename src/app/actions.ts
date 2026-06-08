@@ -1,7 +1,7 @@
 "use server";
 
 import { db } from "@/lib/db";
-import { createSession, getSession } from "@/lib/auth";
+import { createSession, getSession, logout } from "@/lib/auth";
 
 export async function getFlights() {
   return await db.getFlights();
@@ -183,4 +183,13 @@ export async function addDeal(data: any) {
   } catch (error) {
     return { success: false, error: 'Failed to add deal' };
   }
+}
+
+export async function getServerSession() {
+  return await getSession();
+}
+
+export async function performLogout() {
+  await logout();
+  return { success: true };
 }
