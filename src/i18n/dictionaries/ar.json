@@ -149,5 +149,35 @@
         "location": "الهند · DEL"
       }
     }
+  },
+  "checkInPage": {
+    "title": "تسجيل الدخول للرحلة عبر الإنترنت",
+    "subtitle": "سجل وصولك قبل ما يصل إلى 48 ساعة من موعد مغادرة رحلتك واحصل على بطاقة صعود الطائرة.",
+    "pnrLabel": "مرجع الحجز (PNR)",
+    "pnrPlaceholder": "مثال: A8X9KL",
+    "lastNameLabel": "اسم العائلة",
+    "lastNamePlaceholder": "اسم عائلة المسافر كما في الحجز",
+    "infoText": "تأكد من صلاحية جواز سفرك لمدة لا تقل عن 6 أشهر من تاريخ سفرك.",
+    "submitBtn": "تسجيل الوصول الآن"
+  },
+  "manageBookingPage": {
+    "title": "إدارة الحجز",
+    "subtitle": "عرض مسار رحلتك، تعديل تفاصيل الحجز، أو اختيار مقعدك المفضل.",
+    "pnrLabel": "مرجع الحجز (PNR)",
+    "pnrPlaceholder": "مثال: SHATI-X9KL",
+    "lastNameLabel": "اسم العائلة",
+    "lastNamePlaceholder": "اسم عائلة المسافر كما في الحجز",
+    "submitBtn": "استرجاع تفاصيل الحجز",
+    "searching": "جاري البحث...",
+    "notFound": "لم يتم العثور على أي حجز برمز مرجع الحجز واسم العائلة المدخلين.",
+    "ticketConfirmed": "تذكرة إلكترونية مؤكدة",
+    "bookingReference": "رمز مرجع الحجز",
+    "passengerInfo": "معلومات المسافر",
+    "flightItinerary": "خط سير الرحلة",
+    "flightType": "رحلة طيران",
+    "downloadTicket": "تحميل التذكرة",
+    "changeFlight": "تعديل الرحلة",
+    "cancelBooking": "إلغاء الحجز",
+    "backToSearch": "العودة للبحث"
   }
 }

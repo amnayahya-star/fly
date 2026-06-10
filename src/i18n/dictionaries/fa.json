@@ -149,5 +149,35 @@
         "location": "هند · DEL"
       }
     }
+  },
+  "checkInPage": {
+    "title": "پذیرش آنلاین پرواز",
+    "subtitle": "تا ۴۸ ساعت قبل از پرواز خود، به صورت آنلاین پذیرش کنید و کارت پرواز خود را دریافت نمایید.",
+    "pnrLabel": "کد مرجع رزرو (PNR)",
+    "pnrPlaceholder": "مثال: A8X9KL",
+    "lastNameLabel": "نام خانوادگی",
+    "lastNamePlaceholder": "نام خانوادگی مسافر",
+    "infoText": "از اعتبار حداقل ۶ ماهه پاسپورت خود از تاریخ سفر اطمینان حاصل کنید.",
+    "submitBtn": "پذیرش آنلاین پرواز"
+  },
+  "manageBookingPage": {
+    "title": "مدیریت رزرو",
+    "subtitle": "برنامه سفر خود را مشاهده کنید، پروازها را تغییر دهید یا صندلی خود را انتخاب کنید.",
+    "pnrLabel": "کد مرجع رزرو (PNR)",
+    "pnrPlaceholder": "مثال: SHATI-X9KL",
+    "lastNameLabel": "نام خانوادگی",
+    "lastNamePlaceholder": "نام خانوادگی مسافر",
+    "submitBtn": "بازیابی اطلاعات رزرو",
+    "searching": "در حال جستجو...",
+    "notFound": "رزروی با کد مرجع و نام خانوادگی وارد شده یافت نشد.",
+    "ticketConfirmed": "بلیط الکترونیکی تایید شد",
+    "bookingReference": "کد مرجع رزرو",
+    "passengerInfo": "اطلاعات مسافر",
+    "flightItinerary": "برنامه پرواز",
+    "flightType": "پرواز",
+    "downloadTicket": "دانلود بلیط",
+    "changeFlight": "تغییر پرواز",
+    "cancelBooking": "لغو رزرو",
+    "backToSearch": "بازگشت به جستجو"
   }
 }

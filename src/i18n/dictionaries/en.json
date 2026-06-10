@@ -149,5 +149,35 @@
         "location": "India · DEL"
       }
     }
+  },
+  "checkInPage": {
+    "title": "Online Check-in",
+    "subtitle": "Check in up to 48 hours before your flight and get your boarding pass.",
+    "pnrLabel": "Booking Reference (PNR)",
+    "pnrPlaceholder": "e.g. A8X9KL",
+    "lastNameLabel": "Last Name",
+    "lastNamePlaceholder": "Passenger Last Name",
+    "infoText": "Ensure your passport is valid for at least 6 months from your travel date.",
+    "submitBtn": "Check In Now"
+  },
+  "manageBookingPage": {
+    "title": "Manage Booking",
+    "subtitle": "View your itinerary, modify flights, or select seats.",
+    "pnrLabel": "Booking Reference (PNR)",
+    "pnrPlaceholder": "e.g. SHATI-X9KL",
+    "lastNameLabel": "Last Name",
+    "lastNamePlaceholder": "Passenger Last Name",
+    "submitBtn": "Retrieve Booking",
+    "searching": "Searching...",
+    "notFound": "No booking found with this PNR and Last Name.",
+    "ticketConfirmed": "E-Ticket Confirmed",
+    "bookingReference": "Booking Reference",
+    "passengerInfo": "Passenger Information",
+    "flightItinerary": "Flight Itinerary",
+    "flightType": "Flight",
+    "downloadTicket": "Download Ticket",
+    "changeFlight": "Change Flight",
+    "cancelBooking": "Cancel Booking",
+    "backToSearch": "Back to Search"
   }
 }

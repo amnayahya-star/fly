@@ -165,32 +165,32 @@ export default function Navbar({ dict, lang }: { dict: any, lang: string }) {
 
   return (
     <nav className={clsx(
-      "fixed top-0 left-0 w-full z-50 transition-all duration-300 flex items-center justify-between",
+      "fixed top-4 inset-x-4 md:inset-x-8 max-w-7xl mx-auto z-50 transition-all duration-300 rounded-2xl flex items-center justify-between border",
       scrolled 
-        ? "py-3.5 px-6 md:px-12 bg-background/85 backdrop-blur-xl border-b border-foreground/10 shadow-[0_4px_30px_rgba(0,0,0,0.15)] text-foreground" 
-        : "py-6 px-8 bg-transparent border-b border-transparent text-white"
+        ? "py-3 px-6 bg-background/85 backdrop-blur-xl border-foreground/10 shadow-[0_10px_30px_rgba(0,0,0,0.15)] text-foreground" 
+        : "py-4.5 px-8 bg-black/25 dark:bg-white/5 backdrop-blur-lg border-white/10 dark:border-white/5 shadow-lg text-white"
     )}>
       {/* Logo */}
       <div className="flex items-center gap-3 cursor-pointer group">
         <Link href={`/${lang}`}>
-          <svg className={clsx("w-14 h-auto transform group-hover:scale-105 transition-transform duration-300", scrolled ? "text-foreground" : "text-white")} viewBox="0 0 100 45" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+          <svg className={clsx("w-12 h-auto transform group-hover:scale-105 transition-transform duration-300", scrolled ? "text-foreground" : "text-white")} viewBox="0 0 100 45" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
             <path d="M 0 25 Q 30 5 95 0 Q 50 15 12 23 Z" />
             <path d="M 6 31 Q 35 15 88 14 Q 45 25 18 29 Z" />
             <path d="M 12 37 Q 40 25 82 28 Q 40 35 24 35 Z" />
           </svg>
         </Link>
         <Link href={`/${lang}`} className="flex flex-col justify-center pt-1">
-          <span className={clsx("text-xl md:text-2xl font-bold tracking-tight md:tracking-wide leading-none font-sans drop-shadow-sm", scrolled ? "text-foreground" : "text-white")}>
+          <span className={clsx("text-lg md:text-xl font-bold tracking-tight leading-none font-sans drop-shadow-sm", scrolled ? "text-foreground" : "text-white")}>
             {(lang === 'ar' || lang === 'fa') ? "شاطئ الهندية" : "Shati Alhindia"}
           </span>
-          <span className={clsx("text-[0.6rem] tracking-[0.2em] uppercase mt-1.5 ml-0.5 font-semibold", scrolled ? "text-foreground/80" : "text-white/80")}>
+          <span className={clsx("text-[0.55rem] tracking-[0.2em] uppercase mt-1 ml-0.5 font-bold", scrolled ? "text-foreground/80" : "text-white/80")}>
             {(lang === 'ar' || lang === 'fa') ? "حلق بعيداً" : "Fly Beyond"}
           </span>
         </Link>
       </div>
 
       {/* Center Links */}
-      <div className="hidden lg:flex items-center gap-8">
+      <div className="hidden lg:flex items-center gap-4">
         {navLinks.map((link) => {
           const active = isLinkActive(link.href);
           return (
@@ -198,38 +198,33 @@ export default function Navbar({ dict, lang }: { dict: any, lang: string }) {
               key={link.name} 
               href={link.href}
               className={clsx(
-                "text-sm font-semibold transition-all duration-300 relative py-1.5 group whitespace-nowrap",
+                "text-sm font-bold transition-all duration-300 relative py-2 px-4 rounded-xl group whitespace-nowrap border border-transparent",
                 active 
-                  ? (scrolled ? "text-foreground" : "text-white") 
-                  : (scrolled ? "text-foreground/70 hover:text-foreground" : "text-white/70 hover:text-white")
+                  ? (scrolled 
+                      ? "bg-foreground/10 text-foreground border-foreground/5 shadow-sm" 
+                      : "bg-white/20 text-white border-white/10 shadow-sm") 
+                  : (scrolled 
+                      ? "text-foreground/75 hover:text-foreground hover:bg-foreground/5" 
+                      : "text-white/75 hover:text-white hover:bg-white/10")
               )}
             >
               <span>{link.name}</span>
-              {active ? (
-                <span className={clsx(
-                  "absolute bottom-0 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full shadow-[0_0_8px_currentColor]",
-                  isGoldTheme ? "bg-[#D4AF37] text-[#D4AF37]" : "bg-[#4CA1FF] text-[#4CA1FF]"
-                )} />
-              ) : (
-                <span className={clsx(
-                  "absolute bottom-0 left-0 w-full h-[2px] scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-center rounded-full",
-                  isGoldTheme ? "bg-[#D4AF37]/80" : "bg-[#4CA1FF]/80"
-                )} />
-              )}
             </Link>
           );
         })}
       </div>
 
       {/* Right side */}
-      <div className="flex items-center gap-3.5 md:gap-5">
+      <div className="flex items-center gap-2.5 md:gap-3.5">
         
         {/* Theme Toggle Button */}
         <button 
           onClick={toggleTheme}
           className={clsx(
-            "p-2 rounded-full transition-colors cursor-pointer",
-            scrolled ? "text-foreground/70 hover:text-foreground hover:bg-foreground/5" : "text-white/70 hover:text-white hover:bg-white/5"
+            "w-9 h-9 flex items-center justify-center rounded-xl border transition-all cursor-pointer",
+            scrolled 
+              ? "text-foreground/70 border-foreground/10 bg-foreground/5 hover:text-foreground hover:bg-foreground/10" 
+              : "text-white border-white/10 bg-white/5 hover:text-white hover:bg-white/15"
           )}
           aria-label="Toggle theme"
         >
@@ -246,11 +241,13 @@ export default function Navbar({ dict, lang }: { dict: any, lang: string }) {
               setProfileOpen(false);
             }}
             className={clsx(
-              "flex items-center gap-1.5 text-sm font-semibold transition-colors cursor-pointer py-2 px-1",
-              scrolled ? "text-foreground/70 hover:text-foreground" : "text-white/70 hover:text-white"
+              "flex items-center gap-1.5 text-xs font-bold transition-all cursor-pointer py-2 px-3 rounded-xl border",
+              scrolled 
+                ? "text-foreground/70 border-foreground/10 bg-foreground/5 hover:text-foreground hover:bg-foreground/10" 
+                : "text-white border-white/10 bg-white/5 hover:text-white hover:bg-white/15"
             )}
           >
-            <Headphones className={clsx("w-4.5 h-4.5", scrolled ? "text-foreground/60" : "text-white/60")} />
+            <Headphones className="w-4 h-4 shrink-0" />
             <span className="hidden md:inline">{dict.support}</span>
           </button>
 
@@ -287,12 +284,14 @@ export default function Navbar({ dict, lang }: { dict: any, lang: string }) {
               setProfileOpen(false);
             }}
             className={clsx(
-              "p-2 rounded-full transition-colors cursor-pointer relative",
-              scrolled ? "text-foreground/70 hover:text-foreground hover:bg-foreground/5" : "text-white/70 hover:text-white hover:bg-white/5"
+              "w-9 h-9 flex items-center justify-center rounded-xl border transition-all cursor-pointer relative",
+              scrolled 
+                ? "text-foreground/70 border-foreground/10 bg-foreground/5 hover:text-foreground hover:bg-foreground/10" 
+                : "text-white border-white/10 bg-white/5 hover:text-white hover:bg-white/15"
             )}
           >
             <Bell className="w-4.5 h-4.5" />
-            <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full animate-pulse shadow-[0_0_8px_rgba(239,68,68,0.8)]" />
+            <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full animate-pulse shadow-[0_0_8px_rgba(239,68,68,0.8)]" />
           </button>
 
           <AnimatePresence>
@@ -333,12 +332,14 @@ export default function Navbar({ dict, lang }: { dict: any, lang: string }) {
               setProfileOpen(false);
             }}
             className={clsx(
-              "flex items-center gap-1.5 text-sm font-semibold transition-colors cursor-pointer py-2 px-1",
-              scrolled ? "text-foreground/70 hover:text-foreground" : "text-white/70 hover:text-white"
+              "flex items-center gap-1.5 text-xs font-bold transition-all cursor-pointer py-2 px-3 rounded-xl border",
+              scrolled 
+                ? "text-foreground/70 border-foreground/10 bg-foreground/5 hover:text-foreground hover:bg-foreground/10" 
+                : "text-white border-white/10 bg-white/5 hover:text-white hover:bg-white/15"
             )}
           >
             <Globe className={clsx("w-4 h-4", scrolled ? "text-foreground/60" : "text-white/60")} />
-            <span>{lang}</span>
+            <span>{lang.toUpperCase()}</span>
             <svg className={clsx("w-3 h-3 transition-transform duration-300", scrolled ? "text-foreground/50" : "text-white/50", langOpen && "rotate-180")} fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7" />
             </svg>
@@ -449,7 +450,7 @@ export default function Navbar({ dict, lang }: { dict: any, lang: string }) {
             <Link 
               href={`/${lang}/signin`} 
               className={clsx(
-                "text-sm font-semibold transition-colors hidden sm:block",
+                "text-sm font-bold transition-colors hidden sm:block px-3 py-1.5 hover:opacity-85",
                 scrolled ? "text-foreground/70 hover:text-foreground" : "text-white/70 hover:text-white"
               )}
             >
@@ -458,7 +459,7 @@ export default function Navbar({ dict, lang }: { dict: any, lang: string }) {
             <Link 
               href={`/${lang}/signup`} 
               className={clsx(
-                "px-6 py-2.5 text-sm font-bold rounded-full transition-all duration-300 hover:scale-105 active:scale-95 shadow-md flex items-center justify-center cursor-pointer",
+                "px-5 py-2 text-sm font-extrabold rounded-xl transition-all duration-300 hover:scale-105 active:scale-95 shadow-md flex items-center justify-center cursor-pointer",
                 isGoldTheme
                   ? 'bg-gradient-to-r from-[#b89020] to-[#e6c250] text-[#060b19] hover:from-[#a07a16] hover:to-[#d4b037] shadow-[0_4px_15px_rgba(212,175,55,0.25)] hover:shadow-[0_4px_25px_rgba(212,175,55,0.45)]'
                   : 'bg-gradient-to-r from-[#0052CC] to-[#4CA1FF] text-white hover:from-[#003d99] hover:to-[#0052CC] shadow-[0_4px_15px_rgba(76,161,255,0.25)] hover:shadow-[0_4px_25px_rgba(76,161,255,0.45)]'
@@ -473,7 +474,7 @@ export default function Navbar({ dict, lang }: { dict: any, lang: string }) {
         <button 
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           className={clsx(
-            "lg:hidden p-2 transition-colors cursor-pointer rounded-lg border",
+            "lg:hidden w-9 h-9 flex items-center justify-center transition-colors cursor-pointer rounded-xl border",
             scrolled 
               ? "text-foreground/80 hover:text-foreground border-foreground/10 bg-foreground/5" 
               : "text-white/80 hover:text-white border-white/10 bg-white/5"
@@ -486,7 +487,7 @@ export default function Navbar({ dict, lang }: { dict: any, lang: string }) {
 
       {/* Mobile Drawer Menu */}
       {mobileMenuOpen && (
-        <div className="lg:hidden fixed inset-x-0 top-[60px] md:top-[72px] bottom-0 bg-background/95 backdrop-blur-3xl z-40 border-t border-foreground/10 p-6 flex flex-col justify-between overflow-y-auto animate-fade-in text-foreground">
+        <div className="lg:hidden fixed inset-x-4 md:inset-x-8 top-[76px] md:top-[88px] bottom-4 bg-background/95 backdrop-blur-3xl z-40 border border-foreground/10 rounded-2xl p-6 flex flex-col justify-between overflow-y-auto animate-fade-in text-foreground shadow-2xl">
           
           {/* Main Links */}
           <div className="flex flex-col gap-6 mt-4">
